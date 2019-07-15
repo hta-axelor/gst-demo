@@ -4,11 +4,11 @@
   xsi:schemaLocation="http://axelor.com/xml/ns/object-views
   http://axelor.com/xml/ns/object-views/object-views_5.1.xsd">
 
-  <menuitem name="gst-menu"
+  <menuitem name="gst-root"
     title="GST" /> 
 
-  <menuitem name="menu-Company"
-    parent="gst-menu"
+  <menuitem name="gst-root-Company"
+    parent="gst-root"
     title="All Companies"
     action="companies.all"/>   
 

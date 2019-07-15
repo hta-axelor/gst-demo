@@ -1,18 +1,63 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <object-views xmlns="http://axelor.com/xml/ns/object-views"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views
   http://axelor.com/xml/ns/object-views/object-views_5.1.xsd">
 
-  <grid name="company-grid" title="Contacts"
-    model="com.axelor.gst.db.Company"> 
-    <field name="name" />
-  </grid>
-  
-  <form name="company-form" title="Company"
-		model="com.axelor.gst.db.Company">
+	<grid name="company-grid" title="Contacts" model="com.axelor.gst.db.Company">
+		<field name="name" />
+		<field name="GSTIN" />
+		<field name="address" />
+	</grid>
+
+	<form name="company-form" title="Company" model="com.axelor.gst.db.Company">
 		<panel>
+			<field name="logo" title="Logo" widget="image" />
+		</panel>
+		<panel>
+			<field name="name" required="true" />
+			<field name="GSTIN" />
+			<field name="address" />
+		</panel>
+		<panel-related field="contactList" form-view="contactList-form-popup"
+			title="Contacts">
 			<field name="name" />
+			<field name="type" />
+			<field name="primaryEmail" />
+			<field name="secondaryEmail" />
+			<field name="primaryPhone" />
+			<field name="secondaryPhone" />
+		</panel-related>
+		<panel-related field="bankDetailsList" form-view="bankDetailsList-form-popup"
+			title="Bank Details">
+			<field name="bank" />
+			<field name="type" />
+			<field name="IFSC" />
+			<field name="accountNo" />
+			<field name="address" />
+		</panel-related>
+	</form>
+
+	<form name="contactList-form-popup" title="Contacts"
+		model="com.axelor.gst.db.Contact">
+		<panel title="Overview">
+			<field name="name" />
+			<field name="type" />
+			<field name="primaryEmail" />
+			<field name="secondaryEmail" />
+			<field name="primaryPhone" />
+			<field name="secondaryPhone" />
+		</panel>
+	</form>
+
+	<form name="bankDetailsList-form-popup" title="Bank Details"
+		model="com.axelor.gst.db.BankAccount">
+		<panel title="Overview">
+			<field name="bank" />
+			<field name="type" />
+			<field name="IFSC" />
+			<field name="accountNo" />
+			<field name="address" />
 		</panel>
 	</form>
 

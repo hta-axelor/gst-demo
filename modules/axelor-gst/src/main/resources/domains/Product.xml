@@ -1,0 +1,19 @@
+<domain-models xmlns="http://axelor.com/xml/ns/domain-models"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/domain-models
+  http://axelor.com/xml/ns/domain-models/domain-models_5.1.xsd">
+
+	<module name="gst" package="com.axelor.gst.db" />
+
+	<entity name="Product">
+		<string name="name" />
+		<string name="code" />
+		<string name="HSBN" />
+		<many-to-one name="category" ref="ProductCategory" />
+		<decimal name="salePrice" />
+		<decimal name="costPrice" />
+		<binary name="image" title="Photo" help="Max size 4MB." image="true" />
+		<decimal name="gstRate"/>
+	</entity>
+
+</domain-models>
