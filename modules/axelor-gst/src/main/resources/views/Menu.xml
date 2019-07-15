@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.1.xsd">
+
+  <menuitem name="gst-menu"
+    title="GST" /> 
+
+  <menuitem name="menu-Company"
+    parent="gst-menu"
+    title="All Companies"
+    action="companies.all"/>   
+
+  <action-view name="companies.all"
+    title="Company"
+    model="com.axelor.gst.db.Company"> 
+    <view type="grid" name="company-grid"/> 
+    <view type="form" name="company-form"/> 
+  </action-view>
+
+</object-views>
