@@ -6,11 +6,14 @@
 
   <menuitem name="gst-root"
     title="GST" /> 
+    
+   <menuitem title="Company" name="Company" parent="gst-root"/>
+   <menuitem title="Party" name="Party" parent="gst-root"/>
+   
+   
 
-  <menuitem name="gst-root-Company"
-    parent="gst-root"
-    title="All Companies"
-    action="companies.all"/>   
+  <menuitem name="gst-root-Company" parent="Company" title="Companies"
+	action="companies.all" />   
 
   <action-view name="companies.all"
     title="Company"
@@ -18,5 +21,45 @@
     <view type="grid" name="company-grid"/> 
     <view type="form" name="company-form"/> 
   </action-view>
+  
+  <menuitem name="gst-root-BankAccount"
+    parent="Company"
+    title="BankAccounts"
+    action="bankaccount.all"/>   
+
+  <action-view name="bankaccount.all"
+    title="Bank Account"
+    model="com.axelor.gst.db.BankAccount"> 
+    <view type="grid" name="bankaccount-grid"/> 
+    <view type="form" name="bankaccount-form"/> 
+  </action-view>
+  
+  
+  
+  
+  <menuitem name="gst-root-Party"
+    parent="Party"
+    title="Party"
+    action="party.all"/>   
+
+  <action-view name="party.all"
+    title="Party"
+    model="com.axelor.gst.db.Party"> 
+    <view type="grid" name="party-grid"/> 
+    <view type="form" name="party-form"/> 
+  </action-view>
+  
+  <menuitem name="gst-root-Contact"
+    parent="Party"
+    title="Contact"
+    action="contact.all"/>   
+
+  <action-view name="contact.all"
+    title="Contact"
+    model="com.axelor.gst.db.Contact"> 
+    <view type="grid" name="contact-grid"/> 
+    <view type="form" name="contact-form"/> 
+  </action-view>
+  
 
 </object-views>

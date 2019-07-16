@@ -1,19 +1,44 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <object-views xmlns="http://axelor.com/xml/ns/object-views"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views
   http://axelor.com/xml/ns/object-views/object-views_5.1.xsd">
 
-  <grid name="company-grid" title="Contacts"
-    model="com.axelor.gst.db.Company"> 
-    <field name="name" />
-  </grid>
-  
-  <form name="company-form" title="Company"
-		model="com.axelor.gst.db.Company">
+	<grid name="bankaccount-grid" title="Bank Account"
+		model="com.axelor.gst.db.BankAccount">
+		<field name="bank" />
+		<field name="type" />
+		<field name="IFSC" title="IFSC" />
+		<field name="accountNo" />
+		<field name="address" />
+	</grid>
+
+	<form name="bankaccount-form" title="Bank Account"
+		model="com.axelor.gst.db.BankAccount">
 		<panel>
-			<field name="name" required="true"/>
+			<field name="bank" required="true" />
+			<field name="type" />
+			<field name="IFSC" required="true" title="IFSC" />
+			<field name="accountNo" required="true" />
+			<field name="address" />
 		</panel>
 	</form>
+
+	<selection name="gst.bankaccount.type.selection">
+		<option value="saving">Saving</option>
+		<option value="current">Current</option>
+	</selection>
+
+	<form name="bankDetailsList-form-popup" title="Bank Details"
+		model="com.axelor.gst.db.BankAccount">
+		<panel title="Overview">
+			<field name="bank" />
+			<field name="type" />
+			<field name="IFSC" title="IFSC" />
+			<field name="accountNo" />
+			<field name="address" />
+		</panel>
+	</form>
+
 
 </object-views>

@@ -7,7 +7,7 @@
 
   <entity name="BankAccount"> 
     <string name="bank"/>
-    <string name="type" selection="gst.bankaccount.type.selection"/>
+    <string name="type" selection="gst.bankaccount.type.selection" default="current"/>
     <string name="IFSC"/>
     <string name="accountNo"/>
     <string name="address"/>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.1.xsd">
+
+	<grid name="party-grid" title="Party" model="com.axelor.gst.db.Party">
+		<field name="name" />
+		<field name="type" />
+		<field name="customer" />
+		<field name="supplier" />
+		<field name="GSTIN" title="GSTIN" />
+	</grid>
+
+	<form name="party-form" title="Party" model="com.axelor.gst.db.Party">
+		<panel>
+			<field name="name" required="true" />
+			<field name="type" required="true" />
+			<field name="customer" />
+			<field name="supplier" />
+			<field name="GSTIN" />
+		</panel>
+		<panel-related field="contactList" form-view="contactList-form-popup"
+			title="Contacts">
+			<field name="name" />
+			<field name="type" />
+			<field name="primaryEmail" />
+			<field name="secondaryEmail" />
+			<field name="primaryPhone" />
+			<field name="secondaryPhone" />
+		</panel-related>
+		<panel-related field="addressList" form-view="addressList-form-popup"
+			title="Address">
+			<field name="type" />
+			<field name="line1" />
+			<field name="line2" />
+			<field name="category" />
+			<field name="city" />
+			<field name="state" />
+			<field name="country" />
+			<field name="pincode" />
+		</panel-related>
+	</form>
+
+	<selection name="gst.party.type.selection">
+		<option value="individual">Individual</option>
+		<option value="company">Company</option>
+	</selection>
+
+
+</object-views>
