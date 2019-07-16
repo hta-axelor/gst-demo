@@ -18,7 +18,7 @@
 			<field name="type" required="true" />
 			<field name="customer" />
 			<field name="supplier" />
-			<field name="GSTIN" />
+			<field name="GSTIN" title="GSTIN"/>
 		</panel>
 		<panel-related field="contactList" form-view="contactList-form-popup"
 			title="Contacts">

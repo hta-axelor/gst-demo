@@ -7,7 +7,7 @@
 
   <entity name="Party"> 
     <string name="name"/>
-    <string name="type" selection="gst.party.type.selection" default="Company"/>
+    <string name="type" selection="gst.party.type.selection" default="company"/>
     <boolean name="customer"/>
     <boolean name="supplier"/>
     <string name="GSTIN"/>

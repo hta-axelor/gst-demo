@@ -7,7 +7,7 @@
 	<grid name="product-grid" title="Product" model="com.axelor.gst.db.Product">
 		<field name="name" />
 		<field name="code" />
-		<field name="HSBN" title="HSBN"/>
+		<field name="HSBN" title="HSBN" />
 		<field name="category" />
 		<field name="salePrice" />
 		<field name="costPrice" />
@@ -21,12 +21,16 @@
 		<panel>
 			<field name="name" required="true" />
 			<field name="code" required="true" />
-			<field name="HSBN" title="HSBN"/>
-			<field name="category" />
+			<field name="HSBN" title="HSBN" />
+			<field name="category" onChange="action-gst-method-generate-gst" />
 			<field name="salePrice" />
 			<field name="costPrice" />
 			<field name="gstRate" />
 		</panel>
 	</form>
+
+	<action-record name="action-gst-method-generate-gst" model="com.axelor.gst.db.Product">
+		<field name="gstRate" expr="eval: eval:category?.gstRate" />
+	</action-record>
 
 </object-views>

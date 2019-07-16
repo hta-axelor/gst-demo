@@ -28,7 +28,7 @@
 	</form>
 
 	<selection name="gst.address.type.selection">
-		<option value="defualt">Default</option>
+		<option value="default">Default</option>
 		<option value="invoice">Invoice</option>
 		<option value="shipping">Shipping</option>
 		<option value="other">Other</option>
