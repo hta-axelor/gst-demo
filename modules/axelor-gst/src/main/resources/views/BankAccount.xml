@@ -8,7 +8,7 @@
 		model="com.axelor.gst.db.BankAccount">
 		<field name="bank" />
 		<field name="type" />
-		<field name="IFSC" title="IFSC" />
+		<field name="ifsc" />
 		<field name="accountNo" />
 		<field name="address" />
 	</grid>
@@ -16,25 +16,20 @@
 	<form name="bankaccount-form" title="Bank Account"
 		model="com.axelor.gst.db.BankAccount">
 		<panel>
-			<field name="bank" required="true" />
+			<field name="bank" />
 			<field name="type" />
-			<field name="IFSC" required="true" title="IFSC" />
-			<field name="accountNo" required="true" />
+			<field name="ifsc" />
+			<field name="accountNo" />
 			<field name="address" />
 		</panel>
 	</form>
-
-	<selection name="gst.bankaccount.type.selection">
-		<option value="saving">Saving</option>
-		<option value="current">Current</option>
-	</selection>
 
 	<form name="bankDetailsList-form-popup" title="Bank Details"
 		model="com.axelor.gst.db.BankAccount">
 		<panel title="Overview">
 			<field name="bank" />
 			<field name="type" />
-			<field name="IFSC" title="IFSC" />
+			<field name="ifsc" />
 			<field name="accountNo" />
 			<field name="address" />
 		</panel>

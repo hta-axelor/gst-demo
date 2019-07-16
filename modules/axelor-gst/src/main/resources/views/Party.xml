@@ -18,7 +18,7 @@
 			<field name="type" required="true" />
 			<field name="customer" />
 			<field name="supplier" />
-			<field name="GSTIN" title="GSTIN"/>
+			<field name="GSTIN" title="GSTIN" />
 		</panel>
 		<panel-related field="contactList" form-view="contactList-form-popup"
 			title="Contacts">
@@ -41,6 +41,27 @@
 			<field name="pincode" />
 		</panel-related>
 	</form>
+
+	<cards name="gst-party-cards" title="Cards View" model="com.axelor.gst.db.Party"
+		orderBy="name">
+		<field name="name" />
+		<field name="type" />
+		<field name="addressList" />
+		<template><![CDATA[
+ 		 <div class="span4 card-image">
+   		   <strong>{{name}}</strong>
+         </div>
+         <div class="span8">
+          <addressList>
+            <strong>{{type}} </strong>
+            <stong>{{}}
+            <br>
+               
+            <br>
+          </addressList>
+         </div>
+        ]]></template>
+	</cards>
 
 	<selection name="gst.party.type.selection">
 		<option value="individual">Individual</option>

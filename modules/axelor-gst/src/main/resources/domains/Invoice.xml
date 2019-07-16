@@ -5,12 +5,10 @@
 
   <module name="gst" package="com.axelor.gst.db"/>
 
-  <entity name="BankAccount"> 
-    <string name="bank" required="true"/>
-    <string name="type" selection="gst.bankaccount.type.selection" default="current"/>
-    <string name="ifsc" title="IFSC" required="true"/>
-    <string name="accountNo" required="true"/>
-    <string name="address"/>
-  </entity>
+  <entity name="Invoice">
+    <!--  <string name="status" selection="gst.invoice.type.selection" readonly="true"/> -->
+    <many-to-one name="company" ref="Company"/>
+    <!-- <string name="reference" readonly="true"/> -->
+    </entity>
 
 </domain-models>

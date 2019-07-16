@@ -22,15 +22,15 @@
 			<field name="name" required="true" />
 			<field name="code" required="true" />
 			<field name="HSBN" title="HSBN" />
-			<field name="category" onChange="action-gst-method-generate-gst" />
+			<field name="category" onChange="action-gst-record-product-category-copy-gst" />
 			<field name="salePrice" />
 			<field name="costPrice" />
 			<field name="gstRate" />
 		</panel>
 	</form>
 
-	<action-record name="action-gst-method-generate-gst" model="com.axelor.gst.db.Product">
-		<field name="gstRate" expr="eval: eval:category?.gstRate" />
+	<action-record name="action-gst-record-product-category-copy-gst" model="com.axelor.gst.db.Product">
+		<field name="gstRate" expr="eval:category?.gstRate" />
 	</action-record>
 
 </object-views>
