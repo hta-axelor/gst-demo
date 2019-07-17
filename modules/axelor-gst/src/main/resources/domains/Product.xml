@@ -6,9 +6,9 @@
 	<module name="gst" package="com.axelor.gst.db" />
 
 	<entity name="Product">
-		<string name="name" />
-		<string name="code" />
-		<string name="HSBN"/>
+		<string name="name" required="true" />
+		<string name="code"  required="true" />
+		<string name="hsbn" title="HSBN"/>
 		<many-to-one name="category" ref="ProductCategory" />
 		<decimal name="salePrice" />
 		<decimal name="costPrice" />

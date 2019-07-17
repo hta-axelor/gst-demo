@@ -27,18 +27,4 @@
 		</panel>
 	</form>
 
-	<form name="addressList-form-popup" title="Address"
-		model="com.axelor.gst.db.Address">
-		<panel title="Overview">
-			<field name="type" required="true" />
-			<field name="line1" required="true" />
-			<field name="line2" />
-			<field name="category" />
-			<field name="city" required="true" />
-			<field name="state" />
-			<field name="country" required="true" />
-			<field name="pincode" />
-		</panel>
-	</form>
-
 </object-views>

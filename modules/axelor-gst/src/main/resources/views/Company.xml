@@ -6,7 +6,7 @@
 
 	<grid name="company-grid" title="Contacts" model="com.axelor.gst.db.Company">
 		<field name="name" />
-		<field name="GSTIN" title="GSTIN"/>
+		<field name="gstin"/>
 		<field name="address" />
 	</grid>
 
@@ -15,12 +15,12 @@
 			<field name="logo" title="Logo" widget="image" />
 		</panel>
 		<panel>
-			<field name="name" required="true" />
-			<field name="GSTIN" title="GSTIN"/>
+			<field name="name"/>
+			<field name="gstin"/>
 			<field name="address" />
 		</panel>
 		
-		<panel-related field="contactList" form-view="contactList-form-popup"
+		<panel-related field="contactList" form-view="contact-form"
 			title="Contacts">
 			<field name="name" />
 			<field name="type" />
@@ -30,11 +30,11 @@
 			<field name="secondaryPhone" />
 		</panel-related>
 		
-		<panel-related field="bankDetailsList" form-view="bankDetailsList-form-popup"
+		<panel-related field="bankDetailsList" form-view="bank-account-form"
 			title="Bank Details">
 			<field name="bank" />
 			<field name="type" />
-			<field name="IFSC" title="IFSC"/>
+			<field name="ifsc" />
 			<field name="accountNo" />
 			<field name="address" />
 		</panel-related>

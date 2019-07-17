@@ -9,18 +9,18 @@
 		<field name="type" />
 		<field name="customer" />
 		<field name="supplier" />
-		<field name="GSTIN" title="GSTIN" />
+		<field name="gstin"/>
 	</grid>
 
 	<form name="party-form" title="Party" model="com.axelor.gst.db.Party">
 		<panel>
-			<field name="name" required="true" />
-			<field name="type" required="true" />
+			<field name="name"/>
+			<field name="type"/>
 			<field name="customer" />
 			<field name="supplier" />
-			<field name="GSTIN" title="GSTIN" />
+			<field name="gstin"/>
 		</panel>
-		<panel-related field="contactList" form-view="contactList-form-popup"
+		<panel-related field="contactList" form-view="contact-form"
 			title="Contacts">
 			<field name="name" />
 			<field name="type" />
@@ -29,7 +29,7 @@
 			<field name="primaryPhone" />
 			<field name="secondaryPhone" />
 		</panel-related>
-		<panel-related field="addressList" form-view="addressList-form-popup"
+		<panel-related field="addressList" form-view="address-form"
 			title="Address">
 			<field name="type" />
 			<field name="line1" />
@@ -62,11 +62,5 @@
          </div>
         ]]></template>
 	</cards>
-
-	<selection name="gst.party.type.selection">
-		<option value="individual">Individual</option>
-		<option value="company">Company</option>
-	</selection>
-
 
 </object-views>

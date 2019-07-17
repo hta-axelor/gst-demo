@@ -15,26 +15,8 @@
 
 	<form name="contact-form" title="Contacts" model="com.axelor.gst.db.Contact">
 		<panel>
-			<field name="name" required="true" />
-			<field name="type" required="true" />
-			<field name="primaryEmail" />
-			<field name="secondaryEmail" />
-			<field name="primaryPhone" />
-			<field name="secondaryPhone" />
-		</panel>
-	</form>
-
-	<selection name="gst.contact.type.selection">
-		<option value="primary">Primary</option>
-		<option value="secondary">Secondary</option>
-		<option value="others">Others</option>
-	</selection>
-
-	<form name="contactList-form-popup" title="Contacts"
-		model="com.axelor.gst.db.Contact">
-		<panel title="Overview">
-			<field name="name" />
-			<field name="type" />
+			<field name="name"  />
+			<field name="type"/>
 			<field name="primaryEmail" />
 			<field name="secondaryEmail" />
 			<field name="primaryPhone" />
