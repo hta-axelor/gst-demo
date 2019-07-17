@@ -32,5 +32,26 @@
 	<action-record name="action-gst-record-product-category-copy-gst" model="com.axelor.gst.db.Product">
 		<field name="gstRate" expr="eval:category?.gstRate" />
 	</action-record>
+	
+	<cards name="product-cards" title="Cards View" model="com.axelor.gst.db.Party"
+		orderBy="name">
+		<field name="name" />
+		<field name="code" />
+		<field name="hsbn" />
+		<field name="category" />
+		<field name="gstRate" />
+
+		<template><![CDATA[
+ 		 <div class="span4 card-image">
+   		   <strong>{{name}}</strong>
+         </div>
+         <div class="span8">
+           {{code}}<br>
+           {{hsbn}}<br>
+           <strong> {{category.name}}</strong><br>
+           <abbr ng-if="gstRate" title="gstRate">GR:</abbr> {{gstRate}}<br>
+         </div>
+        ]]></template>
+	</cards>
 
 </object-views>

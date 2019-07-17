@@ -105,8 +105,10 @@
 
 	<action-view name="gst.root.product.product" title="Product"
 		model="com.axelor.gst.db.Product">
+		<view type="cards" name="product-cards" />
 		<view type="grid" name="product-grid" />
 		<view type="form" name="product-form" />
+		<context name="json-enhance" expr="true" />
 	</action-view>
 
 	<menuitem name="gst-root-product-product-category" title="Product Categories" parent="gst-root-product"

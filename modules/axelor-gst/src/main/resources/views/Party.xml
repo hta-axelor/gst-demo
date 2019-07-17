@@ -20,26 +20,35 @@
 			<field name="isSupplier" />
 			<field name="gstin" />
 		</panel>
-		<panel-related field="contactList" form-view="contact-form"
-			title="Contacts">
-			<field name="name" />
-			<field name="type" />
-			<field name="primaryEmail" />
-			<field name="secondaryEmail" />
-			<field name="primaryPhone" />
-			<field name="secondaryPhone" />
-		</panel-related>
-		<panel-related field="addressList" form-view="address-form"
-			title="Address">
-			<field name="type" />
-			<field name="line1" />
-			<field name="line2" />
-			<field name="category" />
-			<field name="city" />
-			<field name="state" />
-			<field name="country" />
-			<field name="pincode" />
-		</panel-related>
+
+		<panel>
+			<field name="contactList">
+				<editor x-show-titles="false">
+					<field name="name" />
+					<field name="type" />
+					<field name="primaryEmail" />
+					<field name="secondaryEmail" />
+					<field name="primaryPhone" />
+					<field name="secondaryPhone" />
+				</editor>
+			</field>
+		</panel>
+
+		<panel>
+			<field name="addressList">
+				<editor x-show-titles="false">
+					<field name="type" />
+					<field name="line1" />
+					<field name="line2" />
+					<field name="category" />
+					<field name="city" />
+					<field name="state" />
+					<field name="country" />
+					<field name="pincode" />
+				</editor>
+			</field>
+		</panel>
+
 	</form>
 
 	<cards name="party-cards" title="Cards View" model="com.axelor.gst.db.Party"
@@ -47,21 +56,21 @@
 		<field name="name" />
 		<field name="type" />
 		<field name="gstin" />
-		<field name="contactList" />
+		<field name="contact" />
 
 		<template><![CDATA[
  		 <div class="span4 card-image">
    		   <strong>{{name}}</strong>
          </div>
          <div class="span8">
-          <contactList>
+          <contact>
            <strong ng-if="type==1" >Company</strong>
            <strong ng-if="type==2" >Individual</strong>
            <strong>{{gstin}}</strong> <br>
-           {{contactList.name}}<br>
-           <abbr ng-if="contactList.primaryPhone">P:</abbr> {{contactList.primaryPhone}}<br>
-           <abbr ng-if="contactList.primaryEmail">E:</abbr> {{contactList.primaryEmail}}<br>
-          </contactList>
+           {{contact.name}}<br>
+           <abbr ng-if="contact.primaryPhone">P:</abbr> {{contact.primaryPhone}}<br>
+           <abbr ng-if="contact.primaryEmail">E:</abbr> {{contact.primaryEmail}}<br>
+          </contact>
          </div>
         ]]></template>
 	</cards>

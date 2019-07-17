@@ -22,7 +22,7 @@
 		
 		<panel>
 			<field name="contactList">
-				<editor layout="table" x-show-titles="false">
+				<editor x-show-titles="false">
 					<field name="name" />
 					<field name="type" />
 					<field name="primaryEmail" />
@@ -35,7 +35,7 @@
 
 		<panel>
 			<field name="bankDetailsList">
-				<editor layout="table" x-show-titles="false"> 
+				<editor x-show-titles="false"> 
 					<field name="bank" />
 					<field name="type" />
 					<field name="ifsc" />
