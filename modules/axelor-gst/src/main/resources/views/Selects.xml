@@ -26,5 +26,12 @@
 		<option value="1">Company</option>
 		<option value="2">Individual</option>
 	</selection>
+	
+	<selection name="gst.invoice.status.selection">
+		<option value="1">Draft</option>
+		<option value="2">Validated</option>
+		<option value="3">Paid</option>
+		<option value="4">Cancelled</option>
+	</selection>
 
 </object-views>

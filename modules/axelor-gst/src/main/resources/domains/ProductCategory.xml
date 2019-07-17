@@ -8,7 +8,7 @@
 	<entity name="ProductCategory">
 		<string name="name" required="true"/>
 		<string name="code" required="true"/>
-		<decimal name="gstRate"/>
+		<decimal name="gstRate" title="GST Rate"/>
 	</entity>
 
 </domain-models>

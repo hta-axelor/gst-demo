@@ -17,9 +17,13 @@
 		<panel>
 			<field name="name" />
 			<field name="gstin" />
-			<field name="address" />
+			<field name="address">
+				<editor x-show-titles="false">
+					<field name="line1" />
+				</editor>
+			</field>
 		</panel>
-		
+
 		<panel>
 			<field name="contactList">
 				<editor x-show-titles="false">
@@ -35,7 +39,7 @@
 
 		<panel>
 			<field name="bankDetailsList">
-				<editor x-show-titles="false"> 
+				<editor x-show-titles="false">
 					<field name="bank" />
 					<field name="type" />
 					<field name="ifsc" />

@@ -63,14 +63,12 @@
    		   <strong>{{name}}</strong>
          </div>
          <div class="span8">
-          <contact>
-           <strong ng-if="type==1" >Company</strong>
-           <strong ng-if="type==2" >Individual</strong>
-           <strong>{{gstin}}</strong> <br>
-           {{contact.name}}<br>
+       	   <strong ng-if="type==1" >Company</strong>
+       	   <strong ng-if="type==2" >Individual</strong>
+      	   <strong>{{gstin}}</strong> <br>
+       	   {{contact.name}}<br>
            <abbr ng-if="contact.primaryPhone">P:</abbr> {{contact.primaryPhone}}<br>
            <abbr ng-if="contact.primaryEmail">E:</abbr> {{contact.primaryEmail}}<br>
-          </contact>
          </div>
         ]]></template>
 	</cards>
