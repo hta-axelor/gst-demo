@@ -19,7 +19,7 @@
 		<view type="form" name="company-form" />
 	</action-view>
 
-	<menuitem name="gst-root-company-bank-account" title="BankAccount" parent="gst-root-company" 
+	<menuitem name="gst-root-company-bank-account" title="Bank Account" parent="gst-root-company" 
 		action="gst.root.company.bank.account" />
 
 	<action-view name="gst.root.company.bank.account"
@@ -39,7 +39,7 @@
 
 	<action-view name="gst.root.party.party" title="Party"
 		model="com.axelor.gst.db.Party">
-		<view type="cards" name="gst-party-cards" />
+		<view type="cards" name="party-cards" />
 		<view type="grid" name="party-grid" />
 		<view type="form" name="party-form" />
 		<context name="json-enhance" expr="true" />

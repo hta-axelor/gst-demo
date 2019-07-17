@@ -7,18 +7,18 @@
 	<grid name="party-grid" title="Party" model="com.axelor.gst.db.Party">
 		<field name="name" />
 		<field name="type" />
-		<field name="customer" />
-		<field name="supplier" />
-		<field name="gstin"/>
+		<field name="isCustomer" />
+		<field name="isSupplier" />
+		<field name="gstin" />
 	</grid>
 
 	<form name="party-form" title="Party" model="com.axelor.gst.db.Party">
 		<panel>
-			<field name="name"/>
-			<field name="type"/>
-			<field name="customer" />
-			<field name="supplier" />
-			<field name="gstin"/>
+			<field name="name" />
+			<field name="type" />
+			<field name="isCustomer" />
+			<field name="isSupplier" />
+			<field name="gstin" />
 		</panel>
 		<panel-related field="contactList" form-view="contact-form"
 			title="Contacts">
@@ -42,23 +42,23 @@
 		</panel-related>
 	</form>
 
-	<cards name="gst-party-cards" title="Cards View" model="com.axelor.gst.db.Party"
+	<cards name="party-cards" title="Cards View" model="com.axelor.gst.db.Party"
 		orderBy="name">
 		<field name="name" />
 		<field name="type" />
-		<field name="addressList" />
+		<field name="gstin" />
+		<field name="contactList" />
+
 		<template><![CDATA[
  		 <div class="span4 card-image">
    		   <strong>{{name}}</strong>
          </div>
          <div class="span8">
-          <addressList>
+          <contactList>
             <strong>{{type}} </strong>
-            <stong>{{}}
-            <br>
-               
-            <br>
-          </addressList>
+            <stong>{{gstin}}</strong> <br>
+             {{contactList.name}}
+          </contactList>
          </div>
         ]]></template>
 	</cards>

@@ -15,9 +15,8 @@ public class PartyCardRepository extends PartyRepository{
 			Party party = find(id);
 			json.put("name", party.getName());
 			json.put("type", party.getType());
-			System.out.println(party.getName());
-			System.out.println(party.getAddressList().get(0));
-			json.put("addressList", party.getAddressList().get(0));
+			json.put("gstin", party.getGstin());
+			json.put("contactList", party.getContactList().get(0));
 		} catch (Exception e) {}
 		return json;
 	}

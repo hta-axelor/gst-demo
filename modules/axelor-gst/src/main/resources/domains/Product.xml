@@ -12,7 +12,7 @@
 		<many-to-one name="category" ref="ProductCategory" />
 		<decimal name="salePrice" />
 		<decimal name="costPrice" />
-		<binary name="image" title="Photo" help="Max size 4MB." image="true" />
+	    <many-to-one name="image" ref="com.axelor.meta.db.MetaFile"/>	
 		<decimal name="gstRate"/>
 	</entity>
 

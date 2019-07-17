@@ -16,7 +16,7 @@
 
 	<form name="product-form" title="Product" model="com.axelor.gst.db.Product">
 		<panel>
-			<field name="image" />
+			<field name="image" title="Image" widget="image" />
 		</panel>
 		<panel>
 			<field name="name" />

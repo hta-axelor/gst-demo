@@ -8,8 +8,8 @@
   <entity name="Party"> 
     <string name="name" required="true"/>
     <string name="type" selection="gst.party.type.selection" default="1" required="true"/>
-    <boolean name="customer"/>
-    <boolean name="supplier"/>
+    <boolean name="isCustomer" title="Customer"/>
+    <boolean name="isSupplier" title="Supplier"/>
     <string name="gstin" title="GSTIN"/>
     <one-to-many name="contactList" ref="Contact"/>
     <one-to-many name="addressList" ref="Address"/>
