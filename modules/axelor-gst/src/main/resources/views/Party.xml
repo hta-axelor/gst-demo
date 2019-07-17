@@ -55,9 +55,12 @@
          </div>
          <div class="span8">
           <contactList>
-            <strong>{{type}} </strong>
-            <stong>{{gstin}}</strong> <br>
-             {{contactList.name}}
+           <strong ng-if="type==1" >Company</strong>
+           <strong ng-if="type==2" >Individual</strong>
+           <strong>{{gstin}}</strong> <br>
+           {{contactList.name}}<br>
+           <abbr ng-if="contactList.primaryPhone">P:</abbr> {{contactList.primaryPhone}}<br>
+           <abbr ng-if="contactList.primaryEmail">E:</abbr> {{contactList.primaryEmail}}<br>
           </contactList>
          </div>
         ]]></template>

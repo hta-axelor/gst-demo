@@ -19,7 +19,6 @@
 			<field name="type" />
 			<field name="line1" />
 			<field name="line2" />
-			<field name="category" />
 			<field name="city" />
 			<field name="state" />
 			<field name="country" />

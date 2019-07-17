@@ -6,7 +6,7 @@
 
 	<grid name="company-grid" title="Contacts" model="com.axelor.gst.db.Company">
 		<field name="name" />
-		<field name="gstin"/>
+		<field name="gstin" />
 		<field name="address" />
 	</grid>
 
@@ -15,29 +15,35 @@
 			<field name="logo" title="Logo" widget="image" />
 		</panel>
 		<panel>
-			<field name="name"/>
-			<field name="gstin"/>
+			<field name="name" />
+			<field name="gstin" />
 			<field name="address" />
 		</panel>
 		
-		<panel-related field="contactList" form-view="contact-form"
-			title="Contacts">
-			<field name="name" />
-			<field name="type" />
-			<field name="primaryEmail" />
-			<field name="secondaryEmail" />
-			<field name="primaryPhone" />
-			<field name="secondaryPhone" />
-		</panel-related>
-		
-		<panel-related field="bankDetailsList" form-view="bank-account-form"
-			title="Bank Details">
-			<field name="bank" />
-			<field name="type" />
-			<field name="ifsc" />
-			<field name="accountNo" />
-			<field name="address" />
-		</panel-related>
+		<panel>
+			<field name="contactList">
+				<editor layout="table" x-show-titles="false">
+					<field name="name" />
+					<field name="type" />
+					<field name="primaryEmail" />
+					<field name="secondaryEmail" />
+					<field name="primaryPhone" />
+					<field name="secondaryPhone" />
+				</editor>
+			</field>
+		</panel>
+
+		<panel>
+			<field name="bankDetailsList">
+				<editor layout="table" x-show-titles="false"> 
+					<field name="bank" />
+					<field name="type" />
+					<field name="ifsc" />
+					<field name="accountNo" />
+					<field name="address" />
+				</editor>
+			</field>
+		</panel>
 	</form>
 
 </object-views>
