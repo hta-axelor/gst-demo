@@ -17,11 +17,7 @@
 		<panel>
 			<field name="name" />
 			<field name="gstin" />
-			<field name="address">
-				<editor x-show-titles="false">
-					<field name="line1" />
-				</editor>
-			</field>
+			<field name="address"/>
 		</panel>
 
 		<panel>
