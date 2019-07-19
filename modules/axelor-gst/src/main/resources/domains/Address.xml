@@ -1,18 +1,26 @@
 <domain-models xmlns="http://axelor.com/xml/ns/domain-models"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://axelor.com/xml/ns/domain-models
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/domain-models
   http://axelor.com/xml/ns/domain-models/domain-models_5.1.xsd">
 
-  <module name="gst" package="com.axelor.gst.db"/>
+	<module name="gst" package="com.axelor.gst.db" />
 
-  <entity name="Address"> 
-    <string name="type" selection="gst.address.type.selection" default="1" required="true"/>
-    <string name="line1" required="true"/>
-    <string name="line2"/>
-    <many-to-one name="city" ref="City" required="true"/>
-    <many-to-one name="state" ref="State"/>
-    <many-to-one name="country" ref="Country" required="true"/>
-   ,<string name="pincode"/>
-  </entity>
+	<entity name="Address">
+		<string name="type" selection="gst.address.type.selection"
+			default="1" required="true" />
+		<string name="line1" required="true" />
+		<string name="line2" />
+		<many-to-one name="city" ref="City" required="true" />
+		<many-to-one name="state" ref="State" />
+		<many-to-one name="country" ref="Country" required="true" />
+		<string name="pincode" />
+		<string name="fullAddress" namecolumn="true" search="line1,line2,city,state,country,pincode"> 
+  		  <![CDATA[
+ 			   if (line1 == null &&  line2 == null && city == null && state == null && country == null && pincode == null) {
+ 			     return null;
+ 			   }
+  			   return line1 + " " + line2 + "," + city.getName() + "," + state.getName() + "," + country.getName() + "-" + pincode;
+          ]]></string>
+	</entity>
 
 </domain-models>

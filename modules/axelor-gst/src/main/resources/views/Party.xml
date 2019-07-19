@@ -40,7 +40,6 @@
 					<field name="type" />
 					<field name="line1" />
 					<field name="line2" />
-					<field name="category" />
 					<field name="city" />
 					<field name="state" />
 					<field name="country" />
@@ -65,7 +64,7 @@
          <div class="span8">
        	   <strong ng-if="type==1" >Company</strong>
        	   <strong ng-if="type==2" >Individual</strong>
-      	   <strong>{{gstin}}</strong> <br>
+      	  <br> <strong>{{gstin}}</strong> <br>
        	   {{contact.name}}<br>
            <abbr ng-if="contact.primaryPhone">P:</abbr> {{contact.primaryPhone}}<br>
            <abbr ng-if="contact.primaryEmail">E:</abbr> {{contact.primaryEmail}}<br>

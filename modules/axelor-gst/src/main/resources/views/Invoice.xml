@@ -19,7 +19,7 @@
 			<field name="reference" />
 			<field name="dt" />
 			<field name="priority" />
-			<field name="party" />
+			<field name="party" onChange="action-gst-record-invoice-calculate-party-values,action-gst-record-invoice-calculate-shipping-address"/>
 			<field name="partyContact" />
 			<field name="invoiceAddress" onChange="action-gst-record-invoice-calculate-shipping-address"/>
 			<field name="shippingAddress" />
@@ -54,6 +54,12 @@
 	    model="com.axelor.gst.db.Invoice">
 	     <field name="shippingAddress" expr="eval: invoiceAddress" if="isInvoiceAddress"/>
 	     <field name="shippingAddress" expr="" if="!isInvoiceAddress"/>
+	</action-record>
+	
+	<action-record name="action-gst-record-invoice-calculate-party-values"
+	    model="com.axelor.gst.db.Invoice">
+	     <field name="invoiceAddress" expr="eval: party?.addressList[0]" if="party &amp;&amp; party?.addressList"/>
+	     <field name="partyContact" expr="eval: party?.contactList[0].name" if="party &amp;&amp; party?.contactList &amp;&amp; party?.contactList[0].name"/>
 	</action-record>
 
 </object-views>

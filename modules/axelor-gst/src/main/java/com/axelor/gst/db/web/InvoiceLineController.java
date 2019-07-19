@@ -16,13 +16,6 @@ public class InvoiceLineController {
 
 	@Inject
 	private InvoiceLineService invoiceLineService;
-	
-	public void getNetAmount(ActionRequest request, ActionResponse response) {
-		int qty = (int) request.getContext().get("qty");
-		BigDecimal price = (BigDecimal) request.getContext().get("price");
-		BigDecimal netAmount = invoiceLineService.calculateNetAmount(qty, price);
-		response.setValue("netAmount", netAmount);
-	}
 
 	public void getProductValues(ActionRequest request, ActionResponse response) {
 		Product product = (Product) request.getContext().get("product");
@@ -36,14 +29,17 @@ public class InvoiceLineController {
 
 	public void getAllGst(ActionRequest request, ActionResponse response) {
 		try {
+			int qty = (int) request.getContext().get("qty");
+			BigDecimal price = (BigDecimal) request.getContext().get("price");
+			BigDecimal netAmount = invoiceLineService.calculateNetAmount(qty, price);
+			response.setValue("netAmount", netAmount);
+			
 			Company company = (Company) request.getContext().getParent().get("company");
 			Address companyAddress = (Address) company.getAddress();
 			State companyState = companyAddress.getState();
 
 			Address invoiceAddress = (Address) request.getContext().getParent().get("invoiceAddress");
 			State invoiceAddressState = invoiceAddress.getState();
-
-			BigDecimal netAmount = (BigDecimal) request.getContext().get("netAmount");
 
 			if (companyState != invoiceAddressState) {
 				BigDecimal igst = invoiceLineService.calculateIgst();

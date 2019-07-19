@@ -21,9 +21,9 @@
 			<field name="hsbn" />
 			<field name="item" />
 			<field name="qty"
-				onChange="action-gst-method-invoice-line-calculate-net-amount,action-gst-method-invoice-line-calculate-all-gst" />
+				onChange="action-gst-method-invoice-line-calculate-all-gst" />
 			<field name="price"
-				onChange="action-gst-method-invoice-line-calculate-net-amount,action-gst-method-invoice-line-calculate-all-gst" />
+				onChange="action-gst-method-invoice-line-calculate-all-gst" />
 			<field name="netAmount" />
 			<field name="gstRate" />
 			<field name="igst" />
@@ -32,10 +32,6 @@
 			<field name="grossAmount" />
 		</panel>
 	</form>
-
-	<action-method name="action-gst-method-invoice-line-calculate-net-amount">
-		<call class="com.axelor.gst.db.web.InvoiceLineController" method="getNetAmount" />
-	</action-method>
 
 	<action-method name="action-gst-method-invoice-line-product-calculate-values">
 		<call class="com.axelor.gst.db.web.InvoiceLineController" method="getProductValues" />
