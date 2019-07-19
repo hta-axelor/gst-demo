@@ -55,6 +55,10 @@
 				showIf="statusSelect == 1" />
 		</panel>
 	</form>
+	
+	<action-method name="action-gst-method-invoice-form-calculate-invoice-items">
+	   <call class="com.axelor.gst.db.web.InvoiceController" method="getItems"/>
+	</action-method>
 
 	<action-record name="action-gst-record-invoice-form-calculate-invoice-items"
 		model="com.axelor.gst.db.Invoice">
