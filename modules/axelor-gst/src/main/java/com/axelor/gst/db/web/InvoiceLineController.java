@@ -3,6 +3,7 @@ package com.axelor.gst.db.web;
 import java.math.BigDecimal;
 import com.axelor.gst.db.Address;
 import com.axelor.gst.db.Company;
+import com.axelor.gst.db.Invoice;
 import com.axelor.gst.db.Product;
 import com.axelor.gst.db.State;
 import com.axelor.gst.service.InvoiceLineService;
@@ -17,7 +18,7 @@ public class InvoiceLineController {
 	@Inject
 	private InvoiceLineService invoiceLineService;
 
-	public void getProductValues(ActionRequest request, ActionResponse response) {
+	public void setProductValues(ActionRequest request, ActionResponse response) {
 		Product product = (Product) request.getContext().get("product");
 		BigDecimal gstRate = invoiceLineService.calculateGstRate(product);
 		String item = invoiceLineService.getItem(product);
@@ -27,7 +28,7 @@ public class InvoiceLineController {
 		response.setValue("price", price);
 	}
 
-	public void getAllGst(ActionRequest request, ActionResponse response) {
+	public void setAllGst(ActionRequest request, ActionResponse response) {
 		try {
 			int qty = (int) request.getContext().get("qty");
 			BigDecimal price = (BigDecimal) request.getContext().get("price");

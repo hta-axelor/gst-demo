@@ -34,11 +34,11 @@
 	</form>
 
 	<action-method name="action-gst-method-invoice-line-product-calculate-values">
-		<call class="com.axelor.gst.db.web.InvoiceLineController" method="getProductValues" />
+		<call class="com.axelor.gst.db.web.InvoiceLineController" method="setProductValues" />
 	</action-method>
 	
 	<action-method name="action-gst-method-invoice-line-calculate-all-gst">
-		<call class="com.axelor.gst.db.web.InvoiceLineController" method="getAllGst" />
+		<call class="com.axelor.gst.db.web.InvoiceLineController" method="setAllGst" />
 	</action-method>
 
 </object-views>

@@ -7,7 +7,7 @@
 	<menuitem name="gst-root" title="GST" />
 
 
-
+	<!-- Company -->
 	<menuitem name="gst-root-company" title="Company" parent="gst-root" />
 
 	<menuitem name="gst-root-company-company" title="Company"
@@ -31,7 +31,7 @@
 
 
 
-
+	<!-- Party -->
 	<menuitem name="gst-root-party" title="Party" parent="gst-root" />
 
 	<menuitem name="gst-root-party-party" title="Party" parent="gst-root-party"
@@ -96,7 +96,7 @@
 
 
 
-
+	<!-- Product -->
 	<menuitem name="gst-root-product" title="Product" parent="gst-root" />
 
 
@@ -120,6 +120,10 @@
 		<view type="form" name="product-category-form" />
 	</action-view>
 
+
+
+
+	<!-- Invoice -->
 	<menuitem name="gst-root-invoice" title="Invoice" parent="gst-root" />
 
 	<menuitem name="gst-root-invoice-create-invoice" title="Create Invoice"
@@ -129,6 +133,15 @@
 		model="com.axelor.gst.db.Invoice">
 		<view type="form" name="invoice-form" />
 		<view type="grid" name="invoice-grid" />
+	</action-view>
+
+	<menuitem name="gst-root-invoice-validated-invoice" title="Validated Invoice"
+		parent="gst-root-invoice" action="gst.root.invoice.validated.invoice" />
+
+	<action-view name="gst.root.invoice.validated.invoice"
+		title="Validated Invoice" model="com.axelor.gst.db.Invoice">
+		<view type="grid" name="invoice-validated-grid" />
+		<domain>self.statusSelect = '2'</domain>
 	</action-view>
 
 </object-views>

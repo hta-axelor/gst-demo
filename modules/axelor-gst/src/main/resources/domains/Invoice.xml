@@ -6,10 +6,10 @@
 	<module name="gst" package="com.axelor.gst.db" />
 
 	<entity name="Invoice">
-        <string name="status" readonly="true" selection="gst.invoice.status.selection"/>
+        <string name="statusSelect" title="Status" readonly="true" selection="gst.invoice.status.selection" default="1"/>
         <many-to-one name="company" ref="Company" required="true"/>
         <string name="reference" readonly="true"/>
-        <datetime name="dt" title="Date"/>
+        <datetime name="invoiceDate" title="Date"/>
         <integer name="priority"/>
         <many-to-one name="party" ref="Party" required="true"/>
         <many-to-one name="partyContact" ref="Contact" />
@@ -22,6 +22,10 @@
         <decimal name="netSgst" title="Net SGST" readonly="true"/>
         <decimal name="grossAmount" title="Gross Amount" readonly="true"/>
         <one-to-many name="invoiceItemsList" ref="InvoiceLine"/>
+        
+        <extra-code><![CDATA[
+		  public static final int STATUS_VALIDATED = 2;
+		]]></extra-code>   
 	</entity>
 
 </domain-models>
