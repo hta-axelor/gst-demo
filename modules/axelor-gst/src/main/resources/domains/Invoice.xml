@@ -24,7 +24,11 @@
         <one-to-many name="invoiceItemsList" ref="InvoiceLine"/>
         
         <extra-code><![CDATA[
+		  public static final int STATUS_DRAFT = 1;
 		  public static final int STATUS_VALIDATED = 2;
+		  public static final int STATUS_PAID = 3;
+		  public static final int STATUS_CANCELLED = 4;
+		  public static final int STATUS_ALL_INVOICES = 5;
 		]]></extra-code>   
 	</entity>
 

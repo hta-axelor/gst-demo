@@ -82,7 +82,6 @@ public class InvoiceImpl implements InvoiceService {
 
 	@Override
 	public Invoice getShippingAddress(Invoice invoice) {
-		System.out.println(invoice.getInvoiceAddress());
 		if (invoice.getIsInvoiceAddress()) {
 			invoice.setShippingAddress(invoice.getInvoiceAddress());
 		} else if (shippingAddress != null) {

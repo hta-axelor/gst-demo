@@ -5,7 +5,7 @@
   http://axelor.com/xml/ns/object-views/object-views_5.1.xsd">
 
 	<grid name="invoice-grid" title="Invoice" model="com.axelor.gst.db.Invoice"
-		onNew="action-gst-record-invoice-date-default">
+		onNew="action-gst-record-invoice-form-default">
 		<field name="company" />
 		<field name="reference" />
 		<field name="invoiceDate" />
@@ -14,7 +14,7 @@
 	</grid>
 
 	<form name="invoice-form" title="Invoice" model="com.axelor.gst.db.Invoice"
-		onNew="action-gst-record-invoice-date-default">
+		onNew="action-gst-record-invoice-form-default">
 		<panel>
 			<field name="statusSelect" widget="NavSelect" colSpan="12" />
 		</panel>
@@ -38,7 +38,8 @@
 			<field name="grossAmount" />
 		</panel>
 		<panel-related field="invoiceItemsList" form-view="invoice-line-form"
-			onChange="action-gst-method-invoice-calculate-invoice-items">
+			onChange="action-gst-method-invoice-calculate-invoice-items"
+			readonlyIf="statusSelect == 3">
 			<field name="product" />
 			<field name="hsbn" />
 			<field name="item" />
@@ -53,14 +54,24 @@
 		</panel-related>
 		<panel sidebar="true">
 			<button name="validateBtn" title="Validate"
-				onClick="action-gst-record-invoice-validate,save" hidden="true"
-				showIf="statusSelect == 1" />
+				onClick="action-gst-record-invoice-validate,save,action-gst-attrs-invoice-validate"
+				hidden="true" showIf="statusSelect == 1" />
+			<button name="paidBtn" title="Paid"
+				onClick="action-gst-validate-invoice-items-list,action-gst-record-invoice-paid,save"
+				hidden="true" showIf="statusSelect == 2" />
+			<button name="cancelbtn" title="Cancel"
+				onClick="action-gst-record-invoice-cancelled,save" hidden="true"
+				showIf="statusSelect == 3" />
+			<button name="draftbtn" title="Draft"
+			    onClick="action-gst-record-invoice-draft,save"  hidden="true"
+				showIf="statusSelect == 4" />
 		</panel>
 	</form>
 
-	<action-record name="action-gst-record-invoice-date-default"
+	<action-record name="action-gst-record-invoice-form-default"
 		model="com.axelor.gst.db.Invoice">
 		<field name="invoiceDate" expr="eval:__time__" />
+		<field name="statusSelect" expr="eval: __repo__(Invoice).STATUS_DRAFT" />
 	</action-record>
 
 	<action-method name="action-gst-method-invoice-calculate-invoice-items">
@@ -85,7 +96,38 @@
 
 	<action-record name="action-gst-record-invoice-validate"
 		model="com.axelor.gst.db.Invoice">
-		<field name="statusSelect" expr="eval: InvoiceRepository.STATUS_VALIDATED" />
+		<field name="statusSelect" expr="eval: InvoiceRepository.STATUS_VALIDATED"
+			if="company &amp;&amp; party &amp;&amp; invoiceAddress" />
+	</action-record>
+
+	<action-attrs name="action-gst-attrs-invoice-validate">
+		<attribute for="company" name="readonly" expr="true" />
+		<attribute for="invoiceDate" name="readonly" expr="true" />
+		<attribute for="priority" name="readonly" expr="true" />
+		<attribute for="party" name="readonly" expr="true" />
+		<attribute for="partyContact" name="readonly" expr="true" />
+		<attribute for="invoiceAddress" name="readonly" expr="true" />
+		<attribute for="shippingAddress" name="readonly" expr="true" />
+		<attribute for="isInvoiceAddress" name="readonly" expr="true" />
+	</action-attrs>
+
+	<action-validate name="action-gst-validate-invoice-items-list">
+		<error message="Please insert at least 1 item" if="invoiceItemsList.size == 0" />
+	</action-validate>
+
+	<action-record name="action-gst-record-invoice-paid"
+		model="com.axelor.gst.db.Invoice">
+		<field name="statusSelect" expr="eval: InvoiceRepository.STATUS_PAID" />
+	</action-record>
+
+	<action-record name="action-gst-record-invoice-cancelled"
+		model="com.axelor.gst.db.Invoice">
+		<field name="statusSelect" expr="eval: InvoiceRepository.STATUS_CANCELLED" />
+	</action-record>
+	
+	<action-record name="action-gst-record-invoice-draft"
+		model="com.axelor.gst.db.Invoice">
+		<field name="statusSelect" expr="eval: InvoiceRepository.STATUS_DRAFT" />
 	</action-record>
 
 </object-views>
