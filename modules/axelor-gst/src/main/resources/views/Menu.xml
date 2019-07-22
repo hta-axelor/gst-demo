@@ -27,6 +27,15 @@
 		<view type="grid" name="bank-account-grid" />
 		<view type="form" name="bank-account-form" />
 	</action-view>
+	
+	<menuitem name="gst-root-company-sequence" title="Sequence"
+		parent="gst-root-company" action="gst.root.company.sequence" />
+
+	<action-view name="gst.root.company.sequence" title="Sequence"
+		model="com.axelor.gst.db.Sequence">
+		<view type="grid" name="sequence-grid" />
+		<view type="form" name="sequence-form" />
+	</action-view>
 
 
 
