@@ -3,7 +3,6 @@ package com.axelor.gst.db.web;
 import java.math.BigDecimal;
 import com.axelor.gst.db.Address;
 import com.axelor.gst.db.Company;
-import com.axelor.gst.db.Invoice;
 import com.axelor.gst.db.Product;
 import com.axelor.gst.db.State;
 import com.axelor.gst.service.InvoiceLineService;

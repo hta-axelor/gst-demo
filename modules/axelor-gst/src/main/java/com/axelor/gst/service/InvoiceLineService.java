@@ -2,7 +2,6 @@ package com.axelor.gst.service;
 
 import java.math.BigDecimal;
 import com.axelor.gst.db.Product;
-import com.axelor.gst.db.State;
 
 public interface InvoiceLineService {
    public BigDecimal calculateNetAmount(int qty,BigDecimal price);

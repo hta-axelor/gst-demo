@@ -4,7 +4,8 @@
 	xsi:schemaLocation="http://axelor.com/xml/ns/object-views
   http://axelor.com/xml/ns/object-views/object-views_5.1.xsd">
 
-	<grid name="address-grid" title="Address" model="com.axelor.gst.db.Address">
+	<grid name="address-grid" title="Address"
+		model="com.axelor.gst.db.Address">
 		<field name="type" />
 		<field name="line1" />
 		<field name="line2" />
@@ -14,16 +15,23 @@
 		<field name="pincode" />
 	</grid>
 
-	<form name="address-form" title="Address" model="com.axelor.gst.db.Address">
+	<form name="address-form" title="Address"
+		model="com.axelor.gst.db.Address">
 		<panel>
 			<field name="type" />
 			<field name="line1" />
 			<field name="line2" />
-			<field name="city" />
+			<field name="city" onChange="action-gst-record-address-city-default-values"/>
 			<field name="state" />
 			<field name="country" />
 			<field name="pincode" />
 		</panel>
 	</form>
+
+	<action-record name="action-gst-record-address-city-default-values"
+		model="com.axelor.gst.db.Invoice">
+		<field name="state" expr="eval: city?.state" />
+		<field name="country" expr="eval: city?.state?.country" />
+	</action-record>
 
 </object-views>

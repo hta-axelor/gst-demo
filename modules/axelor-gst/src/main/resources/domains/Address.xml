@@ -16,10 +16,18 @@
 		<string name="pincode" />
 		<string name="fullAddress" namecolumn="true" search="line1,line2,city,state,country,pincode"> 
   		  <![CDATA[
- 			   if (line1 == null &&  line2 == null && city == null && state == null && country == null && pincode == null) {
- 			     return null;
+ 			   if (line2 == null && pincode == null) {
+ 			      return line1  + "," + city.getName() + "," + state.getName() + "," +  country.getName();
  			   }
-  			   return line1 + " " + line2 + "," + city.getName() + "," + state.getName() + "," + country.getName() + "-" + pincode;
+ 			   else if(line2 == null){
+ 			      return line1  + "," + city.getName() + "," + state.getName() + "," +  country.getName() + "-" + pincode;
+ 			   }
+ 			   else if(pincode == null){
+ 				  return line1  + " " + line2 + "," + city.getName() + "," + state.getName() + "," +  country.getName();
+ 			   }
+ 			   else{
+  			      return line1 + " " + line2 + "," + city.getName() + "," + state.getName() + "," + country.getName() + "-" + pincode;
+  			   }
           ]]></string>
 	</entity>
 

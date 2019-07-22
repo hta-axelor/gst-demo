@@ -2,7 +2,6 @@ package com.axelor.gst.service;
 
 import java.math.BigDecimal;
 import com.axelor.gst.db.Product;
-import com.axelor.gst.db.State;
 
 public class InvoiceLineImpl implements InvoiceLineService {
 
@@ -41,19 +40,19 @@ public class InvoiceLineImpl implements InvoiceLineService {
 
 	@Override
 	public BigDecimal calculateIgst() {
-		igst = netAmount.multiply(gstRate);
+		igst = netAmount.multiply(gstRate).divide(new BigDecimal(100));
 		return igst;
 	}
 
 	@Override
 	public BigDecimal calculateSgst() {
-		sgst = netAmount.multiply(gstRate).divide(new BigDecimal(2));
+		sgst = netAmount.multiply(gstRate).divide(new BigDecimal(200));
 		return sgst;
 	}
 
 	@Override
 	public BigDecimal calculateCgst() {
-		cgst = netAmount.multiply(gstRate).divide(new BigDecimal(2));
+		cgst = netAmount.multiply(gstRate).divide(new BigDecimal(200));
 		return cgst;
 	}
 

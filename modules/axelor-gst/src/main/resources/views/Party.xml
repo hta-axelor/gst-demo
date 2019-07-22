@@ -35,12 +35,12 @@
 		</panel>
 
 		<panel>
-			<field name="addressList">
+			<field name="addressList" >
 				<editor x-show-titles="false">
 					<field name="type" />
 					<field name="line1" />
 					<field name="line2" />
-					<field name="city" />
+					<field name="city" onChange="action-gst-record-address-city-default-values"/>
 					<field name="state" />
 					<field name="country" />
 					<field name="pincode" />

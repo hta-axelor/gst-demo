@@ -3,8 +3,10 @@ package com.axelor.gst.db.module;
 import com.axelor.app.AxelorModule;
 import com.axelor.gst.db.repo.GstPartyRepository;
 import com.axelor.gst.db.repo.PartyRepository;
+import com.axelor.gst.service.InvoiceImpl;
 import com.axelor.gst.service.InvoiceLineImpl;
 import com.axelor.gst.service.InvoiceLineService;
+import com.axelor.gst.service.InvoiceService;
 
 public class GstModule extends AxelorModule{
 
@@ -12,5 +14,6 @@ public class GstModule extends AxelorModule{
 	protected void configure() {
 	    bind(PartyRepository.class).to(GstPartyRepository.class);
 	    bind(InvoiceLineService.class).to(InvoiceLineImpl.class);
+	    bind(InvoiceService.class).to(InvoiceImpl.class);
 	}   
 }

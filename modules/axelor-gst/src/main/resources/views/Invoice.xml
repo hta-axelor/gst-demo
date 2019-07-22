@@ -4,31 +4,33 @@
 	xsi:schemaLocation="http://axelor.com/xml/ns/object-views
   http://axelor.com/xml/ns/object-views/object-views_5.1.xsd">
 
-	<grid name="invoice-grid" title="Invoice" model="com.axelor.gst.db.Invoice">
+	<grid name="invoice-grid" title="Invoice" model="com.axelor.gst.db.Invoice"
+		onNew="action-gst-record-invoice-date-default">
 		<field name="company" />
 		<field name="reference" />
-		<field name="invoiceDate" expr="eval: __time__" />
+		<field name="invoiceDate" />
 		<field name="party" />
 		<field name="statusSelect" />
 	</grid>
 
-	<form name="invoice-form" title="Invoice" model="com.axelor.gst.db.Invoice">
+	<form name="invoice-form" title="Invoice" model="com.axelor.gst.db.Invoice"
+		onNew="action-gst-record-invoice-date-default">
 		<panel>
-			<field name="statusSelect" widget="NavSelect" colSpan="12"/>
+			<field name="statusSelect" widget="NavSelect" colSpan="12" />
 		</panel>
 		<panel>
-			<field name="company" readonlyIf="invoiceItemsList.length > 0"/>
+			<field name="company" readonlyIf="invoiceItemsList.length > 0" />
 			<field name="reference" />
 			<field name="invoiceDate" />
 			<field name="priority" />
 			<field name="party" readonlyIf="invoiceItemsList.length > 0"
-				onChange="action-gst-record-invoice-calculate-party-values,action-gst-record-invoice-calculate-shipping-address" />
+				onChange="action-gst-record-invoice-calculate-party-values,action-gst-method-invoice-calculate-shipping-address" />
 			<field name="partyContact" />
 			<field name="invoiceAddress"
-				onChange="action-gst-record-invoice-calculate-shipping-address" />
+				onChange="action-gst-method-invoice-calculate-shipping-address" />
 			<field name="shippingAddress" />
 			<field name="isInvoiceAddress"
-				onChange="action-gst-record-invoice-calculate-shipping-address" />
+				onChange="action-gst-method-invoice-calculate-shipping-address" />
 			<field name="netAmount" />
 			<field name="netIgst" />
 			<field name="netCgst" />
@@ -36,7 +38,7 @@
 			<field name="grossAmount" />
 		</panel>
 		<panel-related field="invoiceItemsList" form-view="invoice-line-form"
-			onChange="action-gst-record-invoice-form-calculate-invoice-items">
+			onChange="action-gst-method-invoice-calculate-invoice-items">
 			<field name="product" />
 			<field name="hsbn" />
 			<field name="item" />
@@ -55,26 +57,23 @@
 				showIf="statusSelect == 1" />
 		</panel>
 	</form>
-	
-	<action-method name="action-gst-method-invoice-form-calculate-invoice-items">
-	   <call class="com.axelor.gst.db.web.InvoiceController" method="getItems"/>
+
+	<action-record name="action-gst-record-invoice-date-default"
+		model="com.axelor.gst.db.Invoice">
+		<field name="invoiceDate" expr="eval:__time__" />
+	</action-record>
+
+	<action-method name="action-gst-method-invoice-calculate-invoice-items">
+		<call class="com.axelor.gst.db.web.InvoiceController" method="setItems" />
 	</action-method>
 
-	<action-record name="action-gst-record-invoice-form-calculate-invoice-items"
-		model="com.axelor.gst.db.Invoice">
-		<field name="netAmount" expr="eval:invoiceItemsList.sum{it->it.netAmount}" />
-		<field name="gstRate" expr="eval:invoiceItemsList.sum{it->it.gstRate}" />
-		<field name="netIgst" expr="eval:invoiceItemsList.sum{it->it.igst}" />
-		<field name="netCgst" expr="eval:invoiceItemsList.sum{it->it.cgst}" />
-		<field name="netSgst" expr="eval:invoiceItemsList.sum{it->it.sgst}" />
-		<field name="grossAmount" expr="eval:invoiceItemsList.sum{it->it.grossAmount}" />
-	</action-record>
+	<action-method name="action-gst-method-invoice-calculate-shipping-address">
+		<call class="com.axelor.gst.db.web.InvoiceController" method="setShippingAddress" />
+	</action-method>
 
-	<action-record name="action-gst-record-invoice-calculate-shipping-address"
-		model="com.axelor.gst.db.Invoice">
-		<field name="shippingAddress" expr="eval: invoiceAddress" if="isInvoiceAddress" />
-		<field name="shippingAddress" expr="" if="!isInvoiceAddress" />
-	</action-record>
+	<action-method name="action-gst-record-invoice-calculate-party-values">
+		<call class="com.axelor.gst.db.web.InvoiceController" method="setPartyValues" />
+	</action-method>
 
 	<action-record name="action-gst-record-invoice-calculate-party-values"
 		model="com.axelor.gst.db.Invoice">

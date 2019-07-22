@@ -7,7 +7,7 @@
 	<grid name="invoice-validated-grid" title="Validated Invoice" model="com.axelor.gst.db.Invoice" >
 		<field name="company" />
 		<field name="reference" />
-		<field name="invoiceDate" expr="eval: __time__" />
+		<field name="invoiceDate" />
 		<field name="party" />
 		<field name="statusSelect" />
 	</grid>
