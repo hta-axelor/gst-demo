@@ -143,6 +143,7 @@
 		model="com.axelor.gst.db.Invoice">
 		<view type="grid" name="invoice-grid" />
 		<view type="form" name="invoice-form" />
+		<view type="kanban" name="invoice-kanban" />
 		<domain>self.statusSelect = '1'</domain>
 	</action-view>
 

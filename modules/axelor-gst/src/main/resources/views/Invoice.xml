@@ -13,6 +13,21 @@
 		<field name="statusSelect" />
 	</grid>
 
+	<kanban name="invoice-kanban" title="Invoice Kanban"
+		model="com.axelor.gst.db.Invoice" columnBy="statusSelect"
+		sequenceBy="priority">
+		<field name="company" />
+		<field name="party" />
+		<field name="reference" />
+
+		<template><![CDATA[
+  			<h4>{{statusSelect}}</h4>
+  			<h4>{{company.name}}</h4>
+  			<h4>{{party.name}}</h4>
+  			<h4>{{reference}}</h4>
+  		]]></template>
+	</kanban>
+
 	<form name="invoice-form" title="Invoice" model="com.axelor.gst.db.Invoice"
 		onNew="action-gst-record-invoice-form-default">
 		<panel>
@@ -63,7 +78,7 @@
 				onClick="action-gst-record-invoice-cancelled,save" hidden="true"
 				showIf="statusSelect == 3" />
 			<button name="draftbtn" title="Draft"
-			    onClick="action-gst-record-invoice-draft,save"  hidden="true"
+				onClick="action-gst-record-invoice-draft,save" hidden="true"
 				showIf="statusSelect == 4" />
 		</panel>
 	</form>
@@ -124,7 +139,7 @@
 		model="com.axelor.gst.db.Invoice">
 		<field name="statusSelect" expr="eval: InvoiceRepository.STATUS_CANCELLED" />
 	</action-record>
-	
+
 	<action-record name="action-gst-record-invoice-draft"
 		model="com.axelor.gst.db.Invoice">
 		<field name="statusSelect" expr="eval: InvoiceRepository.STATUS_DRAFT" />
