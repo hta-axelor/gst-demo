@@ -8,4 +8,6 @@ public interface InvoiceService {
 	public Invoice calculatePartyValues(Invoice invoice);
 	public Invoice getShippingAddress(Invoice invoice);
 	public String computeReference(Sequence sequence);
+	public String createDomainForPartyContact();
+	public String createDomainForPartyAddress();
 }

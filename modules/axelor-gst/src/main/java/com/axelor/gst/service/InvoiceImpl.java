@@ -2,6 +2,7 @@ package com.axelor.gst.service;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.axelor.gst.db.Address;
 import com.axelor.gst.db.Contact;
@@ -13,6 +14,11 @@ public class InvoiceImpl implements InvoiceService {
 
 	private Address shippingAddress;
 	private Address defaultAddress;
+	private Boolean isPartyContactEmpty = true;
+	private Boolean isPartyAddressEmpty = true;
+	;
+	private List<Contact> partyContactList;
+	private List<Address> partyAddressList;
 
 	@Override
 	public Invoice calculateItems(Invoice invoice) {
@@ -43,11 +49,18 @@ public class InvoiceImpl implements InvoiceService {
 
 	@Override
 	public Invoice calculatePartyValues(Invoice invoice) {
+		
+		//setting default values;
 		shippingAddress = null;
 		defaultAddress = null;
+		
+		isPartyContactEmpty = true;
+		isPartyAddressEmpty = true;
+		
 		if (invoice.getParty() != null) {
-			if (!invoice.getParty().getContactList().isEmpty()) {
-				List<Contact> partyContactList = invoice.getParty().getContactList();
+			partyContactList = invoice.getParty().getContactList();
+			if (!partyContactList.isEmpty()) {
+				isPartyContactEmpty = false;
 				for (Contact c : partyContactList) {
 					// finding primary contact
 					if (c.getType().equals("1")) {
@@ -61,8 +74,10 @@ public class InvoiceImpl implements InvoiceService {
 			} else {
 				invoice.setPartyContact(null);
 			}
-			if (!invoice.getParty().getAddressList().isEmpty()) {
-				List<Address> partyAddressList = invoice.getParty().getAddressList();
+			
+			partyAddressList = invoice.getParty().getAddressList();
+			if (!partyAddressList.isEmpty()) {
+				isPartyAddressEmpty = false;
 				Address invoiceAddress = null;
 				for (Address a : partyAddressList) {
 					// finding default type address
@@ -145,4 +160,30 @@ public class InvoiceImpl implements InvoiceService {
 
 		return nextNumberstr;
 	}
+
+	@Override
+	public String createDomainForPartyContact() {
+		String domain = null;
+		if (!isPartyContactEmpty) {
+			domain = "self.id IN " + partyContactList.stream().map(i -> i.getId())
+					.collect(Collectors.toList()).toString().replace('[', '(').replace(']', ')');
+		}
+		else {
+			domain = "self.id = null";
+		}
+		return domain;
+	}
+
+	@Override
+	public String createDomainForPartyAddress() {	
+		String domain = null;
+		if (!isPartyAddressEmpty) {
+			domain = "self.id IN " + partyAddressList.stream().map(i -> i.getId())
+					.collect(Collectors.toList()).toString().replace('[', '(').replace(']', ')');
+		}
+		else {
+			domain = "self.id = null";
+		}
+		return domain;
+	}	
 }

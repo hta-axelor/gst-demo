@@ -1,5 +1,7 @@
 package com.axelor.gst.db.web;
 
+import java.util.stream.Collectors;
+
 import com.axelor.gst.db.Invoice;
 import com.axelor.gst.db.Sequence;
 import com.axelor.gst.db.repo.SequenceRepository;
@@ -27,6 +29,11 @@ public class InvoiceController {
 		Invoice invoice = request.getContext().asType(Invoice.class);
 		invoice = invoiceService.calculatePartyValues(invoice);
 		response.setValues(invoice);
+		String contactDomain = invoiceService.createDomainForPartyContact();	
+		String addressDomain = invoiceService.createDomainForPartyAddress();	
+		response.setAttr("partyContact", "domain" , contactDomain);
+		response.setAttr("invoiceAddress", "domain" , addressDomain);
+		response.setAttr("shippingAddress", "domain" , addressDomain);
 	}
 
 	public void setShippingAddress(ActionRequest request, ActionResponse response) {
