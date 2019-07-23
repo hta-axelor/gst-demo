@@ -9,8 +9,9 @@ import com.axelor.gst.db.Invoice;
 import com.axelor.gst.db.InvoiceLine;
 
 public class InvoiceImpl implements InvoiceService {
-	
+
 	private Address shippingAddress;
+	private Address defaultAddress;
 
 	@Override
 	public Invoice calculateItems(Invoice invoice) {
@@ -19,7 +20,7 @@ public class InvoiceImpl implements InvoiceService {
 		BigDecimal igstSum = BigDecimal.ZERO;
 		BigDecimal cgstSum = BigDecimal.ZERO;
 		BigDecimal sgstSum = BigDecimal.ZERO;
-		BigDecimal grossAmount = BigDecimal.ZERO;	
+		BigDecimal grossAmount = BigDecimal.ZERO;
 
 		List<InvoiceLine> invoiceLineList = invoice.getInvoiceItemsList();
 		for (InvoiceLine il : invoiceLineList) {
@@ -42,15 +43,18 @@ public class InvoiceImpl implements InvoiceService {
 	@Override
 	public Invoice calculatePartyValues(Invoice invoice) {
 		shippingAddress = null;
+		defaultAddress = null;
 		if (invoice.getParty() != null) {
 			if (!invoice.getParty().getContactList().isEmpty()) {
 				List<Contact> partyContactList = invoice.getParty().getContactList();
 				for (Contact c : partyContactList) {
+					// finding primary contact
 					if (c.getType().equals("1")) {
 						invoice.setPartyContact(c);
 						break;
 					}
 				}
+				// no primary contact found
 				if (invoice.getPartyContact() == null)
 					invoice.setPartyContact(partyContactList.get(0));
 			} else {
@@ -58,21 +62,43 @@ public class InvoiceImpl implements InvoiceService {
 			}
 			if (!invoice.getParty().getAddressList().isEmpty()) {
 				List<Address> partyAddressList = invoice.getParty().getAddressList();
+				Address invoiceAddress = null;
 				for (Address a : partyAddressList) {
-					if (a.getType().equals("2")) {
-						invoice.setInvoiceAddress(a);
+					// finding default type address
+					if (a.getType().equals("1")) {
+						defaultAddress = a;
+						// finding invoice type address
+					} else if (a.getType().equals("2")) {
+						invoiceAddress = a;
+						// finding shipping type address
 					} else if (a.getType().equals("3")) {
 						shippingAddress = a;
-						invoice.setShippingAddress(shippingAddress);
 					}
 				}
-				if (invoice.getInvoiceAddress() == null)
+				// Setting invoice address as invoice address
+				if (invoiceAddress != null) {
+					invoice.setInvoiceAddress(invoiceAddress);
+				}
+
+				else if (shippingAddress != null) {
+					invoice.setShippingAddress(shippingAddress);
+				}
+				// Setting default address as invoice address
+				else if (defaultAddress != null) {
+			        invoice.setInvoiceAddress(defaultAddress);
+				} else {
 					invoice.setInvoiceAddress(partyAddressList.get(0));
-			} else {
+				}
+
+			}
+			// No address found for party
+			else {
 				invoice.setInvoiceAddress(null);
 				invoice.setShippingAddress(null);
 			}
-		} else {
+		}
+		// No Party found
+		else {
 			invoice.setPartyContact(null);
 			invoice.setInvoiceAddress(null);
 			invoice.setShippingAddress(null);
@@ -85,8 +111,12 @@ public class InvoiceImpl implements InvoiceService {
 		if (invoice.getIsInvoiceAddress()) {
 			invoice.setShippingAddress(invoice.getInvoiceAddress());
 		} else if (shippingAddress != null) {
-		    invoice.setShippingAddress(shippingAddress);
-		} else {
+			invoice.setShippingAddress(shippingAddress);
+		}
+		else if(defaultAddress != null) {
+			invoice.setShippingAddress(defaultAddress);
+		}
+		else {
 			invoice.setShippingAddress(null);
 		}
 		return invoice;

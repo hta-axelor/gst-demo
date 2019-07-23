@@ -8,15 +8,19 @@
 		<field name="name" />
 		<field name="state" />
 		<field name="country" />
-		
+
 	</grid>
 
 	<form name="city-form" title="City" model="com.axelor.gst.db.City">
 		<panel>
-			<field name="name"/>
-			<field name="state"/>
+			<field name="name" />
+			<field name="state" onChange="action-gst-record-address-city-country-default"/>
 			<field name="country" />
 		</panel>
 	</form>
 
+	<action-record name="action-gst-record-address-city-country-default"
+		model="com.axelor.gst.db.Invoice">
+		<field name="country" expr="eval: state?.country" />
+	</action-record>
 </object-views>

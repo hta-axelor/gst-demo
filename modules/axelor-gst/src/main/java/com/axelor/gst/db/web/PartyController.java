@@ -22,10 +22,13 @@ public class PartyController {
 	public void setReference(ActionRequest request, ActionResponse response) {
 		SequenceRepository sequenceRepository = Beans.get(SequenceRepository.class);
 		Sequence sequence = sequenceRepository.all().filter("self.metaModel.fullName = ?1", request.getModel()).fetchOne();
-		response.setValue("reference", sequence.getNextNumber());
-		String nextNumber = partyService.computeReference(sequence);
-		sequence.setNextNumber(nextNumber);
-		sequenceRepository.save(sequence);
-		
+		if (sequence == null) {
+            response.setError("No Sequence Found, Please enter the sequence");
+		} else {
+			response.setValue("reference", sequence.getNextNumber());
+			String nextNumber = partyService.computeReference(sequence);
+			sequence.setNextNumber(nextNumber);
+			sequenceRepository.save(sequence);
+		}
 	}
 }
