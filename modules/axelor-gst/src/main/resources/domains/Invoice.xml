@@ -8,7 +8,7 @@
 	<entity name="Invoice">
         <string name="statusSelect" title="Status" readonly="true" selection="gst.invoice.status.selection" default="1"/>
         <many-to-one name="company" ref="Company" required="true"/>
-        <string name="reference" readonly="true"/>
+        <string name="reference" title="Reference" readonly="true"/>
         <datetime name="invoiceDate" title="Date"/>
         <integer name="priority"/>
         <many-to-one name="party" ref="Party" required="true"/>

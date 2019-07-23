@@ -6,21 +6,27 @@ public class PartyImpl implements PartyService {
 
 	@Override
 	public String computeReference(Sequence sequence) {
-		String prefix = sequence.getPrefix();
-		String suffix = sequence.getSuffix();
-		Integer padding = sequence.getPadding();
-		String nextNumberStr = sequence.getNextNumber();
+		 String prefix = sequence.getPrefix();
+		 String suffix = sequence.getSuffix();
+		 Integer padding = sequence.getPadding();
+		 String previousNumberStr = sequence.getNextNumber();
+		 String nextNumberstr;
 
 		// splitting
-		nextNumberStr = sequence.getNextNumber().substring(prefix.length(), nextNumberStr.length() - suffix.length());
+		 previousNumberStr = sequence.getNextNumber().substring(prefix.length(), prefix.length() + padding);
 
 		// increment
-		String incremented = String.format("%0" + nextNumberStr.length() + "d", Integer.parseInt(nextNumberStr) + 1);
+		String incremented = String.format("%0" + previousNumberStr.length() + "d", Integer.parseInt(previousNumberStr) + 1);
 
 		// merging
-		nextNumberStr = prefix + incremented + suffix;
+		if(suffix == null) {
+			nextNumberstr = prefix + incremented;
+        }
+        else {
+        	nextNumberstr = prefix + incremented + suffix;
+        }
 
-		return nextNumberStr;
+		return nextNumberstr;
 	}
 
 }

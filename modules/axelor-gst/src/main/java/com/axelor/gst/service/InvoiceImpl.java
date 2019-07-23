@@ -7,6 +7,7 @@ import com.axelor.gst.db.Address;
 import com.axelor.gst.db.Contact;
 import com.axelor.gst.db.Invoice;
 import com.axelor.gst.db.InvoiceLine;
+import com.axelor.gst.db.Sequence;
 
 public class InvoiceImpl implements InvoiceService {
 
@@ -85,7 +86,7 @@ public class InvoiceImpl implements InvoiceService {
 				}
 				// Setting default address as invoice address
 				else if (defaultAddress != null) {
-			        invoice.setInvoiceAddress(defaultAddress);
+					invoice.setInvoiceAddress(defaultAddress);
 				} else {
 					invoice.setInvoiceAddress(partyAddressList.get(0));
 				}
@@ -112,13 +113,36 @@ public class InvoiceImpl implements InvoiceService {
 			invoice.setShippingAddress(invoice.getInvoiceAddress());
 		} else if (shippingAddress != null) {
 			invoice.setShippingAddress(shippingAddress);
-		}
-		else if(defaultAddress != null) {
+		} else if (defaultAddress != null) {
 			invoice.setShippingAddress(defaultAddress);
-		}
-		else {
+		} else {
 			invoice.setShippingAddress(null);
 		}
 		return invoice;
+	}
+
+	@Override
+	public String computeReference(Sequence sequence) {
+		String prefix = sequence.getPrefix();
+		String suffix = sequence.getSuffix();
+		Integer padding = sequence.getPadding();
+		String previousNumberStr = sequence.getNextNumber();
+		String nextNumberstr;
+
+		// splitting
+		previousNumberStr = sequence.getNextNumber().substring(prefix.length(), prefix.length() + padding);
+
+		// increment
+		String incremented = String.format("%0" + previousNumberStr.length() + "d",
+				Integer.parseInt(previousNumberStr) + 1);
+
+		// merging
+		if (suffix == null) {
+			nextNumberstr = prefix + incremented;
+		} else {
+			nextNumberstr = prefix + incremented + suffix;
+		}
+
+		return nextNumberstr;
 	}
 }

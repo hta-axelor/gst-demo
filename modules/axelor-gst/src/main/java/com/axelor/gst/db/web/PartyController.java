@@ -13,12 +13,12 @@ import com.google.inject.Singleton;
 import com.google.inject.persist.Transactional;
 
 @Singleton
-@Transactional
 public class PartyController {
 
 	@Inject
 	private PartyService partyService;
 
+	@Transactional
 	public void setReference(ActionRequest request, ActionResponse response) {
 		SequenceRepository sequenceRepository = Beans.get(SequenceRepository.class);
 		Sequence sequence = sequenceRepository.all().filter("self.metaModel.fullName = ?1", request.getModel()).fetchOne();

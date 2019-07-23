@@ -13,18 +13,18 @@
 		<field name="statusSelect" />
 	</grid>
 
-	<kanban name="invoice-kanban" title="Invoice Kanban"
-		model="com.axelor.gst.db.Invoice" columnBy="statusSelect"
-		sequenceBy="priority">
+	<kanban name="invoice-kanban" title="Invoice Kanban" model="com.axelor.gst.db.Invoice"
+		columnBy="statusSelect" sequenceBy="priority">
+		<field name="reference" />
 		<field name="company" />
 		<field name="party" />
-		<field name="reference" />
+
 
 		<template><![CDATA[
+		    <h4>{{reference}}</h4>
   			<h4>{{statusSelect}}</h4>
   			<h4>{{company.name}}</h4>
   			<h4>{{party.name}}</h4>
-  			<h4>{{reference}}</h4>
   		]]></template>
 	</kanban>
 
@@ -69,7 +69,7 @@
 		</panel-related>
 		<panel sidebar="true">
 			<button name="validateBtn" title="Validate"
-				onClick="action-gst-record-invoice-validate,save,action-gst-attrs-invoice-validate"
+				onClick="action-gst-validate-invoice,action-gst-method-invoice-get-reference,action-gst-record-invoice-validate,save,action-gst-attrs-invoice-validate"
 				hidden="true" showIf="statusSelect == 1" />
 			<button name="paidBtn" title="Paid"
 				onClick="action-gst-validate-invoice-items-list,action-gst-record-invoice-paid,save"
@@ -78,10 +78,15 @@
 				onClick="action-gst-record-invoice-cancelled,save" hidden="true"
 				showIf="statusSelect == 3" />
 			<button name="draftbtn" title="Draft"
-				onClick="action-gst-record-invoice-draft,save" hidden="true"
-				showIf="statusSelect == 4" />
+				onClick="action-gst-record-invoice-draft,save"
+				hidden="true" showIf="statusSelect == 4" />
 		</panel>
 	</form>
+
+	<action-validate name="action-gst-validate-invoice">
+		<error message="Please enter values"
+			if="!(company &amp;&amp; party &amp;&amp; invoiceAddress)" />
+	</action-validate>
 
 	<action-record name="action-gst-record-invoice-form-default"
 		model="com.axelor.gst.db.Invoice">
@@ -111,19 +116,26 @@
 
 	<action-record name="action-gst-record-invoice-validate"
 		model="com.axelor.gst.db.Invoice">
-		<field name="statusSelect" expr="eval: InvoiceRepository.STATUS_VALIDATED"
-			if="company &amp;&amp; party &amp;&amp; invoiceAddress" />
+		<field name="statusSelect" expr="eval: InvoiceRepository.STATUS_VALIDATED" />
 	</action-record>
 
 	<action-attrs name="action-gst-attrs-invoice-validate">
-		<attribute for="company" name="readonly" expr="true" />
-		<attribute for="invoiceDate" name="readonly" expr="true" />
-		<attribute for="priority" name="readonly" expr="true" />
-		<attribute for="party" name="readonly" expr="true" />
-		<attribute for="partyContact" name="readonly" expr="true" />
-		<attribute for="invoiceAddress" name="readonly" expr="true" />
-		<attribute for="shippingAddress" name="readonly" expr="true" />
-		<attribute for="isInvoiceAddress" name="readonly" expr="true" />
+		<attribute for="company" name="readonly"
+			expr="statusSelect == 2 &amp;&amp; statusSelect == 3" />
+		<attribute for="invoiceDate" name="readonly"
+			expr="statusSelect == 2 &amp;&amp; statusSelect == 3" />
+		<attribute for="priority" name="readonly"
+			expr="statusSelect == 2 &amp;&amp; statusSelect == 3" />
+		<attribute for="party" name="readonly"
+			expr="statusSelect == 2 &amp;&amp; statusSelect == 3" />
+		<attribute for="partyContact" name="readonly"
+			expr="statusSelect == 2 &amp;&amp; statusSelect == 3" />
+		<attribute for="invoiceAddress" name="readonly"
+			expr="statusSelect == 2 &amp;&amp; statusSelect == 3" />
+		<attribute for="shippingAddress" name="readonly"
+			expr="statusSelect == 2 &amp;&amp; statusSelect == 3" />
+		<attribute for="isInvoiceAddress" name="readonly"
+			expr="statusSelect == 2 &amp;&amp; statusSelect == 3" />
 	</action-attrs>
 
 	<action-validate name="action-gst-validate-invoice-items-list">

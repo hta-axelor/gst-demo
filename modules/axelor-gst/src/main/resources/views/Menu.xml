@@ -27,7 +27,7 @@
 		<view type="grid" name="bank-account-grid" />
 		<view type="form" name="bank-account-form" />
 	</action-view>
-	
+
 	<menuitem name="gst-root-company-sequence" title="Sequence"
 		parent="gst-root-company" action="gst.root.company.sequence" />
 
@@ -152,7 +152,6 @@
 		model="com.axelor.gst.db.Invoice">
 		<view type="grid" name="invoice-grid" />
 		<view type="form" name="invoice-form" />
-		<view type="kanban" name="invoice-kanban" />
 		<domain>self.statusSelect = '1'</domain>
 	</action-view>
 
@@ -193,10 +192,11 @@
 		parent="gst-root-invoice" action="gst.root.invoice.all.invoices"
 		order="5" />
 
-	<action-view name="gst.root.invoice.all.invoices"
-		title="All Invoices" model="com.axelor.gst.db.Invoice">
+	<action-view name="gst.root.invoice.all.invoices" title="All Invoices"
+		model="com.axelor.gst.db.Invoice">
 		<view type="grid" name="invoice-grid" />
 		<view type="form" name="invoice-form" />
+		<view type="kanban" name="invoice-kanban" />
 	</action-view>
 
 
