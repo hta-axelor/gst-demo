@@ -96,13 +96,17 @@ public class InvoiceImpl implements InvoiceService {
 					invoice.setInvoiceAddress(invoiceAddress);
 				}
 
-				else if (shippingAddress != null) {
-					invoice.setShippingAddress(shippingAddress);
-				}
 				// Setting default address as invoice address
 				else if (defaultAddress != null) {
 					invoice.setInvoiceAddress(defaultAddress);
-				} else {
+				} 
+
+				// Setting shipping address as invoice address
+				else if (shippingAddress != null) {
+					invoice.setInvoiceAddress(shippingAddress);
+				}
+				
+				else {
 					invoice.setInvoiceAddress(partyAddressList.get(0));
 				}
 

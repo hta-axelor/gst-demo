@@ -2,6 +2,7 @@ package com.axelor.gst.db.web;
 
 import java.util.stream.Collectors;
 
+import com.axelor.app.AppSettings;
 import com.axelor.gst.db.Invoice;
 import com.axelor.gst.db.Sequence;
 import com.axelor.gst.db.repo.SequenceRepository;
@@ -29,11 +30,11 @@ public class InvoiceController {
 		Invoice invoice = request.getContext().asType(Invoice.class);
 		invoice = invoiceService.calculatePartyValues(invoice);
 		response.setValues(invoice);
-		String contactDomain = invoiceService.createDomainForPartyContact();	
-		String addressDomain = invoiceService.createDomainForPartyAddress();	
-		response.setAttr("partyContact", "domain" , contactDomain);
-		response.setAttr("invoiceAddress", "domain" , addressDomain);
-		response.setAttr("shippingAddress", "domain" , addressDomain);
+		String contactDomain = invoiceService.createDomainForPartyContact();
+		String addressDomain = invoiceService.createDomainForPartyAddress();
+		response.setAttr("partyContact", "domain", contactDomain);
+		response.setAttr("invoiceAddress", "domain", addressDomain);
+		response.setAttr("shippingAddress", "domain", addressDomain);
 	}
 
 	public void setShippingAddress(ActionRequest request, ActionResponse response) {
@@ -56,5 +57,10 @@ public class InvoiceController {
 			sequence.setNextNumber(nextNumber);
 			sequenceRepository.save(sequence);
 		}
+	}
+
+	public void setAttachmentPath(ActionRequest request, ActionResponse response) {
+		String attachmentPath = AppSettings.get().get("file.upload.dir");
+		request.getContext().put("AttachmentPath", "file://" + attachmentPath + "/");
 	}
 }

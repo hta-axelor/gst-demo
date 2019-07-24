@@ -30,6 +30,10 @@
 
 	<form name="invoice-form" title="Invoice" model="com.axelor.gst.db.Invoice"
 		onNew="action-gst-record-invoice-form-default">
+		<toolbar>
+			<button name="invoice_form_print_btn" icon="fa-print" title="Report"
+				onClick="action-gst-validate-invoice,save,action-gst-method-invoice-set-attachment-path,action-gst-report-invoice"  />
+		</toolbar>
 		<panel>
 			<field name="statusSelect" widget="NavSelect" colSpan="12" />
 		</panel>
@@ -78,8 +82,8 @@
 				onClick="action-gst-record-invoice-cancelled,save" hidden="true"
 				showIf="statusSelect == 3" />
 			<button name="draftbtn" title="Draft"
-				onClick="action-gst-record-invoice-draft,save"
-				hidden="true" showIf="statusSelect == 4" />
+				onClick="action-gst-record-invoice-draft,save" hidden="true"
+				showIf="statusSelect == 4" />
 		</panel>
 	</form>
 
@@ -156,5 +160,15 @@
 		model="com.axelor.gst.db.Invoice">
 		<field name="statusSelect" expr="eval: InvoiceRepository.STATUS_DRAFT" />
 	</action-record>
+
+	<action-method name="action-gst-method-invoice-set-attachment-path">
+		<call class="com.axelor.gst.db.web.InvoiceController" method="setAttachmentPath" />
+	</action-method>
+
+	<action-report name="action-gst-report-invoice" design="invoice_report.rptdesign"
+		output="so-${date}${time}" format="pdf">
+		<param name="id" expr="eval: id" />
+		<param name="AttachmentPath" expr="eval: AttachmentPath" />
+	</action-report>
 
 </object-views>
