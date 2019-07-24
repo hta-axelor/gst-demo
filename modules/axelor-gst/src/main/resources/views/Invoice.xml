@@ -29,7 +29,7 @@
 	</kanban>
 
 	<form name="invoice-form" title="Invoice" model="com.axelor.gst.db.Invoice"
-		onNew="action-gst-record-invoice-form-default">
+		onNew="action-gst-record-invoice-form-default,action-gst-record-get-invoice-details" >
 		<toolbar>
 			<button name="invoice_form_print_btn" icon="fa-print" title="Report"
 				onClick="action-gst-validate-invoice,save,action-gst-method-invoice-set-attachment-path,action-gst-report-invoice"  />
@@ -50,7 +50,7 @@
 			<field name="shippingAddress" />
 			<field name="isInvoiceAddress"
 				onChange="action-gst-method-invoice-calculate-shipping-address" />
-			<field name="netAmount" />
+			<field name="netAmount"/>
 			<field name="netIgst" />
 			<field name="netCgst" />
 			<field name="netSgst" />
@@ -86,6 +86,11 @@
 				showIf="statusSelect == 4" />
 		</panel>
 	</form>
+	
+	<action-record name="action-gst-record-get-invoice-details"
+		model="com.axelor.gst.db.Invoice">
+		<field name="invoiceItemsList" expr="eval: invoiceItemsList"/>
+	</action-record>
 
 	<action-validate name="action-gst-validate-invoice">
 		<error message="Please enter values"

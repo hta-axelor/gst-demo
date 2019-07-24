@@ -16,7 +16,6 @@ public class InvoiceImpl implements InvoiceService {
 	private Address defaultAddress;
 	private Boolean isPartyContactEmpty = true;
 	private Boolean isPartyAddressEmpty = true;
-	;
 	private List<Contact> partyContactList;
 	private List<Address> partyAddressList;
 

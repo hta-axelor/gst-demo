@@ -5,6 +5,12 @@
   http://axelor.com/xml/ns/object-views/object-views_5.1.xsd">
 
 	<grid name="product-grid" title="Product" model="com.axelor.gst.db.Product">
+		<toolbar>
+			<button name="product_grid_print_btn" icon="fa-print" title="Report"
+				onClick="action-gst-product-validate,action-gst-method-product-set-attachment-path,action-gst-report-product" />
+			<button name="product_grid_create_invoice_btn" icon="fa-rocket" title="Invoice"
+				onClick="action-gst-product-validate,action-gst-method-product-create-invoices" />
+		</toolbar>
 		<field name="name" />
 		<field name="code" />
 		<field name="hsbn" />
@@ -20,7 +26,7 @@
 		</panel>
 		<panel>
 			<field name="name" />
-			<field name="code"/>
+			<field name="code" />
 			<field name="hsbn" />
 			<field name="category" onChange="action-gst-record-product-category-copy-gst" />
 			<field name="salePrice" />
@@ -29,10 +35,11 @@
 		</panel>
 	</form>
 
-	<action-record name="action-gst-record-product-category-copy-gst" model="com.axelor.gst.db.Product">
+	<action-record name="action-gst-record-product-category-copy-gst"
+		model="com.axelor.gst.db.Product">
 		<field name="gstRate" expr="eval:category?.gstRate" />
 	</action-record>
-	
+
 	<cards name="product-cards" title="Cards View" model="com.axelor.gst.db.Party"
 		orderBy="name">
 		<field name="name" />
@@ -53,5 +60,23 @@
          </div>
         ]]></template>
 	</cards>
+
+	<action-validate name="action-gst-product-validate">
+		<error message="Please select at least 1 item" if="eval :_ids == null" />
+	</action-validate>
+
+	<action-method name="action-gst-method-product-set-attachment-path">
+		<call class="com.axelor.gst.db.web.ProductController" method="setAttachmentPath" />
+	</action-method>
+
+	<action-report name="action-gst-report-product" design="product_report.rptdesign"
+		output="so-${date}${time}" format="pdf">
+		<param name="ids" expr="eval: _ids.join(',')" />
+		<param name="AttachmentPath" expr="eval: AttachmentPath" />
+	</action-report>
+
+	<action-method name="action-gst-method-product-create-invoices">
+		<call class="com.axelor.gst.db.web.ProductController" method="createInvoices" />
+	</action-method>
 
 </object-views>
