@@ -6,6 +6,16 @@
 
 	<menuitem name="gst-root" title="GST" />
 
+	<!-- DashBoard -->
+	<menuitem name="gst-root" title="GST" />
+
+	<menuitem name="gst-root-dashboard" title="Dashboard" parent="gst-root"
+		action="gst.root.dashboard" />
+
+	<action-view name="gst.root.dashboard" title="Dashboard">
+		<view type="dashboard" name="gst.dashboard" />
+	</action-view>
+
 
 	<!-- Company -->
 	<menuitem name="gst-root-company" title="Company" parent="gst-root" />

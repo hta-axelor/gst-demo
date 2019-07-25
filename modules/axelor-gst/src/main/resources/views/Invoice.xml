@@ -32,18 +32,17 @@
 		onNew="action-gst-record-invoice-form-default,action-gst-record-get-invoice-details" >
 		<toolbar>
 			<button name="invoice_form_print_btn" icon="fa-print" title="Report"
-				onClick="action-gst-validate-invoice,save,action-gst-method-invoice-set-attachment-path,action-gst-report-invoice"  />
+				onClick="action-gst-validate-invoice,save,action-gst-method-invoice-set-attachment-path,action-gst-report-invoice"  showIf="id"/>
 		</toolbar>
 		<panel>
 			<field name="statusSelect" widget="NavSelect" colSpan="12" />
 		</panel>
 		<panel>
-			<field name="company" readonlyIf="invoiceItemsList.length > 0" />
+			<field name="company" readonlyIf="invoiceItemsList.length > 0" canEdit="false"/>
 			<field name="reference" />
 			<field name="invoiceDate" />
-			<field name="priority" />
 			<field name="party" readonlyIf="invoiceItemsList.length > 0"
-				onChange="action-gst-record-invoice-calculate-party-values,action-gst-method-invoice-calculate-shipping-address" />
+				onChange="action-gst-record-invoice-calculate-party-values,action-gst-method-invoice-calculate-shipping-address" canEdit="false"/>
 			<field name="partyContact" />
 			<field name="invoiceAddress"
 				onChange="action-gst-method-invoice-calculate-shipping-address" />
@@ -101,6 +100,7 @@
 		model="com.axelor.gst.db.Invoice">
 		<field name="invoiceDate" expr="eval:__time__" />
 		<field name="statusSelect" expr="eval: __repo__(Invoice).STATUS_DRAFT" />
+		<field name="company" expr="eval: __repo__(Company).all().fetchOne()" />
 	</action-record>
 
 	<action-method name="action-gst-method-invoice-calculate-invoice-items">

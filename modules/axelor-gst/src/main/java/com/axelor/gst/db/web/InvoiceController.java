@@ -61,6 +61,6 @@ public class InvoiceController {
 
 	public void setAttachmentPath(ActionRequest request, ActionResponse response) {
 		String attachmentPath = AppSettings.get().get("file.upload.dir");
-		request.getContext().put("AttachmentPath", "file://" + attachmentPath + "/");
+		request.getContext().put("AttachmentPath",attachmentPath + "/");
 	}
 }

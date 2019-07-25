@@ -617,23 +617,6 @@ where pr.id = any (string_to_array(?, ',')::int[]);]]></xml-property>
     <page-setup>
         <simple-master-page name="Simple MasterPage" id="2">
             <property name="headerHeight">1in</property>
-            <page-header>
-                <image id="21">
-                    <property name="marginLeft">230pt</property>
-                    <property name="width">1.5in</property>
-                    <property name="dataSet">Product_logo</property>
-                    <list-property name="boundDataColumns">
-                        <structure>
-                            <property name="name">file_name</property>
-                            <text-property name="displayName">file_name</text-property>
-                            <expression name="expression" type="javascript">dataSetRow["file_name"]</expression>
-                            <property name="dataType">string</property>
-                        </structure>
-                    </list-property>
-                    <property name="source">file</property>
-                    <expression name="uri" type="javascript">params["AttachmentPath"].value + row["file_name"]</expression>
-                </image>
-            </page-header>
         </simple-master-page>
     </page-setup>
     <body>
@@ -672,6 +655,22 @@ where pr.id = any (string_to_array(?, ',')::int[]);]]></xml-property>
                 </structure>
             </list-property>
             <detail>
+                <image id="21">
+                    <property name="marginLeft">230pt</property>
+                    <property name="height">2in</property>
+                    <property name="width">1.5in</property>
+                    <property name="dataSet">Product_logo</property>
+                    <list-property name="boundDataColumns">
+                        <structure>
+                            <property name="name">file_name</property>
+                            <text-property name="displayName">file_name</text-property>
+                            <expression name="expression" type="javascript">dataSetRow["file_name"]</expression>
+                            <property name="dataType">string</property>
+                        </structure>
+                    </list-property>
+                    <property name="source">file</property>
+                    <expression name="uri" type="javascript">params["AttachmentPath"].value + row["file_name"]</expression>
+                </image>
                 <grid id="78">
                     <property name="marginLeft">200pt</property>
                     <column id="79">

@@ -41,7 +41,7 @@ public class InvoiceLineController {
 			Address invoiceAddress = (Address) request.getContext().getParent().get("invoiceAddress");
 			State invoiceAddressState = invoiceAddress.getState();
 
-			if (companyState != invoiceAddressState) {
+			if (companyState.equals(invoiceAddressState)) {
 				BigDecimal igst = invoiceLineService.calculateIgst();
 				response.setValue("igst", igst);
 			}

@@ -34,9 +34,10 @@ public class ProductController {
 		    invoiceLine.setGstRate(p.getGstRate());
 		    invoiceItemsList.add(invoiceLine);
 		}
-		ActionViewBuilder viewBuilder = ActionView.define("Invoice");
-		viewBuilder.model(Invoice.class.getName()).add("form", "invoice-form").context("invoiceItemsList", invoiceItemsList);
-		response.setView(viewBuilder.map());
+		
+		ActionViewBuilder invoiceViewBuilder = ActionView.define("Invoice");
+		invoiceViewBuilder.model(Invoice.class.getName()).add("form", "invoice-form").context("invoiceItemsList", invoiceItemsList);
+		response.setView(invoiceViewBuilder.map());
 
 	}
 }
