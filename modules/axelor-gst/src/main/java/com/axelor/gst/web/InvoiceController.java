@@ -1,7 +1,5 @@
 package com.axelor.gst.web;
 
-import java.util.stream.Collectors;
-
 import com.axelor.app.AppSettings;
 import com.axelor.gst.db.Invoice;
 import com.axelor.gst.db.Sequence;

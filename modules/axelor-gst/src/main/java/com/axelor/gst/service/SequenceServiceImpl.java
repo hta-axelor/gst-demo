@@ -2,7 +2,7 @@ package com.axelor.gst.service;
 
 import com.axelor.gst.db.Sequence;
 
-public class SequenceImpl implements SequenceService {
+public class SequenceServiceImpl implements SequenceService {
 
 	private String nextNumber;
 

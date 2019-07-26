@@ -10,7 +10,7 @@
 				onClick="action-gst-product-validate,action-gst-method-product-set-attachment-path,action-gst-report-product" />
 			<button name="product_grid_create_invoice_btn" icon="fa-rocket"
 				title="Invoice"
-				onClick="action-gst-product-validate,action-gst-method-product-get-invoice-details,close" />
+				onClick="action-gst-product-validate,action-gst-method-product-get-invoice-details" />
 		</toolbar>
 		<field name="name" />
 		<field name="code" />

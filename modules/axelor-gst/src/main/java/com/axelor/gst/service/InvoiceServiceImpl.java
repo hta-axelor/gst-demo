@@ -10,7 +10,7 @@ import com.axelor.gst.db.Invoice;
 import com.axelor.gst.db.InvoiceLine;
 import com.axelor.gst.db.Sequence;
 
-public class InvoiceImpl implements InvoiceService {
+public class InvoiceServiceImpl implements InvoiceService {
 
 	private Address shippingAddress;
 	private Address defaultAddress;

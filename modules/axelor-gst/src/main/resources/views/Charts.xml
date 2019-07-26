@@ -116,13 +116,13 @@
 		    <![CDATA[
                 SELECT 
                    count(_invoice.id) AS invoices,
-                   selection.title AS status  
+                   selection.title AS status
                 FROM
                    gst_invoice as _invoice
                 JOIN
                    meta_select_item AS selection ON selection.select_id = 19 AND selection.value = _invoice.status_select     
                 GROUP BY
-                  status                
+                  status               
 		    ]]>
 	    </dataset>
 		<category key="status" type="text" title="Status" />

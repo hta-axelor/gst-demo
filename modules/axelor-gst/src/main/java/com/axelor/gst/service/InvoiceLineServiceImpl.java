@@ -3,7 +3,7 @@ package com.axelor.gst.service;
 import java.math.BigDecimal;
 import com.axelor.gst.db.Product;
 
-public class InvoiceLineImpl implements InvoiceLineService {
+public class InvoiceLineServiceImpl implements InvoiceLineService {
 
 	private BigDecimal gstRate;
 	private BigDecimal netAmount;

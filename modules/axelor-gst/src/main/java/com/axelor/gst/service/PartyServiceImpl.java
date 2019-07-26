@@ -2,7 +2,7 @@ package com.axelor.gst.service;
 
 import com.axelor.gst.db.Sequence;
 
-public class PartyImpl implements PartyService {
+public class PartyServiceImpl implements PartyService {
 
 	@Override
 	public String computeReference(Sequence sequence) {

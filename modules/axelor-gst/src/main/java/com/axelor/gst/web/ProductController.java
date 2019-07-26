@@ -20,17 +20,15 @@ import com.google.inject.Singleton;
 @Singleton
 public class ProductController {
 
-	public String ids;
-
 	public void setAttachmentPath(ActionRequest request, ActionResponse response) {
 		String attachmentPath = AppSettings.get().get("file.upload.dir");
 		request.getContext().put("AttachmentPath",attachmentPath + "/");
 	}
 
 	public void getInvoiceDetails(ActionRequest request, ActionResponse response) {
-		ids = (String) request.getContext().get("_ids").toString().replace('[', '(').replace(']', ')');
+		List<String> productIdList =  (List<String>) request.getContext().get("_ids");
 		ActionViewBuilder popupViewBuilder = ActionView.define("Invoice");
-		popupViewBuilder.model(Invoice.class.getName()).add("form", "invoice-form-popup").param("popup", "true")
+		popupViewBuilder.model(Invoice.class.getName()).add("form", "invoice-form-popup").context("productIds", productIdList).param("popup", "true")
 				.param("show-toolbar", "false").param("show-confirm", "false").param("popup-save", "false");
 		response.setView(popupViewBuilder.map());
 	}
@@ -38,9 +36,10 @@ public class ProductController {
 	public void createInvoice(ActionRequest request, ActionResponse response) {
 		Company company = (Company) request.getContext().get("company");
 		Party party = (Party) request.getContext().get("party");
-
+       
+		List<String> productIdList = (List<String>) request.getContext().get("productIds");
 		ProductRepository productRepository = Beans.get(ProductRepository.class);
-		List<Product> productList = productRepository.all().filter("self.id IN " + ids).fetch();
+		List<Product> productList = productRepository.all().filter("self.id IN ?1", productIdList).fetch();
 		List<InvoiceLine> invoiceItemsList = new ArrayList<>();
 		for (Product p : productList) {
 			InvoiceLine invoiceLine = Beans.get(InvoiceLine.class);
@@ -49,12 +48,10 @@ public class ProductController {
 			invoiceLine.setGstRate(p.getGstRate());
 			invoiceItemsList.add(invoiceLine);
 		}
-
-		ActionViewBuilder invoiceViewBuilder = ActionView.define("Invoice");
-		invoiceViewBuilder.model(Invoice.class.getName()).add("form", "invoice-form")
+		response.setView(ActionView.define("Invoice").model(Invoice.class.getName()).add("form", "invoice-form")
 				.context("invoiceItemsList", invoiceItemsList).context("product_company", company)
-				.context("product_party", party);
-		response.setView(invoiceViewBuilder.map());
+				.context("product_party", party).map());
+		response.setCanClose(true);
 	}
 
 }
