@@ -9,7 +9,9 @@
 		<dashlet action="dashlet.unpaid.invoice.per.customer" height="350" />
 		<dashlet action="dashlet.paid.invoice.per.category.per.product"
 			height="350" />
-		<dashlet action="dashlet.paid.invoice.per.status.per.amount"
+		<dashlet action="dashlet.no.of.invoice.per.status.per.amount"
+			height="350" />
+		<dashlet action="dashlet.grid.view.older.validated.invoices"
 			height="350" />
 	</dashboard>
 
@@ -27,9 +29,17 @@
 		<view type="chart" name="chart.paid.invoice.per.category.per.product.bar" />
 	</action-view>
 
-	<action-view name="dashlet.paid.invoice.per.status.per.amount"
-		title="Paid invoices per status per amount">
-		<view type="chart" name="chart.paid.invoice.per.status.amount.bar" />
+	<action-view
+		name="dashlet.no.of.invoice.per.status.per.amount"
+		title="No. of invoices per status">
+		<view type="chart" name="chart.no.of.invoice.per.status.line" />
+	</action-view>
+	
+	<action-view
+		name="dashlet.grid.view.older.validated.invoices"
+		title="Invoices validated older than 1 month" model="com.axelor.gst.db.Invoice">
+		<view type="grid" name="invoice-grid" />
+		<domain>self.invoiceDate &lt;= :previousMonth</domain>
 	</action-view>
 
 </object-views>

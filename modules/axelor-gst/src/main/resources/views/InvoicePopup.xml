@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<object-views xmlns="http://axelor.com/xml/ns/object-views"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://axelor.com/xml/ns/object-views
+  http://axelor.com/xml/ns/object-views/object-views_5.1.xsd">
+
+	<grid name="city-grid" title="City" model="com.axelor.gst.db.City">
+		<field name="name" />
+		<field name="state" />
+		<field name="country" />
+
+	</grid>
+
+	<form name="city-form" title="City" model="com.axelor.gst.db.City">
+		<panel>
+			<field name="name" />
+			<field name="state" onChange="action-gst-record-address-city-country-default"/>
+			<field name="country" />
+		</panel>
+	</form>
+
+	<action-record name="action-gst-record-address-city-country-default"
+		model="com.axelor.gst.db.Invoice">
+		<field name="country" expr="eval: state?.country" />
+	</action-record>
+</object-views>

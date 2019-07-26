@@ -14,6 +14,7 @@
 
 	<action-view name="gst.root.dashboard" title="Dashboard">
 		<view type="dashboard" name="gst.dashboard" />
+		<context name="previousMonth" expr="eval: __date__.minusMonths(1)" />
 	</action-view>
 
 

@@ -90,10 +90,9 @@
 		<category key="product_category_name" type="text" title="Product Category" />
 		<series key="product" type="bar" title="Product" groupBy="product_name" />
 	</chart>
-	
-	<chart name="chart.paid.invoice.per.status.amount.bar"
-		title="Paid invoices per status per amount" onInit="action.chart.set.from.to.date.month"
-		stacked="true">
+
+	<chart name="chart.invoice.per.status.amount.bar" title="Invoices per status per amount"
+		onInit="action.chart.set.from.to.date.month" stacked="true">
 		<dataset type="sql">
 		    <![CDATA[
                 SELECT 
@@ -108,12 +107,31 @@
 		    ]]>
 	    </dataset>
 		<category key="status" type="text" title="Status" />
-		<series key="amount" groupBy="status" type="bar" title="Amount"/>
+		<series key="amount" groupBy="status" type="bar" title="Amount" />
+	</chart>
+
+	<chart name="chart.no.of.invoice.per.status.line" title="No. of invoices per status"
+		onInit="action.chart.set.from.to.date.month" stacked="true">
+		<dataset type="sql">
+		    <![CDATA[
+                SELECT 
+                   count(_invoice.id) AS invoices,
+                   selection.title AS status  
+                FROM
+                   gst_invoice as _invoice
+                JOIN
+                   meta_select_item AS selection ON selection.select_id = 19 AND selection.value = _invoice.status_select     
+                GROUP BY
+                  status                
+		    ]]>
+	    </dataset>
+		<category key="status" type="text" title="Status" />
+		<series key="invoices" groupBy="status" type="bar" title="Amount" />
 	</chart>
 
 	<action-record name="action.chart.set.from.to.date.month"
 		model="com.axelor.gst.db.Invoice">
-		<field name="fromDate" expr="eval:__date__.withDayOfYear(1)"/>
+		<field name="fromDate" expr="eval:__date__.withDayOfYear(1)" />
 		<field name="toDate" expr="eval: (__date__.isLeapYear()) ? __date__.withDayOfYear(366): __date__.withDayOfYear(365)" />
 	</action-record>
 
