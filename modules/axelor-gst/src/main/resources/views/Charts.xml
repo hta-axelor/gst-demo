@@ -4,30 +4,6 @@
 	xsi:schemaLocation="http://axelor.com/xml/ns/object-views
   http://axelor.com/xml/ns/object-views/object-views_5.1.xsd">
 
-	<chart name="chart.customers.by.party.pie" title="Customers per state">
-		<dataset type="sql">
-		    <![CDATA[
-			SELECT
-			    count(_party.id) AS party,
-			    _state.name AS state_name
-			FROM
-				gst_party AS _party
-			JOIN
-			    gst_party_address_list AS _addressList ON 	_party.id = _addressList.gst_party
-		    JOIN
-			    gst_address AS _address ON 	_address.id = _addressList.address_list
-			JOIN
-			    gst_state as _state ON _address.state = _state.id    
-			WHERE
-				_party.is_customer = true		
-			GROUP BY
-				state_name
-		    ]]>
-	    </dataset>
-		<category key="state_name" type="text" title="State" />
-		<series key="party" type="pie" title="Party" />
-	</chart>
-
 	<chart name="chart.unpaid.invoice.per.customer.bar" title="Unpaid invoices per customer"
 		onInit="action.chart.set.from.to.date.month">
 		<search-fields>
@@ -89,6 +65,30 @@
 	    </dataset>
 		<category key="product_category_name" type="text" title="Product Category" />
 		<series key="product" type="bar" title="Product" groupBy="product_name" />
+	</chart>
+	
+		<chart name="chart.customers.by.party.pie" title="Customers per state">
+		<dataset type="sql">
+		    <![CDATA[
+			SELECT
+			    count(_party.id) AS party,
+			    _state.name AS state_name
+			FROM
+				gst_party AS _party
+			JOIN
+			    gst_party_address_list AS _addressList ON 	_party.id = _addressList.gst_party
+		    JOIN
+			    gst_address AS _address ON 	_address.id = _addressList.address_list
+			JOIN
+			    gst_state as _state ON _address.state = _state.id    
+			WHERE
+				_party.is_customer = true		
+			GROUP BY
+				state_name
+		    ]]>
+	    </dataset>
+		<category key="state_name" type="text" title="State" />
+		<series key="party" type="pie" title="Party" />
 	</chart>
 
 	<chart name="chart.invoice.per.status.amount.bar" title="Invoices per status per amount"

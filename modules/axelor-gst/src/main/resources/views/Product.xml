@@ -8,8 +8,9 @@
 		<toolbar>
 			<button name="product_grid_print_btn" icon="fa-print" title="Report"
 				onClick="action-gst-product-validate,action-gst-method-product-set-attachment-path,action-gst-report-product" />
-			<button name="product_grid_create_invoice_btn" icon="fa-rocket" title="Invoice"
-				onClick="action-gst-product-validate,action-gst-method-product-create-invoices" />
+			<button name="product_grid_create_invoice_btn" icon="fa-rocket"
+				title="Invoice"
+				onClick="action-gst-product-validate,action-gst-method-product-get-invoice-details,close" />
 		</toolbar>
 		<field name="name" />
 		<field name="code" />
@@ -47,9 +48,12 @@
 		<field name="hsbn" />
 		<field name="category" />
 		<field name="gstRate" />
+		<field name="hasImage" />
 
 		<template><![CDATA[
- 		 <div class="span4 card-image">
+ 		<div class="span4 card-image">
+ 		  <img ng-if="hasImage" ng-src="{{$image(null, 'image')}}">
+          <img ng-if="!hasImage" src="img/user.png">
    		   <strong>{{name}}</strong>
          </div>
          <div class="span8">
@@ -66,7 +70,7 @@
 	</action-validate>
 
 	<action-method name="action-gst-method-product-set-attachment-path">
-		<call class="com.axelor.gst.db.web.ProductController" method="setAttachmentPath" />
+		<call class="com.axelor.gst.web.ProductController" method="setAttachmentPath" />
 	</action-method>
 
 	<action-report name="action-gst-report-product" design="product_report.rptdesign"
@@ -75,8 +79,12 @@
 		<param name="AttachmentPath" expr="eval: AttachmentPath" />
 	</action-report>
 
+	<action-method name="action-gst-method-product-get-invoice-details">
+		<call class="com.axelor.gst.web.ProductController" method="getInvoiceDetails" />
+	</action-method>
+
 	<action-method name="action-gst-method-product-create-invoices">
-		<call class="com.axelor.gst.db.web.ProductController" method="createInvoices" />
+		<call class="com.axelor.gst.web.ProductController" method="createInvoice" />
 	</action-method>
 
 </object-views>

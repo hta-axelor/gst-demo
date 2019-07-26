@@ -22,7 +22,7 @@
 	</form>
 	
 	<action-method name="action-gst-method-sequence-set-next-number">
-		<call class="com.axelor.gst.db.web.SequenceController" method="setNextNumber" />
+		<call class="com.axelor.gst.web.SequenceController" method="setNextNumber" />
 	</action-method>
 
 </object-views>

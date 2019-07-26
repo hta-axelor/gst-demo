@@ -1,4 +1,4 @@
-package com.axelor.gst.db.web;
+package com.axelor.gst.web;
 
 import com.axelor.gst.db.Sequence;
 import com.axelor.gst.service.InvoiceService;

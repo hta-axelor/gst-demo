@@ -1,8 +1,9 @@
-package com.axelor.gst.db.repo;
+package com.axelor.gst.repo;
 
 import java.util.Map;
 
 import com.axelor.gst.db.Party;
+import com.axelor.gst.db.repo.PartyRepository;
 
 public class GstPartyRepository extends PartyRepository{
 	@Override

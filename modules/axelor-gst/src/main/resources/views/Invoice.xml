@@ -19,7 +19,6 @@
 		<field name="company" />
 		<field name="party" />
 
-
 		<template><![CDATA[
 		    <h4>{{reference}}</h4>
   			<h4>{{statusSelect}}</h4>
@@ -29,27 +28,30 @@
 	</kanban>
 
 	<form name="invoice-form" title="Invoice" model="com.axelor.gst.db.Invoice"
-		onNew="action-gst-record-invoice-form-default,action-gst-record-get-invoice-details" >
+		onNew="action-gst-record-invoice-form-default,action-gst-record-get-invoice-details">
 		<toolbar>
 			<button name="invoice_form_print_btn" icon="fa-print" title="Report"
-				onClick="action-gst-validate-invoice,save,action-gst-method-invoice-set-attachment-path,action-gst-report-invoice"  showIf="id"/>
+				onClick="action-gst-validate-invoice,save,action-gst-method-invoice-set-attachment-path,action-gst-report-invoice"
+				showIf="id" />
 		</toolbar>
 		<panel>
 			<field name="statusSelect" widget="NavSelect" colSpan="12" />
 		</panel>
 		<panel>
-			<field name="company" readonlyIf="invoiceItemsList.length > 0" canEdit="false"/>
+			<field name="company" readonlyIf="invoiceItemsList.length > 0"
+				canEdit="false" />
 			<field name="reference" />
 			<field name="invoiceDate" />
 			<field name="party" readonlyIf="invoiceItemsList.length > 0"
-				onChange="action-gst-record-invoice-calculate-party-values,action-gst-method-invoice-calculate-shipping-address" canEdit="false"/>
+				onChange="action-gst-record-invoice-calculate-party-values,action-gst-method-invoice-calculate-shipping-address"
+				canEdit="false" />
 			<field name="partyContact" />
 			<field name="invoiceAddress"
 				onChange="action-gst-method-invoice-calculate-shipping-address" />
 			<field name="shippingAddress" />
 			<field name="isInvoiceAddress"
 				onChange="action-gst-method-invoice-calculate-shipping-address" />
-			<field name="netAmount"/>
+			<field name="netAmount" />
 			<field name="netIgst" />
 			<field name="netCgst" />
 			<field name="netSgst" />
@@ -85,10 +87,12 @@
 				showIf="statusSelect == 4" />
 		</panel>
 	</form>
-	
+
 	<action-record name="action-gst-record-get-invoice-details"
 		model="com.axelor.gst.db.Invoice">
-		<field name="invoiceItemsList" expr="eval: invoiceItemsList"/>
+		<field name="invoiceItemsList" expr="eval: invoiceItemsList" />
+		<field name="company" expr="eval: product_company" if="eval :product_company"/>
+		<field name="party" expr="eval: product_party" />
 	</action-record>
 
 	<action-validate name="action-gst-validate-invoice">
@@ -104,15 +108,15 @@
 	</action-record>
 
 	<action-method name="action-gst-method-invoice-calculate-invoice-items">
-		<call class="com.axelor.gst.db.web.InvoiceController" method="setItems" />
+		<call class="com.axelor.gst.web.InvoiceController" method="setItems" />
 	</action-method>
 
 	<action-method name="action-gst-method-invoice-calculate-shipping-address">
-		<call class="com.axelor.gst.db.web.InvoiceController" method="setShippingAddress" />
+		<call class="com.axelor.gst.web.InvoiceController" method="setShippingAddress" />
 	</action-method>
 
 	<action-method name="action-gst-record-invoice-calculate-party-values">
-		<call class="com.axelor.gst.db.web.InvoiceController" method="setPartyValues" />
+		<call class="com.axelor.gst.web.InvoiceController" method="setPartyValues" />
 	</action-method>
 
 	<action-record name="action-gst-record-invoice-calculate-party-values"
@@ -167,7 +171,7 @@
 	</action-record>
 
 	<action-method name="action-gst-method-invoice-set-attachment-path">
-		<call class="com.axelor.gst.db.web.InvoiceController" method="setAttachmentPath" />
+		<call class="com.axelor.gst.web.InvoiceController" method="setAttachmentPath" />
 	</action-method>
 
 	<action-report name="action-gst-report-invoice" design="invoice_report.rptdesign"

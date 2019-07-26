@@ -1,4 +1,4 @@
-package com.axelor.gst.db.web;
+package com.axelor.gst.web;
 
 import java.math.BigDecimal;
 import com.axelor.gst.db.Address;

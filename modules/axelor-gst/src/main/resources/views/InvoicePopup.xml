@@ -4,23 +4,17 @@
 	xsi:schemaLocation="http://axelor.com/xml/ns/object-views
   http://axelor.com/xml/ns/object-views/object-views_5.1.xsd">
 
-	<grid name="city-grid" title="City" model="com.axelor.gst.db.City">
-		<field name="name" />
-		<field name="state" />
-		<field name="country" />
-
-	</grid>
-
-	<form name="city-form" title="City" model="com.axelor.gst.db.City">
+	<form name="invoice-form-popup" title="Invoice" model="com.axelor.gst.db.Invoice"
+		canNew="false" canEdit="false" canSave="false" canDelete="false"
+		onNew="action-gst-record-invoice-form-default">
 		<panel>
-			<field name="name" />
-			<field name="state" onChange="action-gst-record-address-city-country-default"/>
-			<field name="country" />
+			<field name="company" />
+			<field name="party"	canEdit="false" />
+		</panel>
+		<panel>
+			<button name="show_invoice" icon="fa-rocket" title="Show Invoice"
+				onClick="action-gst-method-product-create-invoices" />
 		</panel>
 	</form>
 
-	<action-record name="action-gst-record-address-city-country-default"
-		model="com.axelor.gst.db.Invoice">
-		<field name="country" expr="eval: state?.country" />
-	</action-record>
 </object-views>

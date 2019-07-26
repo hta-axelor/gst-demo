@@ -76,7 +76,7 @@
 	</cards>
 
 	<action-method name="action-gst-method-party-get-reference">
-		<call class="com.axelor.gst.db.web.PartyController" method="setReference" />
+		<call class="com.axelor.gst.web.PartyController" method="setReference" />
 	</action-method>
 
 </object-views>
