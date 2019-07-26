@@ -9,6 +9,11 @@ import com.axelor.gst.db.Contact;
 import com.axelor.gst.db.Invoice;
 import com.axelor.gst.db.InvoiceLine;
 import com.axelor.gst.db.Sequence;
+import com.axelor.gst.db.repo.SequenceRepository;
+import com.axelor.inject.Beans;
+import com.axelor.rpc.ActionRequest;
+import com.axelor.rpc.ActionResponse;
+import com.google.inject.persist.Transactional;
 
 public class InvoiceServiceImpl implements InvoiceService {
 
@@ -48,14 +53,14 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	@Override
 	public Invoice calculatePartyValues(Invoice invoice) {
-		
-		//setting default values;
+
+		// setting default values;
 		shippingAddress = null;
 		defaultAddress = null;
-		
+
 		isPartyContactEmpty = true;
 		isPartyAddressEmpty = true;
-		
+
 		if (invoice.getParty() != null) {
 			partyContactList = invoice.getParty().getContactList();
 			if (!partyContactList.isEmpty()) {
@@ -73,7 +78,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 			} else {
 				invoice.setPartyContact(null);
 			}
-			
+
 			partyAddressList = invoice.getParty().getAddressList();
 			if (!partyAddressList.isEmpty()) {
 				isPartyAddressEmpty = false;
@@ -98,13 +103,13 @@ public class InvoiceServiceImpl implements InvoiceService {
 				// Setting default address as invoice address
 				else if (defaultAddress != null) {
 					invoice.setInvoiceAddress(defaultAddress);
-				} 
+				}
 
 				// Setting shipping address as invoice address
 				else if (shippingAddress != null) {
 					invoice.setInvoiceAddress(shippingAddress);
 				}
-				
+
 				else {
 					invoice.setInvoiceAddress(partyAddressList.get(0));
 				}
@@ -139,8 +144,18 @@ public class InvoiceServiceImpl implements InvoiceService {
 		return invoice;
 	}
 
+	@Transactional
 	@Override
-	public String computeReference(Sequence sequence) {
+	public void computeReference(ActionRequest request, ActionResponse response) {
+		SequenceRepository sequenceRepository = Beans.get(SequenceRepository.class);
+		Sequence sequence = sequenceRepository.all().filter("self.metaModel.fullName = ?1", request.getModel())
+				.fetchOne();		
+
+		if (sequence == null) {
+			response.setError("No Sequence Found, Please enter the sequence");
+			return;
+		}
+
 		String prefix = sequence.getPrefix();
 		String suffix = sequence.getSuffix();
 		Integer padding = sequence.getPadding();
@@ -161,32 +176,35 @@ public class InvoiceServiceImpl implements InvoiceService {
 			nextNumberstr = prefix + incremented + suffix;
 		}
 
-		return nextNumberstr;
+		String reference = (String) request.getContext().get("reference");
+		if (reference == null) {
+			response.setValue("reference", sequence.getNextNumber());
+			sequence.setNextNumber(nextNumberstr);
+			sequenceRepository.save(sequence);
+		}
 	}
 
 	@Override
 	public String createDomainForPartyContact() {
 		String domain = null;
 		if (!isPartyContactEmpty) {
-			domain = "self.id IN " + partyContactList.stream().map(i -> i.getId())
-					.collect(Collectors.toList()).toString().replace('[', '(').replace(']', ')');
-		}
-		else {
+			domain = "self.id IN " + partyContactList.stream().map(i -> i.getId()).collect(Collectors.toList())
+					.toString().replace('[', '(').replace(']', ')');
+		} else {
 			domain = "self.id = null";
 		}
 		return domain;
 	}
 
 	@Override
-	public String createDomainForPartyAddress() {	
+	public String createDomainForPartyAddress() {
 		String domain = null;
 		if (!isPartyAddressEmpty) {
-			domain = "self.id IN " + partyAddressList.stream().map(i -> i.getId())
-					.collect(Collectors.toList()).toString().replace('[', '(').replace(']', ')');
-		}
-		else {
+			domain = "self.id IN " + partyAddressList.stream().map(i -> i.getId()).collect(Collectors.toList())
+					.toString().replace('[', '(').replace(']', ')');
+		} else {
 			domain = "self.id = null";
 		}
 		return domain;
-	}	
+	}
 }

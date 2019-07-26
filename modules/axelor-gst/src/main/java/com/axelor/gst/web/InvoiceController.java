@@ -41,20 +41,9 @@ public class InvoiceController {
 		response.setValues(invoice);
 	}
 
-	@Transactional
+	
 	public void setReference(ActionRequest request, ActionResponse response) {
-		SequenceRepository sequenceRepository = Beans.get(SequenceRepository.class);
-		Sequence sequence = sequenceRepository.all().filter("self.metaModel.fullName = ?1", request.getModel())
-				.fetchOne();
-		String reference = (String) request.getContext().get("reference");
-		if (sequence == null) {
-			response.setError("No Sequence Found, Please enter the sequence");
-		} else if (reference == null) {
-			response.setValue("reference", sequence.getNextNumber());
-			String nextNumber = invoiceService.computeReference(sequence);
-			sequence.setNextNumber(nextNumber);
-			sequenceRepository.save(sequence);
-		}
+		invoiceService.computeReference(request,response);
 	}
 
 	public void setAttachmentPath(ActionRequest request, ActionResponse response) {

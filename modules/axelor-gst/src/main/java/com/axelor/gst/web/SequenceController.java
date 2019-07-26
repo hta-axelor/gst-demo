@@ -1,7 +1,6 @@
 package com.axelor.gst.web;
 
 import com.axelor.gst.db.Sequence;
-import com.axelor.gst.service.InvoiceService;
 import com.axelor.gst.service.SequenceService;
 import com.axelor.rpc.ActionRequest;
 import com.axelor.rpc.ActionResponse;

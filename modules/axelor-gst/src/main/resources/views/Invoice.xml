@@ -87,6 +87,10 @@
 				showIf="statusSelect == 4" />
 		</panel>
 	</form>
+	
+	<action-method name="action-gst-method-invoice-get-reference">
+	   <call class="com.axelor.gst.web.InvoiceController" method="setReference"/>
+	</action-method>
 
 	<action-record name="action-gst-record-get-invoice-details"
 		model="com.axelor.gst.db.Invoice">

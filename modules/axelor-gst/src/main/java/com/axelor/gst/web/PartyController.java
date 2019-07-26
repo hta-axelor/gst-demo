@@ -18,17 +18,8 @@ public class PartyController {
 	@Inject
 	private PartyService partyService;
 
-	@Transactional
+
 	public void setReference(ActionRequest request, ActionResponse response) {
-		SequenceRepository sequenceRepository = Beans.get(SequenceRepository.class);
-		Sequence sequence = sequenceRepository.all().filter("self.metaModel.fullName = ?1", request.getModel()).fetchOne();
-		if (sequence == null) {
-            response.setError("No Sequence Found, Please enter the sequence");
-		} else {
-			response.setValue("reference", sequence.getNextNumber());
-			String nextNumber = partyService.computeReference(sequence);
-			sequence.setNextNumber(nextNumber);
-			sequenceRepository.save(sequence);
-		}
+	   partyService.computeReference(request,response);
 	}
 }

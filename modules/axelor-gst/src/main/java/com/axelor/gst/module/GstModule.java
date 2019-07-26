@@ -11,6 +11,8 @@ import com.axelor.gst.service.InvoiceLineServiceImpl;
 import com.axelor.gst.service.InvoiceLineService;
 import com.axelor.gst.service.InvoiceService;
 import com.axelor.gst.service.PartyServiceImpl;
+import com.axelor.gst.service.ProductService;
+import com.axelor.gst.service.ProductServiceImpl;
 import com.axelor.gst.service.PartyService;
 import com.axelor.gst.service.SequenceServiceImpl;
 import com.axelor.gst.service.SequenceService;
@@ -24,6 +26,7 @@ public class GstModule extends AxelorModule{
 	    bind(InvoiceLineService.class).to(InvoiceLineServiceImpl.class);
 	    bind(InvoiceService.class).to(InvoiceServiceImpl.class);
 	    bind(PartyService.class).to(PartyServiceImpl.class);
+	    bind(ProductService.class).to(ProductServiceImpl.class);
 	    bind(SequenceService.class).to(SequenceServiceImpl.class);
 	    bind(InvoiceLine.class);
 	}   
