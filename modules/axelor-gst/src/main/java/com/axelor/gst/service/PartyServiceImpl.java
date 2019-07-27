@@ -1,10 +1,7 @@
 package com.axelor.gst.service;
 
 import com.axelor.gst.db.Sequence;
-import com.axelor.gst.repo.GstSequenceRepository;
-import com.axelor.inject.Beans;
-import com.axelor.rpc.ActionRequest;
-import com.axelor.rpc.ActionResponse;
+import com.axelor.gst.db.repo.SequenceRepository;
 import com.google.inject.persist.Transactional;
 
 
@@ -12,14 +9,7 @@ public class PartyServiceImpl implements PartyService {
 
 	@Override
 	@Transactional
-	public void computeReference(ActionRequest request,ActionResponse response) {
-		GstSequenceRepository sequenceRepository = Beans.get(GstSequenceRepository.class);
-		Sequence sequence = sequenceRepository.all().filter("self.metaModel.fullName = ?1", request.getModel())
-				.fetchOne();
-		if(sequence == null) {
-			response.setError("No Sequence Found, Please enter the sequence");
-			return;
-		}
+	public void computeReference(Sequence sequence,SequenceRepository sequenceRepository) {
 		String prefix = sequence.getPrefix();
 		String suffix = sequence.getSuffix();
 		Integer padding = sequence.getPadding();
@@ -39,9 +29,7 @@ public class PartyServiceImpl implements PartyService {
 		} else {
 			nextNumberstr = prefix + incremented + suffix;
 		}
-		response.setValue("reference", sequence.getNextNumber());
 		sequence.setNextNumber(nextNumberstr);
 		sequenceRepository.save(sequence);
-
 	}
 }

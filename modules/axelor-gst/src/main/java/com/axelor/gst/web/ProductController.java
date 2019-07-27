@@ -3,7 +3,9 @@ package com.axelor.gst.web;
 import java.util.List;
 import java.util.Map;
 import com.axelor.app.AppSettings;
+import com.axelor.gst.db.Address;
 import com.axelor.gst.db.Company;
+import com.axelor.gst.db.Contact;
 import com.axelor.gst.db.Invoice;
 import com.axelor.gst.db.Party;
 import com.axelor.gst.service.ProductService;
@@ -31,11 +33,9 @@ public class ProductController {
 	}
 
 	public void createInvoice(ActionRequest request, ActionResponse response) {
-		Company company = (Company) request.getContext().get("company");
-		Party party = (Party) request.getContext().get("party");
+		Invoice invoice = request.getContext().asType(Invoice.class);
 		List<String> productIdList = (List<String>) request.getContext().get("productIds");
-		
-		Map<String,Object> invoiceView = productService.getInvoiceView(company,party,productIdList);
+		Map<String,Object> invoiceView = productService.getInvoiceView(invoice,productIdList);
 
 		response.setView(invoiceView);
 		response.setCanClose(true);

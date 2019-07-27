@@ -15,7 +15,7 @@
 		<many-to-one name="country" ref="Country" required="true" />
 		<string name="pincode" />
 		<string name="fullAddress" namecolumn="true" search="line1,line2,city,state,country,pincode"> 
-  		  <![CDATA[
+  		  <![CDATA[       
  			   if (line2 == null && pincode == null) {
  			      return line1  + "," + city.getName() + "," + state.getName() + "," +  country.getName();
  			   }

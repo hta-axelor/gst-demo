@@ -2,7 +2,10 @@ package com.axelor.gst.web;
 
 import com.axelor.app.AppSettings;
 import com.axelor.gst.db.Invoice;
+import com.axelor.gst.db.Sequence;
+import com.axelor.gst.repo.GstSequenceRepository;
 import com.axelor.gst.service.InvoiceService;
+import com.axelor.inject.Beans;
 import com.axelor.rpc.ActionRequest;
 import com.axelor.rpc.ActionResponse;
 import com.google.inject.Inject;
@@ -39,7 +42,19 @@ public class InvoiceController {
 
 	
 	public void setReference(ActionRequest request, ActionResponse response) {
-		invoiceService.computeReference(request,response);
+		Invoice invoice = request.getContext().asType(Invoice.class);
+		GstSequenceRepository sequenceRepository = Beans.get(GstSequenceRepository.class);
+		Sequence sequence = sequenceRepository.all().filter("self.metaModel.fullName = ?1", request.getModel())
+				.fetchOne();
+		if (sequence == null) {
+			response.setError("No Sequence Found, Please enter the sequence");
+			return;
+		}
+		String reference = invoice.getReference();
+		if(reference == null) {
+		   response.setValue("reference", sequence.getNextNumber());
+		   invoiceService.computeReference(sequence,sequenceRepository);
+		}
 	}
 
 	public void setAttachmentPath(ActionRequest request, ActionResponse response) {

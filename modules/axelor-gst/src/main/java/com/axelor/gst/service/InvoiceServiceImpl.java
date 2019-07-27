@@ -9,10 +9,9 @@ import com.axelor.gst.db.Contact;
 import com.axelor.gst.db.Invoice;
 import com.axelor.gst.db.InvoiceLine;
 import com.axelor.gst.db.Sequence;
+import com.axelor.gst.db.repo.SequenceRepository;
 import com.axelor.gst.repo.GstSequenceRepository;
 import com.axelor.inject.Beans;
-import com.axelor.rpc.ActionRequest;
-import com.axelor.rpc.ActionResponse;
 import com.google.inject.persist.Transactional;
 
 public class InvoiceServiceImpl implements InvoiceService {
@@ -127,7 +126,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 				// finding default type address
 				if (a.getType().equals("1")) {
 					defaultAddress = a;
-				// finding shipping type address
+					// finding shipping type address
 				} else if (a.getType().equals("3")) {
 					shippingAddress = a;
 				}
@@ -147,16 +146,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	@Transactional
 	@Override
-	public void computeReference(ActionRequest request, ActionResponse response) {
-		GstSequenceRepository sequenceRepository = Beans.get(GstSequenceRepository.class);
-		Sequence sequence = sequenceRepository.all().filter("self.metaModel.fullName = ?1", request.getModel())
-				.fetchOne();
-
-		if (sequence == null) {
-			response.setError("No Sequence Found, Please enter the sequence");
-			return;
-		}
-
+	public void computeReference(Sequence sequence, SequenceRepository sequenceRepository) {
 		String prefix = sequence.getPrefix();
 		String suffix = sequence.getSuffix();
 		Integer padding = sequence.getPadding();
@@ -176,13 +166,8 @@ public class InvoiceServiceImpl implements InvoiceService {
 		} else {
 			nextNumberstr = prefix + incremented + suffix;
 		}
-
-		String reference = (String) request.getContext().get("reference");
-		if (reference == null) {
-			response.setValue("reference", sequence.getNextNumber());
-			sequence.setNextNumber(nextNumberstr);
-			sequenceRepository.save(sequence);
-		}
+		sequence.setNextNumber(nextNumberstr);
+		sequenceRepository.save(sequence);
 	}
 
 	@Override

@@ -1,8 +1,8 @@
 package com.axelor.gst.service;
 
-import com.axelor.rpc.ActionRequest;
-import com.axelor.rpc.ActionResponse;
+import com.axelor.gst.db.Sequence;
+import com.axelor.gst.db.repo.SequenceRepository;
 
 public interface PartyService {
-   public void computeReference(ActionRequest request,ActionResponse response);
+   public void computeReference(Sequence sequence,SequenceRepository sequenceRepository);
 }

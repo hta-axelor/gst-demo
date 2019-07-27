@@ -38,18 +38,20 @@
 			<field name="statusSelect" widget="NavSelect" colSpan="12" />
 		</panel>
 		<panel>
-			<field name="company" readonlyIf="invoiceItemsList.length > 0"
+			<field name="company"
+				readonlyIf="invoiceItemsList.length > 0 || statusSelect != 1"
 				canEdit="false" />
 			<field name="reference" />
-			<field name="invoiceDate" />
-			<field name="party" readonlyIf="invoiceItemsList.length > 0"
-				onChange="action-gst-record-invoice-calculate-party-values,action-gst-method-invoice-calculate-shipping-address"
+			<field name="invoiceDate" readonlyIf="statusSelect != 1" />
+			<field name="party"
+				readonlyIf="invoiceItemsList.length > 0 || statusSelect != 1"
+				onChange="action-gst-method-invoice-calculate-party-values,action-gst-method-invoice-calculate-shipping-address"
 				canEdit="false" />
-			<field name="partyContact" />
+			<field name="partyContact" readonlyIf="statusSelect != 1" />
 			<field name="invoiceAddress"
 				onChange="action-gst-method-invoice-calculate-shipping-address" />
-			<field name="shippingAddress" />
-			<field name="isInvoiceAddress"
+			<field name="shippingAddress" readonlyIf="statusSelect != 1" />
+			<field name="isInvoiceAddress" readonlyIf="statusSelect != 1"
 				onChange="action-gst-method-invoice-calculate-shipping-address" />
 			<field name="netAmount" />
 			<field name="netIgst" />
@@ -59,7 +61,7 @@
 		</panel>
 		<panel-related field="invoiceItemsList" form-view="invoice-line-form"
 			onChange="action-gst-method-invoice-calculate-invoice-items"
-			readonlyIf="statusSelect == 3">
+			readonlyIf="statusSelect == 3 &amp;&amp; statusSelect == 4">
 			<field name="product" />
 			<field name="hsbn" />
 			<field name="item" />
@@ -74,7 +76,7 @@
 		</panel-related>
 		<panel sidebar="true">
 			<button name="validateBtn" title="Validate"
-				onClick="action-gst-validate-invoice,action-gst-method-invoice-get-reference,action-gst-record-invoice-validate,save,action-gst-attrs-invoice-validate"
+				onClick="action-gst-validate-invoice,action-gst-method-invoice-get-reference,action-gst-record-invoice-validate,save"
 				hidden="true" showIf="statusSelect == 1" />
 			<button name="paidBtn" title="Paid"
 				onClick="action-gst-validate-invoice-items-list,action-gst-record-invoice-paid,save"
@@ -87,16 +89,41 @@
 				showIf="statusSelect == 4" />
 		</panel>
 	</form>
-	
+
+	<form name="invoice-form-popup" title="Invoice" model="com.axelor.gst.db.Invoice"
+		canNew="false" canEdit="false" canSave="false" canDelete="false"
+		onNew="action-gst-record-invoice-form-default">
+		<panel>
+			<field name="company" canEdit="false"/>
+			<field name="party" readonlyIf="invoiceItemsList.length > 0"
+				onChange="action-gst-method-invoice-calculate-party-values,action-gst-method-invoice-calculate-shipping-address"
+				canEdit="false" />
+			<field name="partyContact" />
+			<field name="invoiceAddress"
+				onChange="action-gst-method-invoice-calculate-shipping-address" />
+			<field name="shippingAddress" />
+			<field name="isInvoiceAddress"
+				onChange="action-gst-method-invoice-calculate-shipping-address" />
+		</panel>
+		<panel>
+			<button name="show_invoice" icon="fa-rocket" title="Show Invoice"
+				onClick="action-gst-method-product-create-invoices" />
+		</panel>
+	</form>
+
 	<action-method name="action-gst-method-invoice-get-reference">
-	   <call class="com.axelor.gst.web.InvoiceController" method="setReference"/>
+		<call class="com.axelor.gst.web.InvoiceController" method="setReference" />
 	</action-method>
 
 	<action-record name="action-gst-record-get-invoice-details"
 		model="com.axelor.gst.db.Invoice">
 		<field name="invoiceItemsList" expr="eval: invoiceItemsList" />
-		<field name="company" expr="eval: product_company" if="eval :product_company"/>
+		<field name="company" expr="eval: product_company" if="eval :product_company" />
 		<field name="party" expr="eval: product_party" />
+		<field name="partyContact" expr="eval: product_partyContact" />
+		<field name="invoiceAddress" expr="eval: product_invoiceAddress" />
+		<field name="shippingAddress" expr="eval: product_shippingAddress" />
+		<field name="isInvoiceAddress" expr="eval: product_isInvoiceAddress" />
 	</action-record>
 
 	<action-validate name="action-gst-validate-invoice">
@@ -119,17 +146,9 @@
 		<call class="com.axelor.gst.web.InvoiceController" method="setShippingAddress" />
 	</action-method>
 
-	<action-method name="action-gst-record-invoice-calculate-party-values">
+	<action-method name="action-gst-method-invoice-calculate-party-values">
 		<call class="com.axelor.gst.web.InvoiceController" method="setPartyValues" />
 	</action-method>
-
-	<action-record name="action-gst-record-invoice-calculate-party-values"
-		model="com.axelor.gst.db.Invoice">
-		<field name="invoiceAddress" expr="eval: party?.addressList[0]"
-			if="party &amp;&amp; party?.addressList" />
-		<field name="partyContact" expr="eval: party?.contactList[0].name"
-			if="party &amp;&amp; party?.contactList &amp;&amp; party?.contactList[0].name" />
-	</action-record>
 
 	<action-record name="action-gst-record-invoice-validate"
 		model="com.axelor.gst.db.Invoice">
