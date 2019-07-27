@@ -4,10 +4,9 @@ import com.axelor.gst.db.Sequence;
 
 public class SequenceServiceImpl implements SequenceService {
 
-	private String nextNumber;
-
 	@Override
-	public String computeNextSequence(Sequence sequence) {
+	public Sequence computeNextSequence(Sequence sequence) {
+		String nextNumber = null;
 		String prefix = sequence.getPrefix();
 		String suffix = sequence.getSuffix();
 		Integer padding = sequence.getPadding();
@@ -18,6 +17,7 @@ public class SequenceServiceImpl implements SequenceService {
         else {
         	nextNumber = prefix + paddedStr + suffix;
         }
-		return nextNumber;
+        sequence.setNextNumber(nextNumber);
+		return sequence;
 	}
 }

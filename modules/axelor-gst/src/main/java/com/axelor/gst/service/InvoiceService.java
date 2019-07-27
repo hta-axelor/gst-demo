@@ -10,6 +10,6 @@ public interface InvoiceService {
 	public Invoice calculatePartyValues(Invoice invoice);
 	public Invoice getShippingAddress(Invoice invoice);
 	public void computeReference(ActionRequest request,ActionResponse response);
-	public String createDomainForPartyContact();
-	public String createDomainForPartyAddress();
+	public String createDomainForPartyContact(Invoice invoice);
+	public String createDomainForPartyAddress(Invoice invoice);
 }

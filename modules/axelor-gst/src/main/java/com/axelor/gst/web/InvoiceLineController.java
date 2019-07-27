@@ -1,12 +1,8 @@
 package com.axelor.gst.web;
 
 import java.math.BigDecimal;
-import com.axelor.gst.db.Address;
-import com.axelor.gst.db.Company;
 import com.axelor.gst.db.Product;
-import com.axelor.gst.db.State;
 import com.axelor.gst.service.InvoiceLineService;
-import com.axelor.gst.service.InvoiceService;
 import com.axelor.rpc.ActionRequest;
 import com.axelor.rpc.ActionResponse;
 import com.google.inject.Inject;

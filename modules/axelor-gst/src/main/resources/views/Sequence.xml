@@ -11,7 +11,7 @@
 		<field name="nextNumber" />
 	</grid>
 
-	<form name="sequence-form" title="Sequence" model="com.axelor.gst.db.Sequence" onSave="action-gst-method-sequence-set-next-number">
+	<form name="sequence-form" title="Sequence" model="com.axelor.gst.db.Sequence">
 		<panel>
 			<field name="prefix" />
 			<field name="suffix"/>
@@ -20,9 +20,5 @@
 			<field name="metaModel" />
 		</panel>
 	</form>
-	
-	<action-method name="action-gst-method-sequence-set-next-number">
-		<call class="com.axelor.gst.web.SequenceController" method="setNextNumber" />
-	</action-method>
 
 </object-views>

@@ -6,6 +6,7 @@ import com.axelor.gst.db.Party;
 import com.axelor.gst.db.repo.PartyRepository;
 
 public class GstPartyRepository extends PartyRepository{
+	
 	@Override
 	public Map<String, Object> populate(Map<String, Object> json, Map<String, Object> context) {
 		if (!context.containsKey("json-enhance")) {
@@ -17,5 +18,5 @@ public class GstPartyRepository extends PartyRepository{
 			json.put("contact", party.getContactList().get(0));
 		} catch (Exception e) {}
 		return json;
-	}
+	}	
 }

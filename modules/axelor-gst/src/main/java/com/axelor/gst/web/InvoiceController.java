@@ -2,15 +2,11 @@ package com.axelor.gst.web;
 
 import com.axelor.app.AppSettings;
 import com.axelor.gst.db.Invoice;
-import com.axelor.gst.db.Sequence;
-import com.axelor.gst.db.repo.SequenceRepository;
 import com.axelor.gst.service.InvoiceService;
-import com.axelor.inject.Beans;
 import com.axelor.rpc.ActionRequest;
 import com.axelor.rpc.ActionResponse;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import com.google.inject.persist.Transactional;
 
 @Singleton
 public class InvoiceController {
@@ -28,8 +24,8 @@ public class InvoiceController {
 		Invoice invoice = request.getContext().asType(Invoice.class);
 		invoice = invoiceService.calculatePartyValues(invoice);
 		response.setValues(invoice);
-		String contactDomain = invoiceService.createDomainForPartyContact();
-		String addressDomain = invoiceService.createDomainForPartyAddress();
+		String contactDomain = invoiceService.createDomainForPartyContact(invoice);
+		String addressDomain = invoiceService.createDomainForPartyAddress(invoice);
 		response.setAttr("partyContact", "domain", contactDomain);
 		response.setAttr("invoiceAddress", "domain", addressDomain);
 		response.setAttr("shippingAddress", "domain", addressDomain);

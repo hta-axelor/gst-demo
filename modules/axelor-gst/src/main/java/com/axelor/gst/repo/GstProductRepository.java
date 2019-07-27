@@ -1,10 +1,7 @@
 package com.axelor.gst.repo;
 
 import java.util.Map;
-
-import com.axelor.gst.db.Party;
 import com.axelor.gst.db.Product;
-import com.axelor.gst.db.repo.PartyRepository;
 import com.axelor.gst.db.repo.ProductRepository;
 
 public class GstProductRepository extends ProductRepository{

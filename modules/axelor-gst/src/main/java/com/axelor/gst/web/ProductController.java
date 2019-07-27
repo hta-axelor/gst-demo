@@ -1,22 +1,13 @@
 package com.axelor.gst.web;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import com.axelor.app.AppSettings;
-import com.axelor.gst.db.Address;
 import com.axelor.gst.db.Company;
 import com.axelor.gst.db.Invoice;
-import com.axelor.gst.db.InvoiceLine;
 import com.axelor.gst.db.Party;
-import com.axelor.gst.db.Product;
-import com.axelor.gst.db.repo.ProductRepository;
-import com.axelor.gst.service.PartyService;
 import com.axelor.gst.service.ProductService;
-import com.axelor.inject.Beans;
 import com.axelor.meta.schema.actions.ActionView;
-import com.axelor.meta.schema.actions.ActionView.ActionViewBuilder;
 import com.axelor.rpc.ActionRequest;
 import com.axelor.rpc.ActionResponse;
 import com.google.inject.Inject;
