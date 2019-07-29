@@ -1,19 +1,13 @@
 package com.axelor.gst.web;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-
 import com.axelor.app.AppSettings;
-import com.axelor.gst.db.Address;
 import com.axelor.gst.db.Company;
-import com.axelor.gst.db.Contact;
 import com.axelor.gst.db.Invoice;
-import com.axelor.gst.db.InvoiceLine;
 import com.axelor.gst.db.Party;
-import com.axelor.gst.db.Product;
 import com.axelor.gst.db.Sequence;
-import com.axelor.gst.db.repo.ProductRepository;
+import com.axelor.gst.db.repo.CompanyRepository;
+import com.axelor.gst.db.repo.PartyRepository;
 import com.axelor.gst.repo.GstSequenceRepository;
 import com.axelor.gst.service.InvoiceService;
 import com.axelor.inject.Beans;
@@ -52,7 +46,6 @@ public class InvoiceController {
 		response.setValues(invoice);
 	}
 
-	
 	public void setReference(ActionRequest request, ActionResponse response) {
 		Invoice invoice = request.getContext().asType(Invoice.class);
 		GstSequenceRepository sequenceRepository = Beans.get(GstSequenceRepository.class);
@@ -63,23 +56,58 @@ public class InvoiceController {
 			return;
 		}
 		String reference = invoice.getReference();
-		if(reference == null) {
-		   response.setValue("reference", sequence.getNextNumber());
-		   invoiceService.computeReference(sequence,sequenceRepository);
+		if (reference == null) {
+			response.setValue("reference", sequence.getNextNumber());
+			invoiceService.computeReference(sequence, sequenceRepository);
 		}
 	}
 
 	public void setAttachmentPath(ActionRequest request, ActionResponse response) {
 		String attachmentPath = AppSettings.get().get("file.upload.dir");
-		request.getContext().put("AttachmentPath",attachmentPath + "/");
+		request.getContext().put("AttachmentPath", attachmentPath + "/");
 	}
-	
+
 	public void createInvoice(ActionRequest request, ActionResponse response) {
 		Invoice invoice = request.getContext().asType(Invoice.class);
 		List<String> productIdList = (List<String>) request.getContext().get("productIds");
-		Map<String,Object> invoiceView = invoiceService.getInvoiceView(invoice,productIdList);
 
-		response.setView(invoiceView);
-		response.setCanClose(true);
+		response.setView(ActionView.define("Invoice").model(Invoice.class.getName()).add("form", "invoice-form")
+				.context("companyId", invoice.getCompany().getId()).context("partyId", invoice.getParty().getId())
+				.context("product_ids", productIdList).map());
 	}
+
+	public void setInvoiceDetails(ActionRequest request, ActionResponse response) {
+		Invoice invoice = request.getContext().asType(Invoice.class);
+
+		List<String> productIdList = (List<String>) request.getContext().get("product_ids");
+
+		CompanyRepository companyRepository = Beans.get(CompanyRepository.class);
+		Company company = companyRepository.all().filter("self.id = ?1", request.getContext().get("companyId")).fetchOne();
+
+		PartyRepository partyRepository = Beans.get(PartyRepository.class);
+		Party party = partyRepository.all().filter("self.id = ?1", request.getContext().get("partyId")).fetchOne();
+
+		invoice.setIsInvoiceAddress(true);
+		invoice.setCompany(company);
+		invoice.setParty(party);
+
+		invoice = invoiceService.calculatePartyValues(invoice);
+		invoice = invoiceService.getShippingAddress(invoice);
+
+		invoice = invoiceService.calculateProductItemsList(invoice, productIdList);
+			
+		response.setValue("invoiceItemsList", request.getContext().get("product_invoice_items"));
+		
+		invoiceService.calculateItems(invoice);
+		
+		String contactDomain = invoiceService.createDomainForPartyContact(invoice);
+		String addressDomain = invoiceService.createDomainForPartyAddress(invoice);
+		response.setAttr("partyContact", "domain", contactDomain);
+		response.setAttr("invoiceAddress", "domain", addressDomain);
+		response.setAttr("shippingAddress", "domain", addressDomain);
+
+		response.setValues(invoice);
+
+	}
+
 }

@@ -14,5 +14,5 @@ public interface InvoiceService {
 	public void computeReference(Sequence sequence,SequenceRepository sequenceRepository);
 	public String createDomainForPartyContact(Invoice invoice);
 	public String createDomainForPartyAddress(Invoice invoice);
-	public Map<String, Object> getInvoiceView(Invoice invoice, List<String> productIdList);
+	public Invoice calculateProductItemsList(Invoice invoice, List<String> productIdList);
 }

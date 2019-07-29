@@ -28,7 +28,7 @@
 	</kanban>
 
 	<form name="invoice-form" title="Invoice" model="com.axelor.gst.db.Invoice"
-		onNew="action-gst-record-invoice-form-default,action-gst-record-get-invoice-details">
+		onNew="action-gst-record-invoice-form-default,action-gst-method-get-invoice-details">
 		<toolbar>
 			<button name="invoice_form_print_btn" icon="fa-print" title="Report"
 				onClick="action-gst-validate-invoice,save,action-gst-method-invoice-set-attachment-path,action-gst-report-invoice"
@@ -47,7 +47,7 @@
 				canEdit="false" />
 			<field name="partyContact" readonlyIf="statusSelect != 1" />
 			<field name="invoiceAddress"
-				onChange="action-gst-method-invoice-calculate-shipping-address"
+				onChange="action-gst-method-invoice-calculate-shipping-address" 
 				readonlyIf="statusSelect != 1" />
 			<field name="shippingAddress" readonlyIf="statusSelect != 1" />
 			<field name="isInvoiceAddress" readonlyIf="statusSelect != 1"
@@ -94,36 +94,25 @@
 		onNew="action-gst-record-invoice-form-default">
 		<panel>
 			<field name="company" canEdit="false" />
-			<field name="party" readonlyIf="invoiceItemsList.length > 0"
-				onChange="action-gst-method-invoice-calculate-party-values,action-gst-method-invoice-calculate-shipping-address"
-				canEdit="false" />
-			<field name="partyContact" />
-			<field name="invoiceAddress"
-				onChange="action-gst-method-invoice-calculate-shipping-address" />
-			<field name="shippingAddress" />
-			<field name="isInvoiceAddress"
-				onChange="action-gst-method-invoice-calculate-shipping-address" />
+			<field name="party" canEdit="false" />
 		</panel>
 		<panel>
 			<button name="show_invoice" icon="fa-rocket" title="Show Invoice"
-				onClick="action-gst-method-product-create-invoices" />
+				onClick="action-gst-invoice-form-validate,action-gst-method-product-create-invoices,close" />
 		</panel>
 	</form>
+
+	<action-validate name="action-gst-invoice-form-validate">
+		<error message="Please enter all field" if="!(company &amp;&amp; party)" />
+	</action-validate>
 
 	<action-method name="action-gst-method-invoice-get-reference">
 		<call class="com.axelor.gst.web.InvoiceController" method="setReference" />
 	</action-method>
 
-	<action-record name="action-gst-record-get-invoice-details"
-		model="com.axelor.gst.db.Invoice">
-		<field name="invoiceItemsList" expr="eval: invoiceItemsList" />
-		<field name="company" expr="eval: product_company" if="eval :product_company" />
-		<field name="party" expr="eval: product_party" />
-		<field name="partyContact" expr="eval: product_partyContact" />
-		<field name="invoiceAddress" expr="eval: product_invoiceAddress" />
-		<field name="shippingAddress" expr="eval: product_shippingAddress" />
-		<field name="isInvoiceAddress" expr="eval: product_isInvoiceAddress" />
-	</action-record>
+	<action-method name="action-gst-method-get-invoice-details">
+		<call class="com.axelor.gst.web.InvoiceController" method="setInvoiceDetails" />
+	</action-method>
 
 	<action-validate name="action-gst-validate-invoice">
 		<error message="Please enter values"
@@ -136,7 +125,7 @@
 		<field name="statusSelect" expr="eval: __repo__(Invoice).STATUS_DRAFT" />
 		<field name="company" expr="eval: __repo__(Company).all().fetchOne()" />
 	</action-record>
-	
+
 	<action-method name="action-gst-method-product-create-invoices">
 		<call class="com.axelor.gst.web.InvoiceController" method="createInvoice" />
 	</action-method>

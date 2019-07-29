@@ -126,7 +126,7 @@
 		    ]]>
 	    </dataset>
 		<category key="status" type="text" title="Status" />
-		<series key="invoices" groupBy="status" type="bar" title="Amount" />
+		<series key="invoices" groupBy="status" type="line" title="Amount" />
 	</chart>
 
 	<action-record name="action.chart.set.from.to.date.month"

@@ -18,9 +18,14 @@ import com.axelor.gst.db.repo.SequenceRepository;
 import com.axelor.gst.repo.GstSequenceRepository;
 import com.axelor.inject.Beans;
 import com.axelor.meta.schema.actions.ActionView;
+import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 
 public class InvoiceServiceImpl implements InvoiceService {
+	
+	@Inject
+	private InvoiceLineService invoiceLineService;
+
 
 	@Override
 	public Invoice calculateItems(Invoice invoice) {
@@ -219,33 +224,20 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 
 	@Override
-	public Map<String, Object> getInvoiceView(Invoice invoice, List<String> productIdList) {
-		
-		Company company = invoice.getCompany();
-		Party party = invoice.getParty();
-		Contact partyContact = invoice.getPartyContact();
-		Address invoiceAddress = invoice.getInvoiceAddress();
-		Address shippingAddress = invoice.getShippingAddress();
-		Boolean isInvoiceAddress = invoice.getIsInvoiceAddress();
-
+	public Invoice calculateProductItemsList(Invoice invoice, List<String> productIdList) {
 		ProductRepository productRepository = Beans.get(ProductRepository.class);
 		List<Product> productList = productRepository.all().filter("self.id IN ?1", productIdList).fetch();
 		List<InvoiceLine> invoiceItemsList = new ArrayList<>();
 		for (Product p : productList) {
 			InvoiceLine invoiceLine = Beans.get(InvoiceLine.class);
 			invoiceLine.setProduct(p);
-			invoiceLine.setPrice(p.getSalePrice());
-			invoiceLine.setGstRate(p.getGstRate());
+			invoiceLine = invoiceLineService.calculateProductValues(invoiceLine);
+			invoiceLine = invoiceLineService.calculateGstValues(invoice, invoiceLine);
 			invoiceItemsList.add(invoiceLine);
 		}
+		invoice.setInvoiceItemsList(invoiceItemsList);
 		
-		
-		Map<String, Object> invoiceView = ActionView.define("Invoice").model(Invoice.class.getName())
-				.add("form", "invoice-form").context("invoiceItemsList", invoiceItemsList)
-				.context("product_company", company).context("product_party", party)
-				.context("product_partyContact", partyContact).context("product_invoiceAddress", invoiceAddress)
-				.context("product_shippingAddress", shippingAddress)
-				.context("product_isInvoiceAddress", isInvoiceAddress).map();
-		return invoiceView;
+		return invoice;
+	
 	}
 }
