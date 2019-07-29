@@ -38,18 +38,17 @@
 			<field name="statusSelect" widget="NavSelect" colSpan="12" />
 		</panel>
 		<panel>
-			<field name="company"
-				readonlyIf="invoiceItemsList.length > 0 || statusSelect != 1"
+			<field name="company" readonlyIf="invoiceItemsList.length > 0 || statusSelect != 1"
 				canEdit="false" />
 			<field name="reference" />
 			<field name="invoiceDate" readonlyIf="statusSelect != 1" />
-			<field name="party"
-				readonlyIf="invoiceItemsList.length > 0 || statusSelect != 1"
+			<field name="party" readonlyIf="invoiceItemsList.length > 0 || statusSelect != 1"
 				onChange="action-gst-method-invoice-calculate-party-values,action-gst-method-invoice-calculate-shipping-address"
 				canEdit="false" />
 			<field name="partyContact" readonlyIf="statusSelect != 1" />
 			<field name="invoiceAddress"
-				onChange="action-gst-method-invoice-calculate-shipping-address" readonlyIf="statusSelect != 1"/>
+				onChange="action-gst-method-invoice-calculate-shipping-address"
+				readonlyIf="statusSelect != 1" />
 			<field name="shippingAddress" readonlyIf="statusSelect != 1" />
 			<field name="isInvoiceAddress" readonlyIf="statusSelect != 1"
 				onChange="action-gst-method-invoice-calculate-shipping-address" />
@@ -94,7 +93,7 @@
 		canNew="false" canEdit="false" canSave="false" canDelete="false"
 		onNew="action-gst-record-invoice-form-default">
 		<panel>
-			<field name="company" canEdit="false"/>
+			<field name="company" canEdit="false" />
 			<field name="party" readonlyIf="invoiceItemsList.length > 0"
 				onChange="action-gst-method-invoice-calculate-party-values,action-gst-method-invoice-calculate-shipping-address"
 				canEdit="false" />
@@ -133,10 +132,14 @@
 
 	<action-record name="action-gst-record-invoice-form-default"
 		model="com.axelor.gst.db.Invoice">
-		<field name="invoiceDate" expr="eval:__time__" />
+		<field name="invoiceDate" expr="eval:__datetime__" />
 		<field name="statusSelect" expr="eval: __repo__(Invoice).STATUS_DRAFT" />
 		<field name="company" expr="eval: __repo__(Company).all().fetchOne()" />
 	</action-record>
+	
+	<action-method name="action-gst-method-product-create-invoices">
+		<call class="com.axelor.gst.web.InvoiceController" method="createInvoice" />
+	</action-method>
 
 	<action-method name="action-gst-method-invoice-calculate-invoice-items">
 		<call class="com.axelor.gst.web.InvoiceController" method="setItems" />
@@ -183,5 +186,21 @@
 		<param name="id" expr="eval: id" />
 		<param name="AttachmentPath" expr="eval: AttachmentPath" />
 	</action-report>
+
+	<search-filters name="invoice-filters" model="com.axelor.gst.db.Invoice"
+		title="Invoice Filter">
+		<filter title="Draft">
+			<domain>self.statusSelect = '1'</domain>
+		</filter>
+		<filter title="Validated">
+			<domain>self.statusSelect = '2'</domain>
+		</filter>
+		<filter title="Paid">
+			<domain>self.statusSelect = '3'</domain>
+		</filter>
+		<filter title="Cancelled">
+			<domain>self.statusSelect = '4'</domain>
+		</filter>
+	</search-filters>
 
 </object-views>

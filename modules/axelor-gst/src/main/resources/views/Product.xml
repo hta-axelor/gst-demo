@@ -83,8 +83,4 @@
 		<call class="com.axelor.gst.web.ProductController" method="getInvoiceDetails" />
 	</action-method>
 
-	<action-method name="action-gst-method-product-create-invoices">
-		<call class="com.axelor.gst.web.ProductController" method="createInvoice" />
-	</action-method>
-
 </object-views>

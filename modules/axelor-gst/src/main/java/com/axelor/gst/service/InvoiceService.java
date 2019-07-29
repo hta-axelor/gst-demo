@@ -1,5 +1,8 @@
 package com.axelor.gst.service;
 
+import java.util.List;
+import java.util.Map;
+
 import com.axelor.gst.db.Invoice;
 import com.axelor.gst.db.Sequence;
 import com.axelor.gst.db.repo.SequenceRepository;
@@ -11,4 +14,5 @@ public interface InvoiceService {
 	public void computeReference(Sequence sequence,SequenceRepository sequenceRepository);
 	public String createDomainForPartyContact(Invoice invoice);
 	public String createDomainForPartyAddress(Invoice invoice);
+	public Map<String, Object> getInvoiceView(Invoice invoice, List<String> productIdList);
 }

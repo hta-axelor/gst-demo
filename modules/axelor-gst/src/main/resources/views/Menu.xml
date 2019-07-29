@@ -207,6 +207,7 @@
 		<view type="grid" name="invoice-grid" />
 		<view type="form" name="invoice-form" />
 		<view type="kanban" name="invoice-kanban" />
+		<view-param name="search-filters" value="invoice-filters"/>
 	</action-view>
 
 
