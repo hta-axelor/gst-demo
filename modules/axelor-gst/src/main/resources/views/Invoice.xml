@@ -49,7 +49,7 @@
 				canEdit="false" />
 			<field name="partyContact" readonlyIf="statusSelect != 1" />
 			<field name="invoiceAddress"
-				onChange="action-gst-method-invoice-calculate-shipping-address" />
+				onChange="action-gst-method-invoice-calculate-shipping-address" readonlyIf="statusSelect != 1"/>
 			<field name="shippingAddress" readonlyIf="statusSelect != 1" />
 			<field name="isInvoiceAddress" readonlyIf="statusSelect != 1"
 				onChange="action-gst-method-invoice-calculate-shipping-address" />
@@ -61,7 +61,7 @@
 		</panel>
 		<panel-related field="invoiceItemsList" form-view="invoice-line-form"
 			onChange="action-gst-method-invoice-calculate-invoice-items"
-			readonlyIf="statusSelect == 3 &amp;&amp; statusSelect == 4">
+			readonlyIf="statusSelect == 3 || statusSelect == 4">
 			<field name="product" />
 			<field name="hsbn" />
 			<field name="item" />
@@ -154,25 +154,6 @@
 		model="com.axelor.gst.db.Invoice">
 		<field name="statusSelect" expr="eval: InvoiceRepository.STATUS_VALIDATED" />
 	</action-record>
-
-	<action-attrs name="action-gst-attrs-invoice-validate">
-		<attribute for="company" name="readonly"
-			expr="statusSelect == 2 &amp;&amp; statusSelect == 3" />
-		<attribute for="invoiceDate" name="readonly"
-			expr="statusSelect == 2 &amp;&amp; statusSelect == 3" />
-		<attribute for="priority" name="readonly"
-			expr="statusSelect == 2 &amp;&amp; statusSelect == 3" />
-		<attribute for="party" name="readonly"
-			expr="statusSelect == 2 &amp;&amp; statusSelect == 3" />
-		<attribute for="partyContact" name="readonly"
-			expr="statusSelect == 2 &amp;&amp; statusSelect == 3" />
-		<attribute for="invoiceAddress" name="readonly"
-			expr="statusSelect == 2 &amp;&amp; statusSelect == 3" />
-		<attribute for="shippingAddress" name="readonly"
-			expr="statusSelect == 2 &amp;&amp; statusSelect == 3" />
-		<attribute for="isInvoiceAddress" name="readonly"
-			expr="statusSelect == 2 &amp;&amp; statusSelect == 3" />
-	</action-attrs>
 
 	<action-validate name="action-gst-validate-invoice-items-list">
 		<error message="Please insert at least 1 item" if="invoiceItemsList.size == 0" />
