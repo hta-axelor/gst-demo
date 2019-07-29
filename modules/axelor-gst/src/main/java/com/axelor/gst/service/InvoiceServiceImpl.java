@@ -227,12 +227,12 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 
 	@Override
-	public Invoice calculateProductItemsList(Invoice invoice, List<String> productIdList) {
+	public Invoice calculateProductItemsList(Invoice invoice, List<String> productIdList) throws Exception{
 		ProductRepository productRepository = Beans.get(ProductRepository.class);
 		List<Product> productList = productRepository.all().filter("self.id IN ?1", productIdList).fetch();
 		List<InvoiceLine> invoiceItemsList = new ArrayList<>();
 		for (Product p : productList) {
-			InvoiceLine invoiceLine = Beans.get(InvoiceLine.class);
+			InvoiceLine invoiceLine = new InvoiceLine();
 			invoiceLine.setProduct(p);
 			invoiceLine = invoiceLineService.calculateProductValues(invoiceLine);
 			invoiceLine = invoiceLineService.calculateGstValues(invoice, invoiceLine);
@@ -242,5 +242,20 @@ public class InvoiceServiceImpl implements InvoiceService {
 		
 		return invoice;
 	
+	}
+
+	@Override
+	public void checkPartyNullStates(Invoice invoice) throws Exception {
+		 if(!(invoice.getParty().getAddressList().isEmpty())) {
+			 List<Address> addressList = invoice.getParty().getAddressList();
+			 for(Address a : addressList) {
+				 if(a.getState() == null) {
+					 throw new Exception("Please enter state in party");
+				 }
+			 }
+		 }
+		 else {
+			 throw new Exception("Please enter address in party");
+		 }
 	}
 }

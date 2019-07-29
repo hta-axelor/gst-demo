@@ -11,6 +11,7 @@ import com.axelor.gst.db.State;
 import com.axelor.gst.db.repo.CompanyRepository;
 import com.axelor.gst.db.repo.PartyRepository;
 import com.axelor.gst.repo.GstSequenceRepository;
+import com.axelor.gst.service.InvoiceLineService;
 import com.axelor.gst.service.InvoiceService;
 import com.axelor.inject.Beans;
 import com.axelor.meta.schema.actions.ActionView;
@@ -24,6 +25,8 @@ public class InvoiceController {
 
 	@Inject
 	private InvoiceService invoiceService;
+	@Inject
+	private InvoiceLineService invoiceLineService;
 
 	public void setItems(ActionRequest request, ActionResponse response) {
 		Invoice invoice = request.getContext().asType(Invoice.class);
@@ -73,39 +76,20 @@ public class InvoiceController {
 		Invoice invoice = request.getContext().asType(Invoice.class);
 		List<String> productIdList = (List<String>) request.getContext().get("productIds");
 		
-//		Company company = invoice.getCompany();
-//		if (company != null) {
-//			Address companyAddress = (Address) company.getAddress();
-//			if (companyAddress != null) {
-//				State companyState = (State) companyAddress.getState();
-//				if (companyState != null) {
-//					List<Address> partyAddressList = invoice.getParty().getAddressList();
-//					if (!partyAddressList.isEmpty()) {
-//						for(Address)
-//						if (invoiceAddressState != null) {
-//						     invoiceLineService.calculateGstValues(invoice, invoiceLine);
-//						} else {
-//							response.setError("Please enter state in invoice address");
-//						}
-//					} else {
-//						response.setError("Please enter address in party");
-//					}
-//				} else {
-//					response.setError("Please enter state in company");
-//				}
-//			} else {
-//				response.setError("Please enter company address");
-//			}
-//		} else {
-//			response.setError("Please select company");
-//		}
-
+		//Checking Null States in Party
+		try {
+		   invoiceService.checkPartyNullStates(invoice);
+		}
+		catch(Exception e) {
+			response.setError(e.getMessage());
+		}
+		
 		response.setView(ActionView.define("Invoice").model(Invoice.class.getName()).add("form", "invoice-form")
 				.context("companyId", invoice.getCompany().getId()).context("partyId", invoice.getParty().getId())
 				.context("product_ids", productIdList).map());
 	}
 
-	public void setInvoiceDetails(ActionRequest request, ActionResponse response) {
+	public void setInvoiceDetails(ActionRequest request, ActionResponse response) throws Exception{
 		Invoice invoice = request.getContext().asType(Invoice.class);
 
 		List<String> productIdList = (List<String>) request.getContext().get("product_ids");

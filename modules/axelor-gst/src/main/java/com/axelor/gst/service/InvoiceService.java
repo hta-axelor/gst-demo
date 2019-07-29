@@ -14,5 +14,6 @@ public interface InvoiceService {
 	public void computeReference(Sequence sequence);
 	public String createDomainForPartyContact(Invoice invoice);
 	public String createDomainForPartyAddress(Invoice invoice);
-	public Invoice calculateProductItemsList(Invoice invoice, List<String> productIdList);
+	public Invoice calculateProductItemsList(Invoice invoice, List<String> productIdList) throws Exception;
+	public void checkPartyNullStates(Invoice invoice) throws Exception;
 }
