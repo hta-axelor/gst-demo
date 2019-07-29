@@ -48,7 +48,7 @@
 			<field name="partyContact" readonlyIf="statusSelect != 1" />
 			<field name="invoiceAddress"
 				onChange="action-gst-method-invoice-calculate-shipping-address" 
-				readonlyIf="statusSelect != 1" />
+				readonlyIf="invoiceItemsList.length > 0 || statusSelect != 1" />
 			<field name="shippingAddress" readonlyIf="statusSelect != 1" />
 			<field name="isInvoiceAddress" readonlyIf="statusSelect != 1"
 				onChange="action-gst-method-invoice-calculate-shipping-address" />

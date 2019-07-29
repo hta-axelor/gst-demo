@@ -2,10 +2,12 @@ package com.axelor.gst.web;
 
 import java.util.List;
 import com.axelor.app.AppSettings;
+import com.axelor.gst.db.Address;
 import com.axelor.gst.db.Company;
 import com.axelor.gst.db.Invoice;
 import com.axelor.gst.db.Party;
 import com.axelor.gst.db.Sequence;
+import com.axelor.gst.db.State;
 import com.axelor.gst.db.repo.CompanyRepository;
 import com.axelor.gst.db.repo.PartyRepository;
 import com.axelor.gst.repo.GstSequenceRepository;
@@ -58,7 +60,7 @@ public class InvoiceController {
 		String reference = invoice.getReference();
 		if (reference == null) {
 			response.setValue("reference", sequence.getNextNumber());
-			invoiceService.computeReference(sequence, sequenceRepository);
+			invoiceService.computeReference(sequence);
 		}
 	}
 
@@ -70,6 +72,33 @@ public class InvoiceController {
 	public void createInvoice(ActionRequest request, ActionResponse response) {
 		Invoice invoice = request.getContext().asType(Invoice.class);
 		List<String> productIdList = (List<String>) request.getContext().get("productIds");
+		
+//		Company company = invoice.getCompany();
+//		if (company != null) {
+//			Address companyAddress = (Address) company.getAddress();
+//			if (companyAddress != null) {
+//				State companyState = (State) companyAddress.getState();
+//				if (companyState != null) {
+//					List<Address> partyAddressList = invoice.getParty().getAddressList();
+//					if (!partyAddressList.isEmpty()) {
+//						for(Address)
+//						if (invoiceAddressState != null) {
+//						     invoiceLineService.calculateGstValues(invoice, invoiceLine);
+//						} else {
+//							response.setError("Please enter state in invoice address");
+//						}
+//					} else {
+//						response.setError("Please enter address in party");
+//					}
+//				} else {
+//					response.setError("Please enter state in company");
+//				}
+//			} else {
+//				response.setError("Please enter company address");
+//			}
+//		} else {
+//			response.setError("Please select company");
+//		}
 
 		response.setView(ActionView.define("Invoice").model(Invoice.class.getName()).add("form", "invoice-form")
 				.context("companyId", invoice.getCompany().getId()).context("partyId", invoice.getParty().getId())

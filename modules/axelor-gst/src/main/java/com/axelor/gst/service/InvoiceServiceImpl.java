@@ -157,7 +157,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	@Transactional
 	@Override
-	public void computeReference(Sequence sequence, SequenceRepository sequenceRepository) {
+	public void computeReference(Sequence sequence) {
 		String prefix = sequence.getPrefix();
 		String suffix = sequence.getSuffix();
 		Integer padding = sequence.getPadding();
@@ -178,6 +178,9 @@ public class InvoiceServiceImpl implements InvoiceService {
 			nextNumberstr = prefix + incremented + suffix;
 		}
 		sequence.setNextNumber(nextNumberstr);
+		
+		GstSequenceRepository sequenceRepository = Beans.get(GstSequenceRepository.class);
+		
 		sequenceRepository.save(sequence);
 	}
 
