@@ -187,7 +187,7 @@
             </list-property>
             <xml-property name="queryText"><![CDATA[select mf.file_name,pr.code,pr.name,pr.hsbn,pr.sale_price,pr.cost_price
 from gst_product pr
-join meta_file as mf
+left join meta_file as mf
 on pr.image = mf.id
 where pr.id = any (string_to_array(?, ',')::int[])
 order by pr.name;]]></xml-property>
@@ -282,6 +282,12 @@ order by pr.name;]]></xml-property>
                                 <property name="marginLeft">80pt</property>
                                 <property name="height">1.59375in</property>
                                 <property name="width">1.5208333333333333in</property>
+                                <list-property name="visibility">
+                                    <structure>
+                                        <property name="format">all</property>
+                                        <expression name="valueExpr" type="javascript">!row["file_name"]</expression>
+                                    </structure>
+                                </list-property>
                                 <property name="source">file</property>
                                 <expression name="uri" type="javascript">params["AttachmentPath"].value + row["file_name"]</expression>
                             </image>

@@ -1,11 +1,8 @@
 package com.axelor.gst.service;
 
 import java.util.List;
-import java.util.Map;
-
 import com.axelor.gst.db.Invoice;
 import com.axelor.gst.db.Sequence;
-import com.axelor.gst.db.repo.SequenceRepository;
 
 public interface InvoiceService {
 	public Invoice calculateItems(Invoice invoice);
@@ -16,4 +13,5 @@ public interface InvoiceService {
 	public String createDomainForPartyAddress(Invoice invoice);
 	public Invoice calculateProductItemsList(Invoice invoice, List<String> productIdList) throws Exception;
 	public void checkPartyNullStates(Invoice invoice) throws Exception;
+	public void checkCompanyNullStates(Invoice invoice) throws Exception;
 }

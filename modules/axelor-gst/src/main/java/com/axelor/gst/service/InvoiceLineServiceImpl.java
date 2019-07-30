@@ -8,7 +8,6 @@ import com.axelor.gst.db.Invoice;
 import com.axelor.gst.db.InvoiceLine;
 import com.axelor.gst.db.Product;
 import com.axelor.gst.db.State;
-import com.google.common.base.Preconditions;
 
 public class InvoiceLineServiceImpl implements InvoiceLineService {
 
@@ -23,6 +22,7 @@ public class InvoiceLineServiceImpl implements InvoiceLineService {
 			invoiceLine.setPrice(product.getSalePrice());
 		}
 		else {
+			invoiceLine.setItem(null);
 			invoiceLine.setPrice(new BigDecimal(0));
 			invoiceLine.setHsbn(null);
 		}
@@ -43,7 +43,6 @@ public class InvoiceLineServiceImpl implements InvoiceLineService {
 						State invoiceAddressState = invoiceAddress.getState();
 						if (invoiceAddressState != null) {
 							BigDecimal igst = BigDecimal.ZERO;
-							BigDecimal sgst = BigDecimal.ZERO;
 							BigDecimal cgst = BigDecimal.ZERO;
 
 							int qty = invoiceLine.getQty();
@@ -60,12 +59,11 @@ public class InvoiceLineServiceImpl implements InvoiceLineService {
 								igst = netAmount.multiply(gstRate).divide(new BigDecimal(100));
 								invoiceLine.setIgst(igst);
 							} else {
-								sgst = netAmount.multiply(gstRate).divide(new BigDecimal(200));
 								cgst = netAmount.multiply(gstRate).divide(new BigDecimal(200));
-								invoiceLine.setSgst(sgst);
+								invoiceLine.setSgst(cgst);
 								invoiceLine.setCgst(cgst);
 							}
-							BigDecimal grossAmount = netAmount.add(igst).add(sgst).add(cgst);
+							BigDecimal grossAmount = netAmount.add(igst).add(cgst).add(cgst);
 							invoiceLine.setGrossAmount(grossAmount);
 						} else {
 							throw new Exception("Please select Company");

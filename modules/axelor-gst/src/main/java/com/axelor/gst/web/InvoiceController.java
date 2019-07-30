@@ -2,16 +2,13 @@ package com.axelor.gst.web;
 
 import java.util.List;
 import com.axelor.app.AppSettings;
-import com.axelor.gst.db.Address;
 import com.axelor.gst.db.Company;
 import com.axelor.gst.db.Invoice;
 import com.axelor.gst.db.Party;
 import com.axelor.gst.db.Sequence;
-import com.axelor.gst.db.State;
 import com.axelor.gst.db.repo.CompanyRepository;
 import com.axelor.gst.db.repo.PartyRepository;
 import com.axelor.gst.repo.GstSequenceRepository;
-import com.axelor.gst.service.InvoiceLineService;
 import com.axelor.gst.service.InvoiceService;
 import com.axelor.inject.Beans;
 import com.axelor.meta.schema.actions.ActionView;
@@ -25,8 +22,6 @@ public class InvoiceController {
 
 	@Inject
 	private InvoiceService invoiceService;
-	@Inject
-	private InvoiceLineService invoiceLineService;
 
 	public void setItems(ActionRequest request, ActionResponse response) {
 		Invoice invoice = request.getContext().asType(Invoice.class);
@@ -78,10 +73,12 @@ public class InvoiceController {
 		
 		//Checking Null States in Party
 		try {
+		   invoiceService.checkCompanyNullStates(invoice);	
 		   invoiceService.checkPartyNullStates(invoice);
 		}
 		catch(Exception e) {
 			response.setError(e.getMessage());
+			return;
 		}
 		
 		response.setView(ActionView.define("Invoice").model(Invoice.class.getName()).add("form", "invoice-form")

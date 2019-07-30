@@ -33,7 +33,6 @@ public class InvoiceServiceImpl implements InvoiceService {
 		BigDecimal gstRateSum = BigDecimal.ZERO;
 		BigDecimal igstSum = BigDecimal.ZERO;
 		BigDecimal cgstSum = BigDecimal.ZERO;
-		BigDecimal sgstSum = BigDecimal.ZERO;
 		BigDecimal grossAmount = BigDecimal.ZERO;
 
 		List<InvoiceLine> invoiceLineList = invoice.getInvoiceItemsList();
@@ -42,13 +41,12 @@ public class InvoiceServiceImpl implements InvoiceService {
 			gstRateSum = gstRateSum.add(il.getGstRate());
 			igstSum = igstSum.add(il.getIgst());
 			cgstSum = cgstSum.add(il.getCgst());
-			sgstSum = sgstSum.add(il.getSgst());
 			grossAmount = grossAmount.add(il.getGrossAmount());
 		}
 		invoice.setNetAmount(netAmountSum);
 		invoice.setNetIgst(igstSum);
 		invoice.setNetCgst(cgstSum);
-		invoice.setNetSgst(sgstSum);
+		invoice.setNetSgst(cgstSum);
 		invoice.setGrossAmount(grossAmount);
 
 		return invoice;
@@ -256,6 +254,18 @@ public class InvoiceServiceImpl implements InvoiceService {
 		 }
 		 else {
 			 throw new Exception("Please enter address in party");
+		 }
+	}
+
+	@Override
+	public void checkCompanyNullStates(Invoice invoice) throws Exception {
+		 if(invoice.getCompany().getAddress() != null) {
+			 if(invoice.getCompany().getAddress().getState() == null) {
+				 throw new Exception("Please enter state in company address");
+			 }
+		 }
+		 else {
+			 throw new Exception("Please enter address in company");
 		 }
 	}
 }
