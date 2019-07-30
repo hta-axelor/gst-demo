@@ -31,7 +31,7 @@
 		onNew="action-gst-record-invoice-form-default,action-gst-method-get-invoice-details">
 		<toolbar>
 			<button name="invoice_form_print_btn" icon="fa-print" title="Report"
-				onClick="action-gst-validate-invoice,save,action-gst-method-invoice-set-attachment-path,action-gst-report-invoice"
+				onClick="save,action-gst-method-invoice-set-attachment-path,action-gst-report-invoice"
 				showIf="id" />
 		</toolbar>
 		<panel>
@@ -75,7 +75,7 @@
 		</panel-related>
 		<panel sidebar="true">
 			<button name="validateBtn" title="Validate"
-				onClick="action-gst-validate-invoice,action-gst-method-invoice-get-reference,action-gst-record-invoice-validate,save"
+				onClick="save,action-gst-method-invoice-get-reference,action-gst-record-invoice-validate,save"
 				hidden="true" showIf="statusSelect == 1" />
 			<button name="paidBtn" title="Paid"
 				onClick="action-gst-validate-invoice-items-list,action-gst-record-invoice-paid,save"
@@ -113,11 +113,6 @@
 	<action-method name="action-gst-method-get-invoice-details">
 		<call class="com.axelor.gst.web.InvoiceController" method="setInvoiceDetails" />
 	</action-method>
-
-	<action-validate name="action-gst-validate-invoice">
-		<error message="Please enter values"
-			if="!(company &amp;&amp; party &amp;&amp; invoiceAddress)" />
-	</action-validate>
 
 	<action-record name="action-gst-record-invoice-form-default"
 		model="com.axelor.gst.db.Invoice">

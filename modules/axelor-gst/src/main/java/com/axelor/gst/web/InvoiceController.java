@@ -89,6 +89,7 @@ public class InvoiceController {
 	public void setInvoiceDetails(ActionRequest request, ActionResponse response) throws Exception{
 		Invoice invoice = request.getContext().asType(Invoice.class);
 
+		//Getting product id list from Product grid
 		List<String> productIdList = (List<String>) request.getContext().get("product_ids");
 
 		CompanyRepository companyRepository = Beans.get(CompanyRepository.class);
@@ -98,7 +99,11 @@ public class InvoiceController {
 		Party party = partyRepository.all().filter("self.id = ?1", request.getContext().get("partyId")).fetchOne();
 
 		invoice.setIsInvoiceAddress(true);
-		invoice.setCompany(company);
+		
+		//checking default company is selected
+		if(company!=null) {
+		   invoice.setCompany(company);
+		}
 		invoice.setParty(party);
 
 		invoice = invoiceService.calculatePartyValues(invoice);
