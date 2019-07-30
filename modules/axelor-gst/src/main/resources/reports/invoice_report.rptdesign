@@ -1164,12 +1164,12 @@ inv.id = ?]]></xml-property>
     </data-sets>
     <page-setup>
         <simple-master-page name="Simple MasterPage" id="2">
-            <property name="headerHeight">1.5in</property>
+            <property name="headerHeight">1.2in</property>
             <page-header>
                 <image id="87">
-                    <property name="marginLeft">230pt</property>
-                    <property name="height">1.5in</property>
-                    <property name="width">1.5in</property>
+                    <property name="marginLeft">40pt</property>
+                    <property name="height">1in</property>
+                    <property name="width">1in</property>
                     <property name="dataSet">Company Logo</property>
                     <list-property name="visibility">
                         <structure>
@@ -1193,6 +1193,12 @@ inv.id = ?]]></xml-property>
                 <text-data id="89">
                     <property name="paddingLeft">200pt</property>
                     <property name="dataSet">Company N&amp;A</property>
+                    <list-property name="visibility">
+                        <structure>
+                            <property name="format">all</property>
+                            <expression name="valueExpr" type="javascript">!(row["name"] || row["full_address"])</expression>
+                        </structure>
+                    </list-property>
                     <list-property name="boundDataColumns">
                         <structure>
                             <property name="name">name</property>

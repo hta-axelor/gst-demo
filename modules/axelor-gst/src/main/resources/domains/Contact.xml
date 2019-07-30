@@ -12,6 +12,13 @@
     <string name="secondaryEmail" title="Secondary Email"/>
     <string name="primaryPhone" title="Primary Phone"/>
     <string name="secondaryPhone" title="Secondary Phone"/>
+    
+    <extra-code><![CDATA[
+		  public static final String CONTACT_PRIMARY = "1";
+		  public static final String CONTACT_SECONDARY = "2";
+		  public static final String CONTACT_OTHERS = "3";
+		]]></extra-code>
+    
   </entity>
 
 </domain-models>

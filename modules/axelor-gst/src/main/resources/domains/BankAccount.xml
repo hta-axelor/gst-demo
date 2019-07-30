@@ -13,8 +13,8 @@
     <string name="address"/>
     
     <extra-code><![CDATA[
-		  public static final int BANK_ACCOUNT_CURRENT = 1;
-		  public static final int BANK_ACCOUNT_SAVINGS = 2;
+		  public static final String BANK_ACCOUNT_CURRENT = "1";
+		  public static final String BANK_ACCOUNT_SAVINGS = "2";
 		]]></extra-code>
 		
   </entity>

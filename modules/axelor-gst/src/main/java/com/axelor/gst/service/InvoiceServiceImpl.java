@@ -13,6 +13,8 @@ import com.axelor.gst.db.InvoiceLine;
 import com.axelor.gst.db.Party;
 import com.axelor.gst.db.Product;
 import com.axelor.gst.db.Sequence;
+import com.axelor.gst.db.repo.AddressRepository;
+import com.axelor.gst.db.repo.ContactRepository;
 import com.axelor.gst.db.repo.ProductRepository;
 import com.axelor.gst.db.repo.SequenceRepository;
 import com.axelor.gst.repo.GstSequenceRepository;
@@ -60,7 +62,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		if (!partyContactList.isEmpty()) {
 			for (Contact c : partyContactList) {
 				// finding primary contact
-				if (c.getType().equals("1")) {
+				if (c.getType().equals(ContactRepository.CONTACT_PRIMARY)) {
 					invoice.setPartyContact(c);
 					break;
 				}
@@ -80,13 +82,13 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 			for (Address a : partyAddressList) {
 				// finding default type address
-				if (a.getType().equals("1")) {
+				if (a.getType().equals(AddressRepository.ADDRESS_DEFAULT)) {
 					defaultAddress = a;
 					// finding invoice type address
-				} else if (a.getType().equals("2")) {
+				} else if (a.getType().equals(AddressRepository.ADDRESS_INVOICE)) {
 					invoiceAddress = a;
 					// finding shipping type address
-				} else if (a.getType().equals("3")) {
+				} else if (a.getType().equals(AddressRepository.ADDRESS_SHIPPING)) {
 					shippingAddress = a;
 				}
 			}
@@ -133,10 +135,10 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 			for (Address a : partyAddressList) {
 				// finding default type address
-				if (a.getType().equals("1")) {
+				if (a.getType().equals(AddressRepository.ADDRESS_DEFAULT)) {
 					defaultAddress = a;
 					// finding shipping type address
-				} else if (a.getType().equals("3")) {
+				} else if (a.getType().equals(AddressRepository.ADDRESS_SHIPPING)) {
 					shippingAddress = a;
 				}
 			}
