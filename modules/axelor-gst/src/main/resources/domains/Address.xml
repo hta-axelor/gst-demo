@@ -17,18 +17,7 @@
 		<string name="fullAddress" namecolumn="true"
 			search="line1,line2,city,state,country,pincode"> 
   		  <![CDATA[       
- 			   if (line2 == null && pincode == null) {
- 			      return line1  + "," + city.getName() + "," + state.getName() + "," +  country.getName();
- 			   }
- 			   else if(line2 == null){
- 			      return line1  + "," + city.getName() + "," + state.getName() + "," +  country.getName() + "-" + pincode;
- 			   }
- 			   else if(pincode == null){
- 				  return line1  + " " + line2 + "," + city.getName() + "," + state.getName() + "," +  country.getName();
- 			   }
- 			   else{
-  			      return line1 + " " + line2 + "," + city.getName() + "," + state.getName() + "," + country.getName() + "-" + pincode;
-  			   }
+  		       return line1 + (line2 == null ? "" :"," +line2) + " "+ city.getName() + (state == null ? "" :"," +state.getName()) + "," + country.getName() + (pincode == null ? "" :"-" + pincode);
           ]]></string>
 
 		<extra-code><![CDATA[
@@ -39,7 +28,5 @@
 		]]></extra-code>
 
 	</entity>
-
-
 
 </domain-models>

@@ -17,7 +17,7 @@
 	<form name="invoice-line-form" title="Invoice Line"
 		model="com.axelor.gst.db.InvoiceLine">
 		<panel>
-			<field name="product" onChange="action-gst-method-invoice-line-product-calculate-values,action-gst-method-invoice-line-calculate-all-gst" />
+			<field name="product" onChange="action-gst-method-invoice-line-calculate-all-items" />
 			<field name="hsbn" />
 			<field name="item" />
 			<field name="qty"
@@ -32,13 +32,9 @@
 			<field name="grossAmount" />
 		</panel>
 	</form>
-
-	<action-method name="action-gst-method-invoice-line-product-calculate-values">
-		<call class="com.axelor.gst.web.InvoiceLineController" method="setProductValues" />
-	</action-method>
 	
-	<action-method name="action-gst-method-invoice-line-calculate-all-gst">
-		<call class="com.axelor.gst.web.InvoiceLineController" method="setAllGst" />
+	<action-method name="action-gst-method-invoice-line-calculate-all-items">
+		<call class="com.axelor.gst.web.InvoiceLineController" method="setAllItems" />
 	</action-method>
 
 </object-views>

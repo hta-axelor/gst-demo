@@ -9,8 +9,6 @@ public interface InvoiceService {
 	public Invoice calculatePartyValues(Invoice invoice);
 	public Invoice getShippingAddress(Invoice invoice);
 	public void computeReference(Sequence sequence);
-	public String createDomainForPartyContact(Invoice invoice);
-	public String createDomainForPartyAddress(Invoice invoice);
 	public Invoice calculateProductItemsList(Invoice invoice, List<String> productIdList) throws Exception;
 	public void checkPartyNullStates(Invoice invoice) throws Exception;
 	public void checkCompanyNullStates(Invoice invoice) throws Exception;

@@ -24,10 +24,9 @@ import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 
 public class InvoiceServiceImpl implements InvoiceService {
-	
+
 	@Inject
 	private InvoiceLineService invoiceLineService;
-
 
 	@Override
 	public Invoice calculateItems(Invoice invoice) {
@@ -56,72 +55,34 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	@Override
 	public Invoice calculatePartyValues(Invoice invoice) {
-
+		
+		invoice.setPartyContact(null);
+		invoice.setInvoiceAddress(null);
+		invoice.setShippingAddress(null);
+		
+		// No Party found
+		if (invoice.getParty() == null) {
+			return invoice;
+		}
+		
 		List<Contact> partyContactList = getPartyContactList(invoice);
 
-		if (!partyContactList.isEmpty()) {
-			for (Contact c : partyContactList) {
-				// finding primary contact
-				if (c.getType().equals(ContactRepository.CONTACT_PRIMARY)) {
-					invoice.setPartyContact(c);
-					break;
-				}
+		for (Contact contact : partyContactList) {
+			// finding primary contact
+			if (contact.getType().equals(ContactRepository.CONTACT_PRIMARY)) {
+				invoice.setPartyContact(contact);
+				break;
 			}
-			// no primary contact found
-			if (invoice.getPartyContact() == null)
-				invoice.setPartyContact(partyContactList.get(0));
-		} else {
-			invoice.setPartyContact(null);
 		}
 
 		List<Address> partyAddressList = getPartyAddressList(invoice);
-		Address defaultAddress = null;
-		Address invoiceAddress = null;
-		Address shippingAddress = null;
-		if (!partyAddressList.isEmpty()) {
-
-			for (Address a : partyAddressList) {
-				// finding default type address
-				if (a.getType().equals(AddressRepository.ADDRESS_DEFAULT)) {
-					defaultAddress = a;
-					// finding invoice type address
-				} else if (a.getType().equals(AddressRepository.ADDRESS_INVOICE)) {
-					invoiceAddress = a;
-					// finding shipping type address
-				} else if (a.getType().equals(AddressRepository.ADDRESS_SHIPPING)) {
-					shippingAddress = a;
-				}
+		for (Address address : partyAddressList) {
+			// finding invoice address && default address
+			if (address.getType().equals(AddressRepository.ADDRESS_INVOICE)
+					|| address.getType().equals(AddressRepository.ADDRESS_DEFAULT)) {
+				invoice.setInvoiceAddress(address);
+				break;
 			}
-			// Setting invoice address as invoice address
-			if (invoiceAddress != null) {
-				invoice.setInvoiceAddress(invoiceAddress);
-			}
-
-			// Setting default address as invoice address
-			else if (defaultAddress != null) {
-				invoice.setInvoiceAddress(defaultAddress);
-			}
-
-			// Setting shipping address as invoice address
-			else if (shippingAddress != null) {
-				invoice.setInvoiceAddress(shippingAddress);
-			}
-
-			else {
-				invoice.setInvoiceAddress(partyAddressList.get(0));
-			}
-
-		}
-		// No address found for party
-		else {
-			invoice.setInvoiceAddress(null);
-			invoice.setShippingAddress(null);
-		}
-		// No Party found
-		if (invoice.getParty() == null) {
-			invoice.setPartyContact(null);
-			invoice.setInvoiceAddress(null);
-			invoice.setShippingAddress(null);
 		}
 		return invoice;
 	}
@@ -129,28 +90,19 @@ public class InvoiceServiceImpl implements InvoiceService {
 	@Override
 	public Invoice getShippingAddress(Invoice invoice) {
 		List<Address> partyAddressList = getPartyAddressList(invoice);
-		Address defaultAddress = null;
-		Address shippingAddress = null;
-		if (!partyAddressList.isEmpty()) {
 
-			for (Address a : partyAddressList) {
-				// finding default type address
-				if (a.getType().equals(AddressRepository.ADDRESS_DEFAULT)) {
-					defaultAddress = a;
-					// finding shipping type address
-				} else if (a.getType().equals(AddressRepository.ADDRESS_SHIPPING)) {
-					shippingAddress = a;
-				}
-			}
-		}
+		// Checking Flag
 		if (invoice.getIsInvoiceAddress()) {
 			invoice.setShippingAddress(invoice.getInvoiceAddress());
-		} else if (shippingAddress != null) {
-			invoice.setShippingAddress(shippingAddress);
-		} else if (defaultAddress != null) {
-			invoice.setShippingAddress(defaultAddress);
 		} else {
-			invoice.setShippingAddress(null);
+			for (Address address : partyAddressList) {
+				// finding shipping address && default address
+				if (address.getType().equals(AddressRepository.ADDRESS_SHIPPING)
+						|| address.getType().equals(AddressRepository.ADDRESS_DEFAULT)) {
+					invoice.setShippingAddress(address);
+					break;
+				}
+			}
 		}
 		return invoice;
 	}
@@ -172,42 +124,13 @@ public class InvoiceServiceImpl implements InvoiceService {
 				Integer.parseInt(previousNumberStr) + 1);
 
 		// merging
-		if (suffix == null) {
-			nextNumberstr = prefix + incremented;
-		} else {
-			nextNumberstr = prefix + incremented + suffix;
-		}
+		nextNumberstr = prefix + incremented + (suffix == null ? "" : suffix);
+
 		sequence.setNextNumber(nextNumberstr);
-		
+
 		GstSequenceRepository sequenceRepository = Beans.get(GstSequenceRepository.class);
-		
+
 		sequenceRepository.save(sequence);
-	}
-
-	@Override
-	public String createDomainForPartyContact(Invoice invoice) {
-		String domain = null;
-		List<Contact> partyContactList = getPartyContactList(invoice);
-		if (!partyContactList.isEmpty()) {
-			domain = "self.id IN " + partyContactList.stream().map(i -> i.getId()).collect(Collectors.toList())
-					.toString().replace('[', '(').replace(']', ')');
-		} else {
-			domain = "self.id = null";
-		}
-		return domain;
-	}
-
-	@Override
-	public String createDomainForPartyAddress(Invoice invoice) {
-		String domain = null;
-		List<Address> partyAddressList = getPartyAddressList(invoice);
-		if (!partyAddressList.isEmpty()) {
-			domain = "self.id IN " + partyAddressList.stream().map(i -> i.getId()).collect(Collectors.toList())
-					.toString().replace('[', '(').replace(']', ')');
-		} else {
-			domain = "self.id = null";
-		}
-		return domain;
 	}
 
 	public List<Contact> getPartyContactList(Invoice invoice) {
@@ -227,47 +150,54 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 
 	@Override
-	public Invoice calculateProductItemsList(Invoice invoice, List<String> productIdList) throws Exception{
+	public Invoice calculateProductItemsList(Invoice invoice, List<String> productIdList) throws Exception {
 		ProductRepository productRepository = Beans.get(ProductRepository.class);
 		List<Product> productList = productRepository.all().filter("self.id IN ?1", productIdList).fetch();
 		List<InvoiceLine> invoiceItemsList = new ArrayList<>();
-		for (Product p : productList) {
+		for (Product product : productList) {
 			InvoiceLine invoiceLine = new InvoiceLine();
-			invoiceLine.setProduct(p);
-			invoiceLine = invoiceLineService.calculateProductValues(invoiceLine);
-			invoiceLine = invoiceLineService.calculateGstValues(invoice, invoiceLine);
+			invoiceLine.setProduct(product);
+			invoiceLine = invoiceLineService.calculateAllItems(invoice, invoiceLine);
 			invoiceItemsList.add(invoiceLine);
 		}
 		invoice.setInvoiceItemsList(invoiceItemsList);
-		
+
 		return invoice;
-	
+
 	}
 
 	@Override
 	public void checkPartyNullStates(Invoice invoice) throws Exception {
-		 if(!(invoice.getParty().getAddressList().isEmpty())) {
-			 List<Address> addressList = invoice.getParty().getAddressList();
-			 for(Address a : addressList) {
-				 if(a.getState() == null) {
-					 throw new Exception("Please enter state in party");
-				 }
-			 }
-		 }
-		 else {
-			 throw new Exception("Please enter address in party");
-		 }
+		Boolean isShippingOrDefault = false;
+		
+		if (invoice.getParty().getAddressList().isEmpty()) {
+			throw new Exception("Please enter address in party");
+		}
+
+		List<Address> addressList = invoice.getParty().getAddressList();
+		for (Address address : addressList) {
+			if (address.getType().equals(AddressRepository.ADDRESS_SHIPPING)
+					|| address.getType().equals(AddressRepository.ADDRESS_DEFAULT)) {
+				isShippingOrDefault = true;
+				if(address.getState() == null) {
+					throw new Exception("Please enter state in party address");
+				}
+			}
+		}
+		if(!isShippingOrDefault) {
+			throw new Exception("Please enter shipping address or invoice address");
+		}
 	}
 
 	@Override
 	public void checkCompanyNullStates(Invoice invoice) throws Exception {
-		 if(invoice.getCompany().getAddress() != null) {
-			 if(invoice.getCompany().getAddress().getState() == null) {
-				 throw new Exception("Please enter state in company address");
-			 }
-		 }
-		 else {
-			 throw new Exception("Please enter address in company");
-		 }
+		if (invoice.getCompany().getAddress() == null) {
+			throw new Exception("Please enter address in company");
+		}
+
+		if (invoice.getCompany().getAddress().getState() == null) {
+			throw new Exception("Please enter state in company address");
+		}
+
 	}
 }

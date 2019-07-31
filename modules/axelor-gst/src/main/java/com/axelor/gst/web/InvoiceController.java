@@ -2,6 +2,7 @@ package com.axelor.gst.web;
 
 import java.util.List;
 import com.axelor.app.AppSettings;
+import com.axelor.gst.db.Address;
 import com.axelor.gst.db.Company;
 import com.axelor.gst.db.Invoice;
 import com.axelor.gst.db.Party;
@@ -33,11 +34,6 @@ public class InvoiceController {
 		Invoice invoice = request.getContext().asType(Invoice.class);
 		invoice = invoiceService.calculatePartyValues(invoice);
 		response.setValues(invoice);
-		String contactDomain = invoiceService.createDomainForPartyContact(invoice);
-		String addressDomain = invoiceService.createDomainForPartyAddress(invoice);
-		response.setAttr("partyContact", "domain", contactDomain);
-		response.setAttr("invoiceAddress", "domain", addressDomain);
-		response.setAttr("shippingAddress", "domain", addressDomain);
 	}
 
 	public void setShippingAddress(ActionRequest request, ActionResponse response) {
@@ -71,58 +67,42 @@ public class InvoiceController {
 		Invoice invoice = request.getContext().asType(Invoice.class);
 		List<String> productIdList = (List<String>) request.getContext().get("productIds");
 		
-		//Checking Null States in Party
+		// Checking Null States in Party
 		try {
-		   invoiceService.checkCompanyNullStates(invoice);	
-		   invoiceService.checkPartyNullStates(invoice);
-		}
-		catch(Exception e) {
+			invoiceService.checkCompanyNullStates(invoice);
+			invoiceService.checkPartyNullStates(invoice);
+		} catch (Exception e) {
 			response.setError(e.getMessage());
 			return;
 		}
-		
 		response.setView(ActionView.define("Invoice").model(Invoice.class.getName()).add("form", "invoice-form")
 				.context("companyId", invoice.getCompany().getId()).context("partyId", invoice.getParty().getId())
 				.context("product_ids", productIdList).map());
 	}
 
-	public void setInvoiceDetails(ActionRequest request, ActionResponse response) throws Exception{
+	public void setInvoiceDetails(ActionRequest request, ActionResponse response) throws Exception {
 		Invoice invoice = request.getContext().asType(Invoice.class);
-
-		//Getting product id list from Product grid
+		
+		// Getting product id list from Product grid
 		List<String> productIdList = (List<String>) request.getContext().get("product_ids");
-
 		CompanyRepository companyRepository = Beans.get(CompanyRepository.class);
-		Company company = companyRepository.all().filter("self.id = ?1", request.getContext().get("companyId")).fetchOne();
-
+		Company company = companyRepository.all().filter("self.id = ?1", request.getContext().get("companyId"))
+				.fetchOne();
 		PartyRepository partyRepository = Beans.get(PartyRepository.class);
 		Party party = partyRepository.all().filter("self.id = ?1", request.getContext().get("partyId")).fetchOne();
-
 		invoice.setIsInvoiceAddress(true);
-		
-		//checking default company is selected
-		if(company!=null) {
-		   invoice.setCompany(company);
+
+		// checking default company is selected
+		if (company != null) {
+			invoice.setCompany(company);
 		}
 		invoice.setParty(party);
-
 		invoice = invoiceService.calculatePartyValues(invoice);
 		invoice = invoiceService.getShippingAddress(invoice);
-
 		invoice = invoiceService.calculateProductItemsList(invoice, productIdList);
-			
 		response.setValue("invoiceItemsList", request.getContext().get("product_invoice_items"));
-		
 		invoiceService.calculateItems(invoice);
-		
-		String contactDomain = invoiceService.createDomainForPartyContact(invoice);
-		String addressDomain = invoiceService.createDomainForPartyAddress(invoice);
-		response.setAttr("partyContact", "domain", contactDomain);
-		response.setAttr("invoiceAddress", "domain", addressDomain);
-		response.setAttr("shippingAddress", "domain", addressDomain);
-
 		response.setValues(invoice);
-
 	}
 
 }

@@ -12,7 +12,7 @@
 		<string name="reference" title="Reference" readonly="true" />
 		<datetime name="invoiceDate" title="Date" />
 		<integer name="priority" />
-		<many-to-one name="party" ref="Party" required="true" />
+		<many-to-one name="party" ref="Party" required="true"/>
 		<many-to-one name="partyContact" ref="Contact" />
 		<many-to-one name="invoiceAddress" ref="Address" required="true" />
 		<many-to-one name="shippingAddress" ref="Address" />

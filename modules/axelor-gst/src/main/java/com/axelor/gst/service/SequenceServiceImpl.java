@@ -11,12 +11,9 @@ public class SequenceServiceImpl implements SequenceService {
 		String suffix = sequence.getSuffix();
 		Integer padding = sequence.getPadding();
 		String paddedStr = String.format("%0" + padding + "d", 0);
-        if(suffix == null) {
-        	nextNumber = prefix + paddedStr;
-        }
-        else {
-        	nextNumber = prefix + paddedStr + suffix;
-        }
+		
+		nextNumber = prefix + paddedStr + (suffix == null ? "" : suffix);
+       
         sequence.setNextNumber(nextNumber);
 		return sequence;
 	}

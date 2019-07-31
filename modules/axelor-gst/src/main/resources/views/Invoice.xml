@@ -45,10 +45,8 @@
 			<field name="party" readonlyIf="invoiceItemsList.length > 0 || statusSelect != 1"
 				onChange="action-gst-method-invoice-calculate-party-values,action-gst-method-invoice-calculate-shipping-address"
 				canEdit="false" />
-			<field name="partyContact" readonlyIf="statusSelect != 1" />
-			<field name="invoiceAddress"
-				onChange="action-gst-method-invoice-calculate-shipping-address" 
-				readonlyIf="invoiceItemsList.length > 0 || statusSelect != 1" />
+			<field name="partyContact" readonlyIf="statusSelect != 1" onSelect="action-gst-attrs-create-domain-for-party-contact"/>
+			<field name="invoiceAddress" onChange="action-gst-method-invoice-calculate-shipping-address" onSelect="action-gst-attrs-create-domain-for-invoice-address" readonlyIf="invoiceItemsList.length > 0 || statusSelect != 1" />
 			<field name="shippingAddress" readonlyIf="statusSelect != 1" />
 			<field name="isInvoiceAddress" readonlyIf="statusSelect != 1"
 				onChange="action-gst-method-invoice-calculate-shipping-address" />
@@ -57,10 +55,11 @@
 			<field name="netCgst" />
 			<field name="netSgst" />
 			<field name="grossAmount" />
+			<field name="company.address.state" hidden="true"/>
+			<field name="invoiceAddress.state" hidden="true"/>
 		</panel>
-		<panel-related field="invoiceItemsList" form-view="invoice-line-form"
-			onChange="action-gst-method-invoice-calculate-invoice-items"
-			readonlyIf="statusSelect == 3 || statusSelect == 4">
+		<panel-related field="invoiceItemsList" form-view="invoice-line-form" onChange="action-gst-method-invoice-calculate-invoice-items"
+			readonlyIf="statusSelect == 3 || statusSelect == 4" showIf="company.address.state != null &amp;&amp; invoiceAddress.state != null">
 			<field name="product" />
 			<field name="hsbn" />
 			<field name="item" />
@@ -170,6 +169,16 @@
 		<param name="id" expr="eval: id" />
 		<param name="AttachmentPath" expr="eval: AttachmentPath" />
 	</action-report>
+	
+	<action-attrs name="action-gst-attrs-create-domain-for-party-contact">
+	 <attribute for="partyContact" name="domain" expr="eval: &quot;self = null&quot;"/>
+	 <attribute for="partyContact" name="domain"  expr="eval: &quot;self.id IN (${party.contactList?.collect{it.id}.join(',')})&quot;" if="!party.contactList.isEmpty()"/>
+	</action-attrs>
+	
+	<action-attrs name="action-gst-attrs-create-domain-for-invoice-address">
+	  <attribute for="invoiceAddress" name="domain" expr="eval: &quot;self = null&quot;"/>
+	  <attribute for="invoiceAddress" name="domain"  expr="eval: &quot;self.id IN (${party.addressList?.collect{it.id}.join(',')})&quot;" if="!party.addressList.isEmpty()"/>
+	</action-attrs>
 
 	<search-filters name="invoice-filters" model="com.axelor.gst.db.Invoice"
 		title="Invoice Filter">

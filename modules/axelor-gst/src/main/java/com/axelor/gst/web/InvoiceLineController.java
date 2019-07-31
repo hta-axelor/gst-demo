@@ -14,21 +14,10 @@ public class InvoiceLineController {
 	@Inject
 	private InvoiceLineService invoiceLineService;
 
-	public void setProductValues(ActionRequest request, ActionResponse response) {
-		InvoiceLine invoiceLine = request.getContext().asType(InvoiceLine.class);
-		invoiceLine = invoiceLineService.calculateProductValues(invoiceLine);
-		response.setValues(invoiceLine);
-	}
-
-	public void setAllGst(ActionRequest request, ActionResponse response) {
+	public void setAllItems(ActionRequest request, ActionResponse response) {
 		Invoice invoice = request.getContext().getParent().asType(Invoice.class);
 		InvoiceLine invoiceLine = request.getContext().asType(InvoiceLine.class);
-		try {
-		invoiceLineService.calculateGstValues(invoice, invoiceLine);
-		}
-		catch(Exception e) {
-			response.setError(e.getMessage());
-		}
+		invoiceLineService.calculateAllItems(invoice, invoiceLine);
 		response.setValues(invoiceLine);
 	}
 }

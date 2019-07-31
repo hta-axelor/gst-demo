@@ -24,11 +24,8 @@ public class PartyServiceImpl implements PartyService {
 				Integer.parseInt(previousNumberStr) + 1);
 
 		// merging
-		if (suffix == null) {
-			nextNumberstr = prefix + incremented;
-		} else {
-			nextNumberstr = prefix + incremented + suffix;
-		}
+		nextNumberstr = prefix + incremented + (suffix == null ? "" : suffix);
+		
 		sequence.setNextNumber(nextNumberstr);
 		sequenceRepository.save(sequence);
 	}
