@@ -4,13 +4,11 @@
 	xsi:schemaLocation="http://axelor.com/xml/ns/object-views
   http://axelor.com/xml/ns/object-views/object-views_5.1.xsd">
 
-	<menuitem name="gst-root" title="GST" />
+	<menuitem name="gst-root" title="GST" icon="fa-book"/>
 
 	<!-- DashBoard -->
-	<menuitem name="gst-root" title="GST" />
-
-	<menuitem name="gst-root-dashboard" title="Dashboard" parent="gst-root"
-		action="gst.root.dashboard" />
+	<menuitem name="gst-root-dashboard" title="Dashboard" parent="gst-root" icon="fa-bar-chart"
+		action="gst.root.dashboard"/>
 
 	<action-view name="gst.root.dashboard" title="Dashboard">
 		<view type="dashboard" name="gst.dashboard" />
@@ -18,7 +16,7 @@
 
 
 	<!-- Company -->
-	<menuitem name="gst-root-company" title="Company" parent="gst-root" />
+	<menuitem name="gst-root-company" title="Company" parent="gst-root" icon="fa-building" />
 
 	<menuitem name="gst-root-company-company" title="Company"
 		parent="gst-root-company" action="gst.root.company.company" />
@@ -51,7 +49,7 @@
 
 
 	<!-- Party -->
-	<menuitem name="gst-root-party" title="Party" parent="gst-root" />
+	<menuitem name="gst-root-party" title="Party" parent="gst-root" icon="fa-handshake-o"/>
 
 	<menuitem name="gst-root-party-party" title="Party" parent="gst-root-party"
 		action="gst.root.party.party" />
@@ -116,7 +114,7 @@
 
 
 	<!-- Product -->
-	<menuitem name="gst-root-product" title="Product" parent="gst-root" />
+	<menuitem name="gst-root-product" title="Product" parent="gst-root" icon="fa-shopping-cart"/>
 
 
 	<menuitem name="gst-root-product-product" title="Product"
@@ -143,7 +141,7 @@
 
 
 	<!-- Invoice -->
-	<menuitem name="gst-root-invoice" title="Invoice" parent="gst-root" />
+	<menuitem name="gst-root-invoice" title="Invoice" parent="gst-root" icon="fa-list"/>
 
 	<menuitem name="gst-root-invoice-create-invoice" title="Create Invoice"
 		parent="gst-root-invoice" action="gst.root.invoice.create.invoice"
