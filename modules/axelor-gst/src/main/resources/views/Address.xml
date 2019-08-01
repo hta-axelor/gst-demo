@@ -2,8 +2,8 @@
 <object-views xmlns="http://axelor.com/xml/ns/object-views"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://axelor.com/xml/ns/object-views
-  http://axelor.com/xml/ns/object-views/object-views_5.1.xsd">
-
+  http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
+  
 	<grid name="address-grid" title="Address"
 		model="com.axelor.gst.db.Address">
 		<field name="type" />
@@ -29,7 +29,7 @@
 	</form>
 
 	<action-record name="action-gst-record-address-city-default-values"
-		model="com.axelor.gst.db.Address">
+		model="com.axelor.gst.db.Address">	
 		<field name="state" expr="eval: city?.state" />
 		<field name="country" expr="eval: city?.state?.country" />
 	</action-record>

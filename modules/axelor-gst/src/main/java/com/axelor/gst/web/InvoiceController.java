@@ -80,29 +80,30 @@ public class InvoiceController {
 				.context("product_ids", productIdList).map());
 	}
 
-	public void setInvoiceDetails(ActionRequest request, ActionResponse response){
+	public void setInvoiceDetails(ActionRequest request, ActionResponse response) {
 		Invoice invoice = request.getContext().asType(Invoice.class);
+		if (request.getContext().get("product_ids") != null) {
+			// Getting product id list from Product grid
+			List<String> productIdList = (List<String>) request.getContext().get("product_ids");
+			CompanyRepository companyRepository = Beans.get(CompanyRepository.class);
+			Company company = companyRepository.all().filter("self.id = ?1", request.getContext().get("companyId"))
+					.fetchOne();
+			PartyRepository partyRepository = Beans.get(PartyRepository.class);
+			Party party = partyRepository.all().filter("self.id = ?1", request.getContext().get("partyId")).fetchOne();
+			invoice.setIsInvoiceAddress(true);
 
-		// Getting product id list from Product grid
-		List<String> productIdList = (List<String>) request.getContext().get("product_ids");
-		CompanyRepository companyRepository = Beans.get(CompanyRepository.class);
-		Company company = companyRepository.all().filter("self.id = ?1", request.getContext().get("companyId"))
-				.fetchOne();
-		PartyRepository partyRepository = Beans.get(PartyRepository.class);
-		Party party = partyRepository.all().filter("self.id = ?1", request.getContext().get("partyId")).fetchOne();
-		invoice.setIsInvoiceAddress(true);
-
-		// checking default company is selected
-		if (company != null) {
-			invoice.setCompany(company);
+			// checking default company is selected
+			if (company != null) {
+				invoice.setCompany(company);
+			}
+			invoice.setParty(party);
+			invoice = invoiceService.calculatePartyValues(invoice);
+			invoice = invoiceService.getShippingAddress(invoice);
+			invoice = invoiceService.calculateProductItemsList(invoice, productIdList);
+			response.setValue("invoiceItemsList", request.getContext().get("product_invoice_items"));
+			invoiceService.calculateItems(invoice);
+			response.setValues(invoice);
 		}
-		invoice.setParty(party);
-		invoice = invoiceService.calculatePartyValues(invoice);
-		invoice = invoiceService.getShippingAddress(invoice);
-		invoice = invoiceService.calculateProductItemsList(invoice, productIdList);
-		response.setValue("invoiceItemsList", request.getContext().get("product_invoice_items"));
-		invoiceService.calculateItems(invoice);
-		response.setValues(invoice);
 	}
 
 }

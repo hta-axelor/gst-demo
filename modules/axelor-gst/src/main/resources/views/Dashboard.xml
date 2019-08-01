@@ -2,8 +2,8 @@
 <object-views xmlns="http://axelor.com/xml/ns/object-views"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://axelor.com/xml/ns/object-views
-  http://axelor.com/xml/ns/object-views/object-views_5.1.xsd">
-
+  http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
+  
 	<dashboard name="gst.dashboard" title="GST Dashboard" width="large">	
      	<dashlet action="dashlet.unpaid.invoice.per.customer" height="350" />
 		<dashlet action="dashlet.paid.invoice.per.category.per.product"

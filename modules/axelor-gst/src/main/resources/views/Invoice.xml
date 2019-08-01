@@ -2,7 +2,7 @@
 <object-views xmlns="http://axelor.com/xml/ns/object-views"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://axelor.com/xml/ns/object-views
-  http://axelor.com/xml/ns/object-views/object-views_5.1.xsd">
+  http://axelor.com/xml/ns/object-views/object-views_5.0.xsd">
 
 	<grid name="invoice-grid" title="Invoice" model="com.axelor.gst.db.Invoice"
 		onNew="action-gst-record-invoice-form-default">
@@ -93,8 +93,7 @@
 	</form>
 
 	<form name="invoice-form-popup" title="Invoice" model="com.axelor.gst.db.Invoice"
-		canNew="false" canEdit="false" canSave="false" canDelete="false"
-		onNew="action-gst-record-invoice-form-default">
+		canNew="false" canEdit="false" canSave="false" canDelete="false">
 		<panel>
 			<field name="company" canEdit="false" />
 			<field name="party" canEdit="false" />
