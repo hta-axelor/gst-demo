@@ -8,6 +8,8 @@ import com.axelor.gst.db.Company;
 import com.axelor.gst.db.Contact;
 import com.axelor.gst.db.Invoice;
 import com.axelor.gst.db.Party;
+import com.axelor.gst.service.InvoiceService;
+import com.axelor.inject.Beans;
 import com.axelor.meta.schema.actions.ActionView;
 import com.axelor.rpc.ActionRequest;
 import com.axelor.rpc.ActionResponse;

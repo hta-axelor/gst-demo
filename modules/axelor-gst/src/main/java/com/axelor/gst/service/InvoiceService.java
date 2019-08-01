@@ -9,7 +9,7 @@ public interface InvoiceService {
 	public Invoice calculatePartyValues(Invoice invoice);
 	public Invoice getShippingAddress(Invoice invoice);
 	public void computeReference(Sequence sequence);
-	public Invoice calculateProductItemsList(Invoice invoice, List<String> productIdList) throws Exception;
+	public Invoice calculateProductItemsList(Invoice invoice, List<String> productIdList);
 	public void checkPartyNullStates(Invoice invoice) throws Exception;
 	public void checkCompanyNullStates(Invoice invoice) throws Exception;
 }

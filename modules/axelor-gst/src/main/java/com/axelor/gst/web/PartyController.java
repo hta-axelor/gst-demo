@@ -24,6 +24,6 @@ public class PartyController {
 			return;
 		}
 		response.setValue("reference", sequence.getNextNumber());
-		partyService.computeReference(sequence, sequenceRepository);
+		partyService.computeReference(sequence);
 	}
 }

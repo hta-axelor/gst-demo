@@ -55,16 +55,16 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	@Override
 	public Invoice calculatePartyValues(Invoice invoice) {
-		
+
 		invoice.setPartyContact(null);
 		invoice.setInvoiceAddress(null);
 		invoice.setShippingAddress(null);
-		
+
 		// No Party found
 		if (invoice.getParty() == null) {
 			return invoice;
 		}
-		
+
 		List<Contact> partyContactList = getPartyContactList(invoice);
 
 		for (Contact contact : partyContactList) {
@@ -89,6 +89,9 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	@Override
 	public Invoice getShippingAddress(Invoice invoice) {
+		
+		invoice.setShippingAddress(null);
+		
 		List<Address> partyAddressList = getPartyAddressList(invoice);
 
 		// Checking Flag
@@ -150,13 +153,18 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 
 	@Override
-	public Invoice calculateProductItemsList(Invoice invoice, List<String> productIdList) throws Exception {
-		ProductRepository productRepository = Beans.get(ProductRepository.class);
-		List<Product> productList = productRepository.all().filter("self.id IN ?1", productIdList).fetch();
+	public Invoice calculateProductItemsList(Invoice invoice, List<String> productIdList) {
+		List<Product> productList = Beans.get(ProductRepository.class).all().filter("self.id IN ?1", productIdList)
+				.fetch();
 		List<InvoiceLine> invoiceItemsList = new ArrayList<>();
 		for (Product product : productList) {
 			InvoiceLine invoiceLine = new InvoiceLine();
 			invoiceLine.setProduct(product);
+			invoiceLine.setHsbn(product.getHsbn()==null ? "" : product.getHsbn());
+			invoiceLine.setItem(product.getCategory()==null ? product.getCode() : product.getCategory().getName() + " :[" + product.getCode() + "]");
+			invoiceLine.setPrice(product.getSalePrice());
+			invoiceLine.setGstRate(product.getGstRate());
+
 			invoiceLine = invoiceLineService.calculateAllItems(invoice, invoiceLine);
 			invoiceItemsList.add(invoiceLine);
 		}
@@ -169,7 +177,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 	@Override
 	public void checkPartyNullStates(Invoice invoice) throws Exception {
 		Boolean isShippingOrDefault = false;
-		
+
 		if (invoice.getParty().getAddressList().isEmpty()) {
 			throw new Exception("Please enter address in party");
 		}
@@ -179,12 +187,12 @@ public class InvoiceServiceImpl implements InvoiceService {
 			if (address.getType().equals(AddressRepository.ADDRESS_SHIPPING)
 					|| address.getType().equals(AddressRepository.ADDRESS_DEFAULT)) {
 				isShippingOrDefault = true;
-				if(address.getState() == null) {
+				if (address.getState() == null) {
 					throw new Exception("Please enter state in party address");
 				}
 			}
 		}
-		if(!isShippingOrDefault) {
+		if (!isShippingOrDefault) {
 			throw new Exception("Please enter shipping address or invoice address");
 		}
 	}

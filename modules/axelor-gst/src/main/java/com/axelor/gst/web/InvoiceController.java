@@ -66,7 +66,7 @@ public class InvoiceController {
 	public void createInvoice(ActionRequest request, ActionResponse response) {
 		Invoice invoice = request.getContext().asType(Invoice.class);
 		List<String> productIdList = (List<String>) request.getContext().get("productIds");
-		
+
 		// Checking Null States in Party
 		try {
 			invoiceService.checkCompanyNullStates(invoice);
@@ -80,9 +80,9 @@ public class InvoiceController {
 				.context("product_ids", productIdList).map());
 	}
 
-	public void setInvoiceDetails(ActionRequest request, ActionResponse response) throws Exception {
+	public void setInvoiceDetails(ActionRequest request, ActionResponse response){
 		Invoice invoice = request.getContext().asType(Invoice.class);
-		
+
 		// Getting product id list from Product grid
 		List<String> productIdList = (List<String>) request.getContext().get("product_ids");
 		CompanyRepository companyRepository = Beans.get(CompanyRepository.class);

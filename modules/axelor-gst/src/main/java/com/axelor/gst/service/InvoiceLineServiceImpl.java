@@ -13,19 +13,7 @@ public class InvoiceLineServiceImpl implements InvoiceLineService {
 
 	@Override
 	public InvoiceLine calculateAllItems(Invoice invoice, InvoiceLine invoiceLine){
-		
-		Product product = invoiceLine.getProduct();
 
-		if (product != null) {
-			invoiceLine.setHsbn(product.getHsbn());
-			invoiceLine.setGstRate(product.getGstRate());
-			invoiceLine.setItem(product.getCategory().getName() + " :[" + product.getCode() + "]");
-			invoiceLine.setPrice(product.getSalePrice());
-		} else {
-			invoiceLine.setItem(null);
-			invoiceLine.setPrice(new BigDecimal(0));
-			invoiceLine.setHsbn(null);
-		}
 		BigDecimal igst = BigDecimal.ZERO;
 		BigDecimal cgst = BigDecimal.ZERO;
 
