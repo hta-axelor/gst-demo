@@ -7,7 +7,7 @@
   <module name="gst" package="com.axelor.gst.db"/>
 
   <entity name="Country"> 
-    <string name="name" required="true"/>
+    <string name="name" title="Name" required="true"/>
   </entity>
 
 </domain-models>

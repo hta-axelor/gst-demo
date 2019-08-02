@@ -52,8 +52,7 @@
 
 		<template><![CDATA[
  		<div class="span4 card-image">
- 		  <img ng-if="hasImage" ng-src="{{$image(null, 'image')}}">
-          <img ng-if="!hasImage" src="img/user.png">
+          <img ng-src="{{$image(null, 'image')}}">
    		   <strong>{{name}}</strong>
          </div>
          <div class="span8">

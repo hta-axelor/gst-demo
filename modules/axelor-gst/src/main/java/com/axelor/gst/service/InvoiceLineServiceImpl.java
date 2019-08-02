@@ -29,15 +29,24 @@ public class InvoiceLineServiceImpl implements InvoiceLineService {
 
 		if (companyState.equals(invoiceAddressState)) {
 			igst = netAmount.multiply(gstRate).divide(new BigDecimal(100));
-			invoiceLine.setIgst(igst);
 		} else {
 			cgst = netAmount.multiply(gstRate).divide(new BigDecimal(200));
-			invoiceLine.setSgst(cgst);
-			invoiceLine.setCgst(cgst);
 		}
+		invoiceLine.setIgst(igst);
+		invoiceLine.setSgst(cgst);
+		invoiceLine.setCgst(cgst);
 		BigDecimal grossAmount = netAmount.add(igst).add(cgst).add(cgst);
 		invoiceLine.setGrossAmount(grossAmount);
 		return invoiceLine;
 	}
 
+	@Override
+	public InvoiceLine setProductItems(InvoiceLine invoiceLine, Product product) {
+		invoiceLine.setProduct(product);
+		invoiceLine.setHsbn(product.getHsbn()==null ? "" : product.getHsbn());
+		invoiceLine.setItem(product.getCategory()==null ? product.getCode() : product.getCategory().getName() + " :[" + product.getCode() + "]");
+		invoiceLine.setPrice(product.getSalePrice());
+		invoiceLine.setGstRate(product.getGstRate());
+		return invoiceLine;
+	}
 }

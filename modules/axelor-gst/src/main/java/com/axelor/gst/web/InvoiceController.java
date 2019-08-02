@@ -11,6 +11,7 @@ import com.axelor.gst.db.repo.CompanyRepository;
 import com.axelor.gst.db.repo.PartyRepository;
 import com.axelor.gst.repo.GstSequenceRepository;
 import com.axelor.gst.service.InvoiceService;
+import com.axelor.gst.service.SequenceService;
 import com.axelor.inject.Beans;
 import com.axelor.meta.schema.actions.ActionView;
 import com.axelor.rpc.ActionRequest;
@@ -23,6 +24,9 @@ public class InvoiceController {
 
 	@Inject
 	private InvoiceService invoiceService;
+	
+	@Inject
+	private SequenceService sequenceService;
 
 	public void setItems(ActionRequest request, ActionResponse response) {
 		Invoice invoice = request.getContext().asType(Invoice.class);
@@ -32,7 +36,7 @@ public class InvoiceController {
 
 	public void setPartyValues(ActionRequest request, ActionResponse response) {
 		Invoice invoice = request.getContext().asType(Invoice.class);
-		invoice = invoiceService.calculatePartyValues(invoice);
+		invoice = invoiceService.setPartyValues(invoice);
 		response.setValues(invoice);
 	}
 
@@ -54,7 +58,7 @@ public class InvoiceController {
 		String reference = invoice.getReference();
 		if (reference == null) {
 			response.setValue("reference", sequence.getNextNumber());
-			invoiceService.computeReference(sequence);
+			sequenceService.computeReference(sequence);
 		}
 	}
 
@@ -82,28 +86,28 @@ public class InvoiceController {
 
 	public void setInvoiceDetails(ActionRequest request, ActionResponse response) {
 		Invoice invoice = request.getContext().asType(Invoice.class);
-		if (request.getContext().get("product_ids") != null) {
-			// Getting product id list from Product grid
-			List<String> productIdList = (List<String>) request.getContext().get("product_ids");
-			CompanyRepository companyRepository = Beans.get(CompanyRepository.class);
-			Company company = companyRepository.all().filter("self.id = ?1", request.getContext().get("companyId"))
-					.fetchOne();
-			PartyRepository partyRepository = Beans.get(PartyRepository.class);
-			Party party = partyRepository.all().filter("self.id = ?1", request.getContext().get("partyId")).fetchOne();
-			invoice.setIsInvoiceAddress(true);
+		
+		// Getting product id list from Product grid
+		List<String> productIdList = (List<String>) request.getContext().get("product_ids");
+		Integer companyId = (Integer) request.getContext().get("companyId");
+		Integer partyId = (Integer) request.getContext().get("partyId");
+		
+		Company company = Beans.get(CompanyRepository.class).find(companyId.longValue());
+		Party party = Beans.get(PartyRepository.class).find(partyId.longValue());
+		
+		invoice.setIsInvoiceAddress(true);
 
-			// checking default company is selected
-			if (company != null) {
-				invoice.setCompany(company);
-			}
-			invoice.setParty(party);
-			invoice = invoiceService.calculatePartyValues(invoice);
-			invoice = invoiceService.getShippingAddress(invoice);
-			invoice = invoiceService.calculateProductItemsList(invoice, productIdList);
-			response.setValue("invoiceItemsList", request.getContext().get("product_invoice_items"));
-			invoiceService.calculateItems(invoice);
-			response.setValues(invoice);
+		// checking default company is selected
+		if (company != null) {
+			invoice.setCompany(company);
 		}
+		invoice.setParty(party);
+		invoice = invoiceService.setPartyValues(invoice);
+		invoice = invoiceService.getShippingAddress(invoice);
+		invoice = invoiceService.calculateProductItemsList(invoice, productIdList);
+		response.setValue("invoiceItemsList", request.getContext().get("product_invoice_items"));
+		invoiceService.calculateItems(invoice);
+		response.setValues(invoice);
 	}
 
 }

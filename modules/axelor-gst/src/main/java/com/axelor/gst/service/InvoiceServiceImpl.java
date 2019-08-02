@@ -54,7 +54,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 
 	@Override
-	public Invoice calculatePartyValues(Invoice invoice) {
+	public Invoice setPartyValues(Invoice invoice) {
 
 		invoice.setPartyContact(null);
 		invoice.setInvoiceAddress(null);
@@ -110,33 +110,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		return invoice;
 	}
 
-	@Transactional
-	@Override
-	public void computeReference(Sequence sequence) {
-		String prefix = sequence.getPrefix();
-		String suffix = sequence.getSuffix();
-		Integer padding = sequence.getPadding();
-		String previousNumberStr = sequence.getNextNumber();
-		String nextNumberstr;
-
-		// splitting
-		previousNumberStr = sequence.getNextNumber().substring(prefix.length(), prefix.length() + padding);
-
-		// increment
-		String incremented = String.format("%0" + previousNumberStr.length() + "d",
-				Integer.parseInt(previousNumberStr) + 1);
-
-		// merging
-		nextNumberstr = prefix + incremented + (suffix == null ? "" : suffix);
-
-		sequence.setNextNumber(nextNumberstr);
-
-		GstSequenceRepository sequenceRepository = Beans.get(GstSequenceRepository.class);
-
-		sequenceRepository.save(sequence);
-	}
-
-	public List<Contact> getPartyContactList(Invoice invoice) {
+	protected List<Contact> getPartyContactList(Invoice invoice) {
 		List<Contact> partyContactList = new ArrayList<>();
 		if (invoice.getParty() != null) {
 			partyContactList = invoice.getParty().getContactList();
@@ -144,7 +118,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		return partyContactList;
 	}
 
-	public List<Address> getPartyAddressList(Invoice invoice) {
+	protected List<Address> getPartyAddressList(Invoice invoice) {
 		List<Address> partyAddressList = new ArrayList<>();
 		if (invoice.getParty() != null) {
 			partyAddressList = invoice.getParty().getAddressList();
@@ -159,12 +133,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		List<InvoiceLine> invoiceItemsList = new ArrayList<>();
 		for (Product product : productList) {
 			InvoiceLine invoiceLine = new InvoiceLine();
-			invoiceLine.setProduct(product);
-			invoiceLine.setHsbn(product.getHsbn()==null ? "" : product.getHsbn());
-			invoiceLine.setItem(product.getCategory()==null ? product.getCode() : product.getCategory().getName() + " :[" + product.getCode() + "]");
-			invoiceLine.setPrice(product.getSalePrice());
-			invoiceLine.setGstRate(product.getGstRate());
-
+			invoiceLine = invoiceLineService.setProductItems(invoiceLine,product);
 			invoiceLine = invoiceLineService.calculateAllItems(invoice, invoiceLine);
 			invoiceItemsList.add(invoiceLine);
 		}

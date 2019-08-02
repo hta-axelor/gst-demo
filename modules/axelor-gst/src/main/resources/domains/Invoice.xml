@@ -9,14 +9,14 @@
 	<entity name="Invoice">
 		<string name="statusSelect" title="Status" readonly="true"
 			selection="gst.invoice.status.selection" default="1" />
-		<many-to-one name="company" ref="Company" required="true" />
+		<many-to-one name="company" title="Company" ref="Company" required="true" />
 		<string name="reference" title="Reference" readonly="true" />
 		<datetime name="invoiceDate" title="Date" />
-		<integer name="priority" />
-		<many-to-one name="party" ref="Party" required="true"/>
-		<many-to-one name="partyContact" ref="Contact" />
-		<many-to-one name="invoiceAddress" ref="Address" required="true" />
-		<many-to-one name="shippingAddress" ref="Address" />
+		<integer name="priority" title="Priority"/>
+		<many-to-one name="party" title="Party" ref="Party" required="true"/>
+		<many-to-one name="partyContact" title="Party Contact" ref="Contact" />
+		<many-to-one name="invoiceAddress" title="Invoice Address" ref="Address" required="true" />
+		<many-to-one name="shippingAddress" title="Shipping Address" ref="Address" />
 		<boolean name="isInvoiceAddress" title="Use invoice address as shipping"
 			default="true" />
 		<decimal name="netAmount" title="Net Amount" readonly="true" />
@@ -24,7 +24,7 @@
 		<decimal name="netCgst" title="Net CGST" readonly="true" />
 		<decimal name="netSgst" title="Net SGST" readonly="true" />
 		<decimal name="grossAmount" title="Gross Amount" readonly="true" />
-		<one-to-many name="invoiceItemsList" ref="InvoiceLine" />
+		<one-to-many name="invoiceItemsList" title="Invoice Items" ref="InvoiceLine" />
 
 		<extra-code><![CDATA[
 		  public static final String STATUS_DRAFT = "1";

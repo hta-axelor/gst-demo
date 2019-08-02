@@ -131,8 +131,8 @@
 
 	<action-record name="action.chart.set.from.to.date.month"
 		model="com.axelor.gst.db.Invoice">
-		<field name="fromDate" expr="eval:__date__.withDayOfYear(1)" />
-		<field name="toDate" expr="eval: (__date__.isLeapYear()) ? __date__.withDayOfYear(366): __date__.withDayOfYear(365)" />
+		<field name="fromDate" expr="eval:__date__.withDayOfMonth(1)" />
+		<field name="toDate" expr="eval: __date__" />
 	</action-record>
 
 </object-views>

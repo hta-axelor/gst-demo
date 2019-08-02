@@ -9,12 +9,12 @@
   <entity name="Party"> 
     <string name="reference" title="Reference" readonly="true"/>
     <string name="name" title="Name" required="true"/>
-    <string name="type" selection="gst.party.type.selection" default="1" required="true"/>
+    <string name="type" title="Type" selection="gst.party.type.selection" default="1" required="true"/>
     <boolean name="isCustomer" title="Customer"/>
     <boolean name="isSupplier" title="Supplier"/>
     <string name="gstin" title="GSTIN"/>
-    <one-to-many name="contactList" ref="Contact"/>
-    <one-to-many name="addressList" ref="Address"/>
+    <one-to-many name="contactList" title="Contacts" ref="Contact"/>
+    <one-to-many name="addressList" title="Addresses" ref="Address"/>
     
     <extra-code><![CDATA[
 		  public static final String PARTY_COMPANY = "1";

@@ -21,14 +21,13 @@
 
 		<template><![CDATA[
 		    <h4>{{reference}}</h4>
-  			<h4>{{statusSelect}}</h4>
   			<h4>{{company.name}}</h4>
   			<h4>{{party.name}}</h4>
   		]]></template>
 	</kanban>
 
 	<form name="invoice-form" title="Invoice" model="com.axelor.gst.db.Invoice"
-		onNew="action-gst-record-invoice-form-default,action-gst-method-get-invoice-details">
+		onNew="action-gst-invoice-group-form-on-new">
 		<toolbar>
 			<button name="invoice_form_print_btn" icon="fa-print" title="Report"
 				onClick="action-gst-invoice-group-print-btn-on-click" showIf="id" />
@@ -36,46 +35,32 @@
 		<panel>
 			<field name="statusSelect" widget="NavSelect" colSpan="12" />
 		</panel>
-		<panel>
-			<field name="company" readonlyIf="invoiceItemsList.length > 0 || statusSelect != 1"
+		<panel name="mainPanel" readonlyIf="statusSelect != 1">
+			<field name="company" readonlyIf="invoiceItemsList.length > 0"
 				canEdit="false" />
 			<field name="reference" />
-			<field name="invoiceDate" readonlyIf="statusSelect != 1" />
-			<field name="party" readonlyIf="invoiceItemsList.length > 0 || statusSelect != 1"
+			<field name="invoiceDate" />
+			<field name="party" readonlyIf="invoiceItemsList.length > 0"
 				onChange="action-gst-invoice-group-party-on-change" canEdit="false" />
-			<field name="partyContact" readonlyIf="statusSelect != 1"
+			<field name="partyContact"
 				onSelect="action-gst-attrs-invoice-create-domain-for-party-contact" />
 			<field name="invoiceAddress"
 				onChange="action-gst-method-invoice-calculate-shipping-address"
-				onSelect="action-gst-attrs-invoice-create-domain-for-invoice-address"
-				readonlyIf="invoiceItemsList.length > 0 || statusSelect != 1" />
+				onSelect="action-gst-attrs-invoice-create-domain-for-address"
+				readonlyIf="invoiceItemsList.length > 0" />
 			<field name="shippingAddress" hideIf="isInvoiceAddress"
-				readonlyIf="statusSelect != 1" onSelect="action-gst-method-invoice-calculate-shipping-address" />
-			<field name="isInvoiceAddress" readonlyIf="statusSelect != 1"
+				onSelect="action-gst-attrs-invoice-create-domain-for-address" />
+			<field name="isInvoiceAddress"
 				onChange="action-gst-method-invoice-calculate-shipping-address" />
-			<field name="netAmount" />
-			<field name="netIgst" />
-			<field name="netCgst" />
-			<field name="netSgst" />
-			<field name="grossAmount" />
 			<field name="company.address.state" hidden="true" />
 			<field name="invoiceAddress.state" hidden="true" />
 		</panel>
+
 		<panel-related field="invoiceItemsList" form-view="invoice-line-form"
 			onChange="action-gst-method-invoice-calculate-invoice-items"
 			readonlyIf="statusSelect == 3 || statusSelect == 4" showIf="company.address.state &amp;&amp; invoiceAddress.state">
-			<field name="product" />
-			<field name="hsbn" />
-			<field name="item" />
-			<field name="qty" />
-			<field name="price" />
-			<field name="netAmount" />
-			<field name="gstRate" />
-			<field name="igst" />
-			<field name="cgst" />
-			<field name="sgst" />
-			<field name="grossAmount" />
 		</panel-related>
+		
 		<panel sidebar="true">
 			<button name="validateBtn" title="Validate"
 				onClick="save,action-gst-method-invoice-get-reference,action-gst-record-invoice-validate,save"
@@ -90,6 +75,14 @@
 				onClick="action-gst-record-invoice-draft,save" hidden="true"
 				showIf="statusSelect == 4" />
 		</panel>
+		
+		<panel sidebar="true">
+			<field name="netAmount" colSpan="6" />
+			<field name="netIgst" colSpan="6" />
+			<field name="netCgst" colSpan="6" />
+			<field name="netSgst" colSpan="6" />
+			<field name="grossAmount"/>
+		</panel>
 	</form>
 
 	<form name="invoice-form-popup" title="Invoice" model="com.axelor.gst.db.Invoice"
@@ -103,6 +96,11 @@
 				onClick="action-gst-invoice-group-show-invoice-btn-on-click" />
 		</panel>
 	</form>
+
+	<action-group name="action-gst-invoice-group-form-on-new">
+		<action name="action-gst-record-invoice-form-default" />
+		<action name="action-gst-method-get-invoice-details" if="eval: product_ids" />
+	</action-group>
 
 	<action-group name="action-gst-invoice-group-party-on-change">
 		<action name="action-gst-method-invoice-calculate-party-values" />
@@ -199,20 +197,10 @@
 			if="party &amp;&amp; !party?.contactList?.isEmpty()" />
 	</action-attrs>
 
-	<action-attrs
-		name="action-gst-attrs-invoice-create-domain-for-invoice-address">
-		<attribute for="invoiceAddress" name="domain"
+	<action-attrs name="action-gst-attrs-invoice-create-domain-for-address">
+		<attribute for="invoiceAddress,shippingAddress" name="domain"
 			expr="eval: &quot;self = null&quot;" />
-		<attribute for="invoiceAddress" name="domain"
-			expr="eval: &quot;self.id IN (${party.addressList?.collect{it.id}.join(',')})&quot;"
-			if="!party.addressList.isEmpty()" />
-	</action-attrs>
-
-	<action-attrs
-		name="action-gst-attrs-invoice-create-domain-for-shipping-address">
-		<attribute for="shippingAddress" name="domain"
-			expr="eval: &quot;self = null&quot;" />
-		<attribute for="shippingAddress" name="domain"
+		<attribute for="invoiceAddress,shippingAddress" name="domain"
 			expr="eval: &quot;self.id IN (${party.addressList?.collect{it.id}.join(',')})&quot;"
 			if="!party.addressList.isEmpty()" />
 	</action-attrs>

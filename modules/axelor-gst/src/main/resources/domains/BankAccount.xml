@@ -7,11 +7,11 @@
   <module name="gst" package="com.axelor.gst.db"/>
 
   <entity name="BankAccount"> 
-    <string name="bank" required="true"/>
-    <string name="type" selection="gst.bank.account.type.selection" default="1"/>
+    <string name="bank" title="Bank" required="true"/>
+    <string name="type" title="Type" selection="gst.bank.account.type.selection" default="1"/>
     <string name="ifsc" title="IFSC" required="true"/>
     <string name="accountNo" title="Account No." required="true"/>
-    <string name="address"/>
+    <string name="address" title="Address"/>
     
     <extra-code><![CDATA[
 		  public static final String BANK_ACCOUNT_CURRENT = "1";

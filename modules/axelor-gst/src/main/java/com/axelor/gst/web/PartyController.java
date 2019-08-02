@@ -2,7 +2,7 @@ package com.axelor.gst.web;
 
 import com.axelor.gst.db.Sequence;
 import com.axelor.gst.repo.GstSequenceRepository;
-import com.axelor.gst.service.PartyService;
+import com.axelor.gst.service.SequenceService;
 import com.axelor.inject.Beans;
 import com.axelor.rpc.ActionRequest;
 import com.axelor.rpc.ActionResponse;
@@ -13,7 +13,7 @@ import com.google.inject.Singleton;
 public class PartyController {
 
 	@Inject
-	private PartyService partyService;
+	private SequenceService sequenceService;
 
 	public void setReference(ActionRequest request, ActionResponse response) {
 		GstSequenceRepository sequenceRepository = Beans.get(GstSequenceRepository.class);
@@ -24,6 +24,6 @@ public class PartyController {
 			return;
 		}
 		response.setValue("reference", sequence.getNextNumber());
-		partyService.computeReference(sequence);
+		sequenceService.computeReference(sequence);
 	}
 }
