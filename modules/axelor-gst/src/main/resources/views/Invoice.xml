@@ -202,7 +202,7 @@
 			expr="eval: &quot;self = null&quot;" />
 		<attribute for="invoiceAddress,shippingAddress" name="domain"
 			expr="eval: &quot;self.id IN (${party.addressList?.collect{it.id}.join(',')})&quot;"
-			if="!party.addressList.isEmpty()" />
+			if="party &amp;&amp; !party.addressList.isEmpty()" />
 	</action-attrs>
 
 	<search-filters name="invoice-filters" model="com.axelor.gst.db.Invoice"

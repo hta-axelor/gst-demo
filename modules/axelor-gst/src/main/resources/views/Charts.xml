@@ -110,13 +110,13 @@
 		<series key="amount" groupBy="status" type="bar" title="Amount" />
 	</chart>
 
-	<chart name="chart.no.of.invoice.per.status.line" title="No. of invoices per status"
+<chart name="chart.no.of.invoice.per.status.line" title="No. of invoices per status"
 		onInit="action.chart.set.from.to.date.month" stacked="true">
 		<dataset type="sql">
 		    <![CDATA[
                 SELECT 
                    count(_invoice.id) AS invoices,
-                   selection.title AS status
+                   selection.value AS status
                 FROM
                    gst_invoice as _invoice
                 JOIN
@@ -128,7 +128,7 @@
 		<category key="status" type="text" title="Status" />
 		<series key="invoices" groupBy="status" type="line" title="Amount" />
 	</chart>
-
+	
 	<action-record name="action.chart.set.from.to.date.month"
 		model="com.axelor.gst.db.Invoice">
 		<field name="fromDate" expr="eval:__date__.withDayOfMonth(1)" />

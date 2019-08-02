@@ -28,9 +28,9 @@ public class InvoiceLineServiceImpl implements InvoiceLineService {
 		State invoiceAddressState = invoice.getInvoiceAddress().getState();
 
 		if (companyState.equals(invoiceAddressState)) {
-			igst = netAmount.multiply(gstRate).divide(new BigDecimal(100));
+			cgst = netAmount.multiply(gstRate).divide(new BigDecimal(200));	
 		} else {
-			cgst = netAmount.multiply(gstRate).divide(new BigDecimal(200));
+			igst = netAmount.multiply(gstRate).divide(new BigDecimal(100));
 		}
 		invoiceLine.setIgst(igst);
 		invoiceLine.setSgst(cgst);

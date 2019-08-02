@@ -13,8 +13,7 @@ public class GstSequenceRepository extends SequenceRepository{
 	@Override
 	public Sequence save(Sequence entity) {
 		if(entity.getNextNumber() == null) {
-		   Sequence nextSequence = sequenceService.computeNextSequence(entity);
-		   return super.save(nextSequence);
+		   entity  = sequenceService.computeNextSequence(entity);
 	    }
 		return super.save(entity);
 	}

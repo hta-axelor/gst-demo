@@ -19,9 +19,9 @@
 			<field name="reference" />
 			<field name="name" />
 			<field name="type" />
+			<field name="gstin" />
 			<field name="isCustomer" />
 			<field name="isSupplier" />
-			<field name="gstin" />
 		</panel>
 
 		<panel>
