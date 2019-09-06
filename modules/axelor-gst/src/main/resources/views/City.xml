@@ -20,7 +20,7 @@
 	</form>
 
 	<action-record name="action-gst-record-address-city-country-default"
-		model="com.axelor.gst.db.Invoice">
+		model="com.axelor.gst.db.City">
 		<field name="country" expr="eval: state?.country" />
 	</action-record>
 </object-views>

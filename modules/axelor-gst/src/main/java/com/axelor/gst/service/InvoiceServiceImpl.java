@@ -31,7 +31,6 @@ public class InvoiceServiceImpl implements InvoiceService {
 	@Override
 	public Invoice calculateItems(Invoice invoice) {
 		BigDecimal netAmountSum = BigDecimal.ZERO;
-		BigDecimal gstRateSum = BigDecimal.ZERO;
 		BigDecimal igstSum = BigDecimal.ZERO;
 		BigDecimal cgstSum = BigDecimal.ZERO;
 		BigDecimal grossAmount = BigDecimal.ZERO;
@@ -39,7 +38,6 @@ public class InvoiceServiceImpl implements InvoiceService {
 		List<InvoiceLine> invoiceLineList = invoice.getInvoiceItemsList();
 		for (InvoiceLine il : invoiceLineList) {
 			netAmountSum = netAmountSum.add(il.getNetAmount());
-			gstRateSum = gstRateSum.add(il.getGstRate());
 			igstSum = igstSum.add(il.getIgst());
 			cgstSum = cgstSum.add(il.getCgst());
 			grossAmount = grossAmount.add(il.getGrossAmount());

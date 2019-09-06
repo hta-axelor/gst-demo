@@ -97,11 +97,13 @@
 		    <![CDATA[
                 SELECT 
                    SUM(_invoice.gross_amount) AS amount,
-                   selection.title AS status  
+                   selection_value.title AS status  
                 FROM
                    gst_invoice as _invoice
+                JOIN   
+                   meta_select AS selection ON selection.name = 'gst.invoice.status.selection'
                 JOIN
-                   meta_select_item AS selection ON selection.select_id = 19 AND selection.value = _invoice.status_select     
+                   meta_select_item AS selection_value ON selection_value.select_id = selection.id AND selection_value.value = _invoice.status_select     
                 GROUP BY
                   status                
 		    ]]>
@@ -116,17 +118,20 @@
 		    <![CDATA[
                 SELECT 
                    count(_invoice.id) AS invoices,
-                   selection.value AS status
+                   selection_value.value AS status,
+                   selection_value.title AS sttitle
                 FROM
                    gst_invoice as _invoice
+                JOIN   
+                   meta_select AS selection ON selection.name = 'gst.invoice.status.selection'
                 JOIN
-                   meta_select_item AS selection ON selection.select_id = 19 AND selection.value = _invoice.status_select     
+                   meta_select_item AS selection_value ON selection_value.select_id = selection.id AND selection_value.value = _invoice.status_select     
                 GROUP BY
-                  status               
+                  status,sttitle               
 		    ]]>
 	    </dataset>
 		<category key="status" type="text" title="Status" />
-		<series key="invoices" groupBy="status" type="line" title="Amount" />
+		<series key="invoices" groupBy="sttitle" type="line" title="Amount" />
 	</chart>
 	
 	<action-record name="action.chart.set.from.to.date.month"
